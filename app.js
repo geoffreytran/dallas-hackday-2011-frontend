@@ -26,10 +26,10 @@ app.configure(function(){
 
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "DallasHackDay2011", store: sessionStore }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-  app.use(cookieParser);
-  app.use(express.session({ secret: "DallasHackDay2011", store: sessionStore }));
 });
 
 app.configure('development', function(){
@@ -61,7 +61,7 @@ app.get('/m', function(req, res){
 var socket = sio.enable({
   socket:      io.listen(app),
   store:       sessionStore,
-  parser:      cookieParser,
+  parser:       express.cookieParser(),
   per_message: false
 });
 
