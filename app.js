@@ -42,6 +42,13 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', function(req, res){
+  res.render('index.mobile.html', {
+		layout: 'layout.mobile.html',
+		timestamp: (new Date()).getTime()
+	});
+});
+
+app.get('/display', function(req, res){
   res.render('index', {
     title: 'Express',
 		timestamp: (new Date()).getTime(),
@@ -49,12 +56,6 @@ app.get('/', function(req, res){
   });
 });
 
-app.get('/m', function(req, res){
-  res.render('index.mobile.html', {
-		layout: 'layout.mobile.html',
-		timestamp: (new Date()).getTime()
-	});
-});
 
 
 // Make Socket.IO session aware
