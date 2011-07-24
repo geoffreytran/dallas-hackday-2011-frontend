@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="scrims">
+      Scrims
+    </h1>
+    <p>
+      A scrim is used to temporarily disable an application's user interface. It covers the screen with a translucent layer.
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Scrims.png" alt="Scrim"><br>
+      <br>
+      It's possible to create a scrim in a components block, but this usage is not common. Typically, a scrim is shown using <code>enyo.scrim.show()</code>.
+    </p>
+    <p>
+      To show a scrim for five seconds:
+    </p>
+    <blockquote>
+      <pre>
+<code>buttonClick: function() {
+  enyo.scrim.show();
+  setTimeout(enyo.scrim.hide, 5000);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To show a scrim while a service is in flight:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {kind: &quot;PalmService&quot;, onResponse: &quot;serviceResponse&quot;},
+  {kind: &quot;Button&quot;, caption: &quot;Call Service&quot;, onclick: &quot;buttonClick&quot;}
+],
+buttonClick: function() {
+  this.$.service.call();
+  enyo.scrim.show();
+},
+serviceResponse: function() {
+  enyo.scrim.hide();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To show a scrim and then hide it when the user clicks on it:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {kind: &quot;Button&quot;, caption: &quot;Show scrim&quot;, onclick: &quot;buttonClick&quot;},
+  {kind: &quot;Scrim&quot;, onclick: &quot;scrimClick&quot;}
+],
+buttonClick: function() {
+  this.$.scrim.show();
+},
+scrimClick: function() {
+  this.$.scrim.hide();
+}
+</code>
+</pre>
+    </blockquote>
+		</div>
+	</body>
+</html>

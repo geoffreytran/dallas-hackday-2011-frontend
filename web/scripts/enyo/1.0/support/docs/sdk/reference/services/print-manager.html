@@ -1,0 +1,5690 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="print-manager">
+      Print Manager
+    </h1>
+    <p>
+      The Print Manager service (<code>com.palm.printmgr</code>) provides two components and a number of APIs. These calls can be accessed in JavaScript with the standard calls provided for accessing system services. See the Enyo Javascript documentation for more information.
+    </p>
+    <ul>
+      <li>
+        <code>printers</code>
+        <ul>
+          <li>
+            <a href="#add"><code>add</code></a> -- Manually adds a printer that Zeroconf did not discover.
+          </li>
+          <li>
+            <a href="#delete"><code>delete</code></a> -- Deletes a manually added printer.
+          </li>
+          <li>
+            <a href="#getCapabilities"><code>getCapabilities</code></a> -- Returns printer capabilities.
+          </li>
+          <li>
+            <a href="#getCurrent"><code>getCurrent</code></a> -- Gets the current printer for the user's currently connected LAN (SSID).
+          </li>
+          <li>
+            <a href="#list"><code>list</code></a> -- Lists printers as they are added or removed either by Zeroconf or manually.
+          </li>
+          <li>
+            <a href="#listActive"><code>listActive</code></a> -- Lists all the currently active printers.
+          </li>
+          <li>
+            <a href="#listAddedPrinters"><code>listAddedPrinters</code></a> -- Lists manually added printers.
+          </li>
+          <li>
+            <a href="#setCurrent"><code>setCurrent</code></a> -- Sets the current printer for the user's currently connected LAN.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>jobs</code>
+        <ul>
+          <li>
+            <a href="#addFile"><code>addFile</code></a> -- Adds file to print job.
+          </li>
+          <li>
+            <a href="#allAtOnce"><code>allAtOnce</code></a> -- Launches a print job with multiple JPEG files.
+          </li>
+          <li>
+            <a href="#cancel"><code>cancel</code></a> -- Cancel the print job.
+          </li>
+          <li>
+            <a href="#close"><code>close</code></a> -- Close the print job.
+          </li>
+          <li>
+            <a href="#editPrintParams"><code>editPrintParams</code></a> -- Modifies the current print parameters.
+          </li>
+          <li>
+            <a href="#getCurrentPrintParams"><code>getCurrentPrintParams</code></a> -- Returns the current print parameters.
+          </li>
+          <li>
+            <a href="#getFinalParamsAndArea"><code>getFinalParamsAndArea</code></a> -- Validates print job parameters.
+          </li>
+          <li>
+            <a href="#getRenderStatus"><code>getRenderStatus</code></a> -- Gets status of files being rendered or added.
+          </li>
+          <li>
+            <a href="#getStatus"><code>getStatus</code></a> -- Gets print job's status.
+          </li>
+          <li>
+            <a href="#listAll"><code>listAll</code></a> -- Lists all Print Manager jobs.
+          </li>
+          <li>
+            <a href="#newTempFile"><code>newTempFile</code></a> -- Creates a new file in the file cache.
+          </li>
+          <li>
+            <a href="#open"><code>open</code></a> -- Opens a print job returning a job ID.
+          </li>
+          <li>
+            <a href="#resizeTempFile"><code>resizeTempFile</code></a> -- Adjusts temporary file's allocated cache.
+          </li>
+          <li>
+            <a href="#setRenderStatus"><code>setRenderStatus</code></a> -- Sets status when WebKit is finished rendering a job.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <hr>
+    <h2 id="print-jobs-overview">
+      Print Jobs Overview
+    </h2>
+    <p>
+      Basic end-to-end process for print jobs:
+    </p>
+    <ol>
+      <li>Open a print job -- Call <a href="#open">jobs/open</a> with a subscription so the print job can be cancelled if the calling app crashes or exits.
+      </li>
+      <li>Get the job's print parameters-- Use <a href="#getCurrentPrintParams">jobs/getCurrentPrintParams</a>.
+      </li>
+      <li>If necessary, modify the job's print parameters-- Use <a href="#editPrintParams">jobs/editPrintParams</a>
+      </li>
+      <li>Check final job parameters -- The Print Manager may modify your edits, so check the final values with <a href="#getFinalParamsAndArea">jobs/getFinalParamsAndArea</a>
+      </li>
+      <li>Add job files -- Add JPEG files to the job with <a href="#addFile">jobs/addFile</a>.
+      </li>
+      <li>Close the print job -- Call <a href="#close">jobs/close</a>.
+      </li>
+    </ol>
+    <p>
+      The Print Manager can print an existing file (i.e., a photo) or a temporary file (i.e., a WebKit rendered Web page).
+    </p>
+    <p>
+      <strong>WebKit Rendering</strong>
+    </p>
+    <p>
+      WebKit rendering can be used to generate files for printing. If pages are being rendered to a temporary file, the methods <a href="#newTempFile">jobs/newTempFile</a> and <a href="#resizeTempFile">jobs/resizeTempFile</a> are needed to create and grow the file as the page is being rendered.<br>
+      After the page is rendered, you can add the temporary file to the job using <a href="#addFile">jobs/addFile</a>. All this is done by WebKit.
+    </p>
+    <p>
+      <strong>Job and Rendering Staus</strong>
+    </p>
+    <p>
+      You can obtain rendering status and job status via subscriptions to <a href="#getRenderStatus">jobs/getRenderStatus</a> and <a href="#getStatus">jobs/getStatus</a>.
+    </p>
+    <hr>
+    <p>
+      <strong>About the Code Samples</strong>
+    </p>
+    <p>
+      The code samples were done using <code>luna-send</code>, a webOS utility you can invoke from a command-line shell on the device. You can open a shell using <code>putty</code> (Windows) or <code>ssh</code> (Mac). Another option is to use <code>novaterm</code>. The webOS SDK comes with both <code>putty</code> and <code>novaterm</code>.
+    </p>
+    <p>
+      If you are using a HP/Palm TouchPad for testing, then:
+    </p>
+    <ul>
+      <li>The TouchPad should have webOS 3.0 or higher installed.
+      </li>
+      <li>You should have a USB cord to connect the device to your development machine.
+      </li>
+      <li>The TouchPad should be charged and prepared.
+      </li>
+    </ul>
+    <p>
+      <strong>To open a shell and log in to the device:</strong>
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>
+        <p>
+          Open a command prompt.
+        </p>
+        <p>
+          On Windows type:
+        </p>
+        <blockquote>
+          <pre>
+<code>putty -P 10022 root@localhost
+</code>
+</pre>
+        </blockquote>
+        <p>
+          On the Mac OS X:
+        </p>
+        <blockquote>
+          <pre>
+<code>ssh -p 10022 root@localhost
+</code>
+</pre>
+        </blockquote>
+      </li>
+      <li>
+        <p>
+          Press &quot;Enter&quot; at the password prompt.
+        </p>
+      </li>
+    </ol><a name="add" id="add"></a>
+    <hr>
+    <h2 id="printersadd">
+      printers/add
+    </h2>
+    <p>
+      Manually adds a printer that Zeroconf did not discover. Printer must be present on the SSID.
+    </p>
+    <h3 id="syntax">
+      Syntax
+    </h3>
+    <pre>
+{
+   "printerID"      : string,
+   "printerName"    : string,
+   "printerAddress" : string
+}
+</pre>
+    <h3 id="parameters">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Printer name (can be same as printerID).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerAddress
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer's IPv4 address.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -203, -204, -205, -206. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/printers/add '{"printerID":"cat","printerName":"Mister", "printerAddress":"192.168.0.213"}'
+</pre>
+    <h4 id="example-output">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue":true
+}
+</pre><a name="delete" id="delete"></a>
+    <hr>
+    <h2 id="printersdelete">
+      printers/delete
+    </h2>
+    <p>
+      Deletes a manually added printer. Only manually added printers can be deleted, not ones that Zeroconf automatically discovers. If the <code>ssid</code> optional parameter is passed, then the manually added printer does not need to currently be accessible on the SSID.
+    </p>
+    <h3 id="syntax-1">
+      Syntax
+    </h3>
+    <pre>
+{
+   "printerID" : string,
+   "ssid"      : string
+}
+</pre>
+    <h3 id="parameters-1">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ssid
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer's SSID.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-1">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -202. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-1">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/printers/delete '{"printerID":"RC","ssid":"MySSID"}'
+</pre>
+    <h4 id="example-output-1">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true
+}
+</pre><a name="getCapabilities" id="getCapabilities"></a>
+    <hr>
+    <h2 id="printersgetcapabilities">
+      printers/getCapabilities
+    </h2>
+    <p>
+      Given a printer ID, returns printer capabilities. You can subscribe to <a href="#list">printers/list</a> to obtain a printer ID.
+    </p>
+    <h3 id="syntax-2">
+      Syntax
+    </h3>
+    <pre>
+{
+   "printerID" : string
+}
+</pre>
+    <h3 id="parameters-2">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-2">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"           : boolean,
+    "errorCode"             : int,
+    "errorText"             : string,
+    "mediaSize"             : string array,
+    "mediaType"             : string array,
+    "trays"                 : string array,
+    "canDuplex"             : boolean,
+    "hasPhotoTray"          : boolean,
+    "canPrintBorderless"    : boolean,
+    "canPrintQualityDraft"  : boolean,
+    "canPrintQualityNormal" : boolean,
+    "canPrintQualityHigh"   : boolean,
+    "hasColor"              : boolean,
+    "hasFaceDownTray"       : boolean,
+    "isSupported"           : boolean,
+    "canCancel"             : boolean
+
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -202, -207, and -238. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaSize
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            Supported media sizes.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaType
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            Supported media types.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            trays
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            Supported media types.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canDuplex
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if duplex supported.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            hasPhotoTray
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if printer has a photo tray.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canPrintBorderless
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if printer can print borderless.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canPrintQualityDraft
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if a draft mode is supported.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canPrintQualityNormal
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if a normal quality is supported.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canPrintQualityHigh
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if a best mode is supported.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            hasColor
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if printing in color is option.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            hasFaceDownTray
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if the printout is face down in the tray.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            isSupported
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if printer supports HP pcl5 or pcl3gui protocol, meaning the Print Manager knows how to &quot;talk&quot; to it.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canCancel
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if printer supports an explicit cancel command, <code>false</code> if cancel requires shutting the connection. This is for internal logging purposes ONLY and should not be exposed to the user.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-2">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/printers/getCapabilities '{"printerID":" Photosmart Prem C410 series [E8D0A1]"}'
+</pre>
+    <h4 id="example-output-2">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true,
+   "errorCode":0,
+   "mediaSize":[
+      "ISO_A4",
+      "HAGAKI",
+      "Photo_4x6",
+      "Photo_L",
+      "Photo_5x7",
+      "Photo_10x15",
+      "ISO_A6",
+      "Photo_8x10",
+      "Photo_5x7_MainTray"
+   ],
+   "mediaType":[
+      "Plain",
+      "Photo",
+      "Photo Glossy",
+      "Premium Photo",
+      "Advanced Photo"
+   ],
+   "trays":[
+      "Auto",
+      "Tray1",
+      "Photo"
+   ],
+   "canDuplex":true,
+   "hasPhotoTray":true,
+   "canPrintBorderless":true,
+   "canPrintQualityDraft":true,
+   "canPrintQualityNormal":true,
+   "canPrintQualityHigh":true,
+   "hasColor":true,
+   "hasFaceDownTray":false,
+   "isSupported" : true,
+   "canCancel":false      
+}
+</pre><a name="getCurrent" id="getCurrent"></a>
+    <hr>
+    <h2 id="printersgetcurrent">
+      printers/getCurrent
+    </h2>
+    <p>
+      Gets the current printer for the user's currently connected LAN.
+    </p>
+    <h3 id="syntax-3">
+      Syntax
+    </h3>
+    <pre>
+{}
+</pre>
+    <h3 id="parameters-3">
+      Parameters
+    </h3>
+    <p>
+      None
+    </p>
+    <h3 id="returns-3">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"    : boolean,
+    "errorCode"      : int,
+    "errorText"      : string,
+    "printerID"      : string,
+    "printerName"    : string,
+    "printerAddress" : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID. Returns empty string (&quot;&quot;) if no current printer exists.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer name. Returns empty string (&quot;&quot;) if no current printer exists.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerAddress
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer IPv4 address. Returns empty string (&quot;&quot;) if no current printer exists.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-3">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/printers/getCurrent '{}'
+</pre>
+    <h4 id="example-output-3">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue": true,
+    "printerID": "eStn",
+    "printerName": "Zeus",
+    "printerAddress": "192.168.1.102"
+}
+</pre><a name="list" id="list"></a>
+    <hr>
+    <h2 id="printerslist">
+      printers/list
+    </h2>
+    <p>
+      Lists printers as they are added or removed, either via Zeroconf or manually. Apps need to <em>subscribe</em> to this to get the list.
+    </p>
+    <h3 id="syntax-4">
+      Syntax
+    </h3>
+    <pre>
+{
+   subscribe : boolean
+}
+</pre>
+    <h3 id="parameters-4">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Must be <code>true</code> to return list.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-4">
+      Returns
+    </h3>
+    <p>
+      One of the following is returned for each printer.
+    </p>
+    <pre>
+{
+    "returnValue"    : boolean,
+    "errorCode"      : int,
+    "errorText"      : string,
+    "subscribed"     : boolean,
+    [{
+       "printerID"      : string,
+       "printerName"    : string,
+       "printerAddress" : string,      
+       "eventType"      : string
+       "source"         : string       
+    }]
+}
+
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerAddress
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer IP address.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            eventType
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Add&quot; or &quot;Rmv&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            source
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            fromZeroconf|fromManualAdd
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-4">
+      Example
+    </h4>
+    <pre>
+luna-send -i palm://com.palm.printmgr/printers/list '{"subscribe":true}'
+</pre>
+    <h4 id="example-output-4">
+      Example Output
+    </h4>
+    <pre>
+{"returnValue":true,"subscribed":true}
+{"printerID":"HP LaserJet 400 color M451 ","printerName":"HP LaserJet 400 color M451","printerAddress":"192.168.1.100","eventType":"Add","source":"fromZeroconf"}
+{"printerID":"Photosmart Prem C410 ","printerName":"Photosmart Prem C410 seri[E8D0A1]","printerAddress":"192.168.1.2","eventType":"Add","source":"fromManualAdd"}
+{"printerID":"Ubuntu Print to PDF Printer","printerName":"Ubuntu Print to PDF Printer","printerAddress":"192.168.1.34","eventType":"Add","source":"fromZeroconf"}
+{"printerID":"eStn","printerName":"Zeus","printerAddress":"192.168.22.76","eventType":"Add","source":"fromZeroconf"}
+{"printerID":"eStn","printerName":"Zeus","printerAddress":"192.168.22.76","eventType":"Rmv","source":"fromZeroconf"}
+</pre><a name="listActive" id="listActive"></a>
+    <hr>
+    <h2 id="printerslistactive">
+      printers/listActive
+    </h2>
+    <p>
+      Lists the currently &quot;active&quot; printers on the current WLAN (SSID) that Zeroconf automatically discovered or were manually added. Unlike <a href="#list">printer/list</a>, more data for each printer is returned and there is no subscription. All the printers are returned in an array in one response. This API is included mainly as a debugging aid and not for general usage.
+    </p>
+    <h3 id="syntax-5">
+      Syntax
+    </h3>
+    <pre>
+{}
+</pre>
+    <h3 id="parameters-5">
+      Parameters
+    </h3>
+    <p>
+      None
+    </p>
+    <h3 id="returns-5">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"    : boolean,
+    "errorCode"      : int,
+    "errorText"      : string,
+    "activePrinters" :
+    [
+        {
+            "printerID"        : string,
+            "printerName"      : string,
+            "printerAddress"   : string,
+            "zeroconfFullName" : string,
+            "supportsIpp"      : boolean,
+            "supportsPdl"      : boolean,
+            "source"           : string
+        }
+    ]
+}
+</pre>style=&quot;padding-left:30px&quot;
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            activePrinters
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            object array
+          </td>
+          <td>
+            Inline array of active printer objects, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            ID of active printer for the SSID, empty string (&quot;&quot;) if none set.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Active printer name, may be the same as the ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            zeroconfFullName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Full Zeroconf (Bonjour) name, i.e., &quot;HP\032LaserJet\032color\032M451dn\032(AA7EBC)._ipp._tcp.local.&quot;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            supportsIpp
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supports <a href="http://en.wikipedia.org/wiki/Internet_Printing_Protocol" target="_blank">IPP</a> (Internet Printing Protocol) flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            supportsPdl
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supports <a href="http://en.wikipedia.org/wiki/Page_description_language" target="_blank">PDL</a> (Page Description Language) flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            source
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;fromZeroconf&quot; (printer was automatically discovered (Bonjour)), or &quot;fromManualAdd&quot; (printer was manually added).
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-5">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/printers/listActive '{}'
+</pre>
+    <h4 id="example-output-5">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true,
+   "activePrinters":[
+      {
+         "printerID":"192.168.1.100",
+         "printerName":"Laser",
+         "printerAddress":"192.168.1.100",
+         "zeroconfFullName":"HP\\032LaserJet\\032color\\032M451dn\\032(AA7EBC)._ipp._tcp.local.",
+         "supportsIpp":false,
+         "supportsPdl":true,
+         "source":"fromZeroconf"
+      },
+      {
+         "printerID":"192.168.1.103",
+         "printerName":"eStation",
+         "printerAddress":"192.168.1.103",
+         "zeroconfFullName":"NULL",
+         "supportsIpp":false,
+         "supportsPdl":true,
+         "source":" fromManualAdd "
+      }
+   ]
+}
+</pre><a name="listAddedPrinters" id="listAddedPrinters"></a>
+    <hr>
+    <h2 id="printerslistaddedprinters">
+      printers/listAddedPrinters
+    </h2>
+    <p>
+      Lists manually added printers.
+    </p>
+    <p>
+      Some printers cannot be discovered via Zeroconf (Bonjour), which could occur if the printer does not support Zeroconf, or has support turned off, or because its WLAN is blocking multicast messages.
+    </p>
+    <p>
+      In this case, manually adding a printer is supported. You can only add a printer that is currently available and is not previously added (either manually or thru Zeroconf). You can only delete a manually added printer. This API returns a list of manually added printers for either the current access point (SSID) or for all SSIDs.
+    </p>
+    <h3 id="syntax-6">
+      Syntax
+    </h3>
+    <pre>
+{
+   ssidAll : boolean
+}
+</pre>
+    <h3 id="parameters-6">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ssidAll
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, manually added printers for all SSIDs are returned; otherwise, only the list for the current SSID is returned.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-6">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string,
+    "addList"      : [
+       {
+            printerID      : string,
+            printerName    : string,
+            printerAddress : string
+            ssid           : string
+       }
+   ]
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -209. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            addList
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            object array
+          </td>
+          <td>
+            Inline object array -- see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            printerID
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            printerName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer name.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            printerAddress
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer IPv4 address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ssid
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            SSID of WLAN the printer is connected to.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-6">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/printers/listAddedPrinters '{"ssidAll":true}'
+</pre>
+    <h4 id="example-output-6">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue": true,
+   "addList":[
+      {
+         "printerID":"eStn",
+         "printerName":"Zeus",
+         "printerAddress":"192.168.1.102",
+         "ssid":"CPayneTestWLAN"
+      },
+      {
+         "printerID":"Bart",
+         "printerName":"Bart",
+         "printerAddress":"255.255.0.1",
+         "ssid":"MY_SSID"
+      }
+   ]
+}
+</pre><a name="setCurrent" id="setCurrent"></a>
+    <hr>
+    <h2 id="printerssetcurrent">
+      printers/setCurrent
+    </h2>
+    <p>
+      Sets the current printer for the user's currently connected WLAN (SSID). A different current printer can be set for each access point.
+    </p>
+    <h3 id="syntax-7">
+      Syntax
+    </h3>
+    <pre>
+{
+   printerID : string
+}
+</pre>
+    <h3 id="parameters-7">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-7">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -202, and -208. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-7">
+      Example
+    </h4>
+    <pre>
+ luna-send -n 1 -f palm://com.palm.printmgr/printers/setCurrent '{"printerID":"eStn"}'
+</pre>
+    <h4 id="example-output-7">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue": true
+}
+</pre><a name="addFile" id="addFile"></a>
+    <hr>
+    <h2 id="jobsaddfile">
+      jobs/addFile
+    </h2>
+    <p>
+      Adds file (JPEG) to print job.
+    </p>
+    <p>
+      Insets can optionally be set on a per page basis, overriding those specified for the job. Do not specify insets for jobs printing in borderless mode. Insets must be larger than the (corresponding) page margins.
+    </p>
+    <p>
+      It is expected that if the file already exists, or is WebKit rendered, that insets will be specified for the job as a whole using <a href="#editPrintParameters">jobs/editPrintParameters</a>, and not be specified as part of <a href="#addFile">jobs/addFile</a>.
+    </p>
+    <h3 id="syntax-8">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID"        : int,
+    "pathName"     : string,
+    "currentPage"  : int,
+    "totalPages"   : int,
+    "topInset"     : float,
+    "leftInset"    : float,
+    "rightInset"   : float,
+    "bottomInset"  : float
+}
+</pre>
+    <h3 id="parameters-8">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Printer ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pathName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to file, i.e., &quot;<code>/media/internal/1.jpg</code>&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            currentPage
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Current page (1,2,3,...etc.)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            totalPages
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Total pages to add to job. Should be set to 0 if this is unknown.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            topInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from top (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            leftInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from left (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            rightInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from right (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            bottomInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from bottom (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-8">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -213, -214, -216, -219, -220, -222 and -232. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-8">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/addFile '{"jobID":1,"pathName":"/media/internal/1.jpg", "currentPage":1, "totalPages":2}'
+</pre>
+    <h4 id="example-output-8">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue":true
+}
+</pre><a name="allAtOnce" id="allAtOnce"></a>
+    <hr>
+    <h2 id="jobsallatonce">
+      jobs/allAtOnce
+    </h2>
+    <p>
+      Initiates a print job with multiple JPEG files; intended primarily as an aid to scripted testing as it is easier than carrying the job ID across a sequence of method calls such as open/addFile/close.
+    </p>
+    <h3 id="syntax-9">
+      Syntax
+    </h3>
+    <pre>
+{
+    "printerID"   : string,
+    "description" : string,
+    "appName"     : string,
+    "pathnames"   : string array
+}
+</pre>
+    <h3 id="parameters-9">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID or IPv4 address.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            description
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Job description.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Application name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pathnames
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            Documents' full pathname, minimum of one.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-9">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string,
+    "jobID"        : int
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -213, -214, -215, -216, -218, -219, and -221. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            ID of new job.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-9">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/allAtOnce '{"printerID":"192.168.1.113","description":"desc","appName":"app","pathNames":["/media/internal/2.jpg"]}'
+</pre>
+    <h4 id="example-output-9">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue":true,
+    "jobID":4
+}
+</pre><a name="cancel" id="cancel"></a>
+    <hr>
+    <h2 id="jobscancel">
+      jobs/cancel
+    </h2>
+    <p>
+      Cancels a print job.
+    </p>
+    <h3 id="syntax-10">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID" : int
+}
+</pre>
+    <h3 id="parameters-10">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-10">
+      Returns
+    </h3>
+    <p>
+      One of the following is returned for each printer.
+    </p>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -214, and -217. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-10">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/cancel '{"jobID":1}'
+</pre>
+    <h4 id="example-output-10">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue":true
+}
+</pre><a name="close" id="close"></a>
+    <hr>
+    <h2 id="jobsclose">
+      jobs/close
+    </h2>
+    <p>
+      Closes the print job; this means that no more pages can be added. Note that this does not mean page printing is done, but does allow the Print Manager to start the next copy for multi-copy jobs.
+    </p>
+    <h3 id="syntax-11">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID" : int
+}
+</pre>
+    <h3 id="parameters-11">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-11">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -214, and -223. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-11">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/close '{"jobID":1}'
+</pre>
+    <h4 id="example-output-11">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue": true
+}
+</pre><a name="editPrintParams" id="editPrintParams"></a>
+    <hr>
+    <h2 id="jobseditprintparams">
+      jobs/editPrintParams
+    </h2>
+    <p>
+      Change the Print Manager's print parameters with passed values. Call <a href="#getCapabilities">printer/getCapabilities</a> to get supported printer parameters.
+    </p>
+    <p>
+      Insets set here apply to all job pages. You can override insets on a page by page basis using <a href="#addFile">jobs/addFile</a> if rendering is done on a page basis and different insets are needed for different pages.
+    </p>
+    <p>
+      Insets should not be set if <code>borderless</code> is <code>true</code> and they should be larger then (or equal to) the printer margins for the selected media size. The <a href="#getFinalParamsAndArea">jobs/getFinalParamsAndArea</a> API can validate this and adjust them if they are smaller.
+    </p>
+    <p>
+      <strong>Note</strong>: If the input data is wider than the printable area, an equal amount of data is dropped on either side. If the input data is higher than the printable area, an equal amount of data is dropped from the top and the bottom. The image's aspect ratio is maintained.
+    </p>
+    <h3 id="syntax-12">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID"        : int,
+    "mediaSize"    : string,
+    "mediaType"    : string,
+    "printQuality" : string,
+    "duplex"       : string,
+    "dryTime"      : string,
+    "color"        : string,
+    "tray"         : string,
+    "numCopies"    : int,
+    "borderless"   : boolean,
+    "autoRotate"   : boolean,
+    "autoScale"    : boolean,
+    "topInset"     : float,
+    "leftInset"    : float,
+    "rightInset"   : float,
+    "bottomInset"  : float
+}
+</pre>
+    <h3 id="parameters-12">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaSize
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media sizes. Must be one of the media sizes returned in <a href="#getCapabilities">printer/getCapabilities</a>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaType
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media types. Must be one of the media types returned in <a href="#getCapabilities">printer/getCapabilities</a>. Note that some printers have media sensors in the tray. For these printers, the media type must match what is in the tray; otherwise, the printer front panel could display warning or error messages.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printQuality
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Options: &quot;Fast&quot;, &quot;Normal&quot;, or &quot;Best&quot;, assuming equivalent qualities supported in <a href="#getCapabilities">printer/getCapabilities</a>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            duplex
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Options: &quot;None&quot; , &quot;Book&quot;, or &quot;Tablet&quot;. Use &quot;None&quot; if single-sided print is desired, &quot;Tablet&quot; if duplex is desired.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            dryTime
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Options: &quot;Normal&quot;, &quot;Lower&quot;, or &quot;Minimum&quot;. Indicates the time needed to allow ink to dry. Usually not changed from default.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            color
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Options: &quot;Mono&quot;, or &quot;Color&quot; (if color is supported in <a href="#getCapabilities">printer/getCapabilities</a>).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            tray
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Output tray, must be one of the trays returned in <a href="#getCapabilities">printer/getCapabilities</a>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            numCopies
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Number of copies (1-99).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            borderless
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if print should extend to the edges of the media; <code>false</code> otherwise.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            autoRotate
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, input data is rotated to best match the printable area. Landscape photos are rotated to the printer's photo paper orientation while not affecting portrait photos.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            autoScale
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, input data is rotated to best match the printable area with the necessary scaling applied, while maintaining the aspect ratio, to fill the entire printable area. Aside from scaling, this flag implies <code>autoRotate</code>, placing the vertical center of the input data at the vertical center of the printable area and placing the horizontal center of the input data at the horizontal center of the printable area, using an equal amount of input data on either side to fill the printable area.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            topInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from top (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            leftInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from left (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            rightInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from right (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            bottomInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from bottom (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-12">
+      Returns
+    </h3>
+    <p>
+      If a parameter is unrecognized, it is listed in the returned <code>errorText</code>. Only the first invalid parameter detected is listed in the <code>errorText</code>. If a parameter is valid, but not supported in the capabilities, it is set to a default. The <code>paramsAdjusted</code> flag returned from <a href="#getFinalParamsAndArea">getFinalParamsAndArea</a> indicates if this occurred.
+    </p>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -214, -224, -225, -226, -227, -228, -229, -230, and -234. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-12">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/jobs/editPrintParams '{"jobID":1, "mediaSize":"US_Letter", "dryTime":"Lower", "color":"Color", "borderless":false, "autoRotate": false, "leftInset":1.5,"topInset":1.0,"rightInset":0.75,"bottomInset":0.5}'
+</pre>
+    <h4 id="example-output-12">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue": true
+}
+</pre><a name="getCurrentPrintParams" id="getCurrentPrintParams"></a>
+    <hr>
+    <h2 id="jobsgetcurrentprintparams">
+      jobs/getCurrentPrintParams
+    </h2>
+    <p>
+      Returns the contents of the Print Manager's print parameters. Initially, these default to pre-defined print subsystem values, which you can change with <a href="#editPrintParams">jobs/editPrintParams</a>.
+    </p>
+    <h3 id="syntax-13">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID" : int
+}
+</pre>
+    <h3 id="parameters-13">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-13">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"      : boolean,
+    "errorCode"        : int,
+    "errorText"        : string,
+    "jobID"            : int,
+    "mediaSize"        : string,
+    "mediaType"        : string,
+    "printQuality"     : string,
+    "duplex"           : string,
+    "dryTime"          : string,
+    "color"            : string,
+    "tray"             : string,
+    "numCopies"        : int,
+    "borderless"       : boolean,
+    "autoRotate"       : boolean,
+    "autoScale"        : boolean,
+    "topInset"         : float,
+    "leftInset"        : float,
+    "rightInset"       : float,
+    "bottomInset"      : float,
+    "pageTopMargin"    : float,
+    "pageLeftMargin"   : float,
+    "pageBottomMargin" : float,
+    "pageHeight"       : float,
+    "pageWidth"        : float
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, and -214. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaSize
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media size.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaType
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media type.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printQuality
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Fast&quot;, &quot;Normal&quot;, or &quot;Best&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            duplex
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;None&quot; , &quot;Book&quot;, or &quot;Tablet&quot;. Use &quot;None&quot; if single-sided print is desired, &quot;Tablet&quot; if duplex is desired.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            dryTime
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Normal&quot;, &quot;Lower&quot;, or &quot;Minimum&quot;. Indicates the time needed to allow ink to dry. Usually not changed from default.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            color
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Mono&quot;, or &quot;Color&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            tray
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Output tray.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            numCopies
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Number of copies (1-99)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            borderless
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if print should extend to the edges of the media; <code>false</code> otherwise.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            autoRotate
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, input data is rotated to best match the printable area. Landscape photos are rotated to the printer's photo paper orientation while not affecting portrait photos.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            autoScale
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, input data is rotated to best match the printable area with the necessary scaling applied, while maintaining the aspect ratio, to fill the entire printable area. Aside from scaling, this flag implies <code>autoRotate</code>, placing the vertical center of the input data at the vertical center of the printable area and placing the horizontal center of the input data at the horizontal center of the printable area, using an equal amount of input data on either side to fill the printable area.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            topInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from top (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            leftInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from left (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            rightInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from right (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            bottomInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from bottom (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageTopMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from top in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageLeftMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from left in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageRightMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from right in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageBottomMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from bottom in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageHeight
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Page height in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageWidth
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Page width in inches. Cannot be changed by app.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-13">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/jobs/getCurrentPrintParams '{"jobID":1}'
+</pre>
+    <h4 id="example-output-13">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true,
+   "mediaSize":"US_Letter",
+   "mediaType":"Plain",
+   "printQuality":"Normal",
+   "duplex":"None",
+   "dryTime":"Normal",
+   "color":"Color",
+   "tray":"Auto",
+   "numCopies":1,
+   "borderless":false,
+   "autoRotate":false,
+   "autoScale":false,
+   "topInset ":0.125,
+   "leftInset ":0.125,
+   "rightInset ":0.125,
+   "bottomInset ":0.125,
+   "pageTopMargin ":0.125,
+   "pageLeftMargin ":0.125,
+   "pageRightMargin ":0.125,
+   "pageBottomMargin ":0.125,
+   "pageHeight ":11.0,
+   "pageWidth ":8.5
+}
+</pre><a name="getFinalParamsAndArea" id="getFinalParamsAndArea"></a>
+    <hr>
+    <h2 id="jobsgetfinalparamsandarea">
+      jobs/getFinalParamsAndArea
+    </h2>
+    <p>
+      Returns validated job parameters and height and width in pixels for WebKit rendering.
+    </p>
+    <p>
+      Will alter job parameters if requested parameters are not possible, for example: asking for duplex AND the photo tray. The returned <code>paramsAdjusted</code> flag is <code>true</code> if any parameter was altered. If this happens, the caller can compare the returned parameters with the original to determine if any action is needed before starting to add pages to the job. These actions are optional, but could include asking the user for more info, calling <a href="#editPrintParams">jobs/editPrintParams</a> with new values, and calling <a href="#GetFinalAreaAndParams">jobs/GetFinalAreaAndParams</a> again.
+    </p>
+    <p>
+      Adjusts insets if they are smaller than the page margins for the selected media size.
+    </p>
+    <h3 id="syntax-14">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID" : int
+}
+</pre>
+    <h3 id="parameters-14">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-14">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"          : boolean,
+    "errorCode"            : int,
+    "errorText"            : string,
+    "jobID"                : int,
+    "mediaSize"            : string,
+    "mediaType"            : string,
+    "printQuality"         : string,
+    "duplex"               : string,
+    "dryTime"              : string,
+    "color"                : string,
+    "tray"                 : string,
+    "numCopies"            : int,
+    "borderless"           : boolean,
+    "autoRotate"           : boolean,
+    "topInset"             : float,
+    "leftInset"            : float,
+    "rightInset"           : float,
+    "bottomInset"          : float,
+    "pageTopMargin"        : float,
+    "pageLeftMargin"       : float,
+    "pageRightMargin"      : float,
+    "pageBottomMargin"     : float,
+    "paramsAdjusted"       : boolean,
+    "pixel_units"          : int,
+    "width"                : int,
+    "height"               : int,
+    "renderInReverseOrder" : boolean
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -214, -220 -234, and -235. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaSize
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media size.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaType
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Supported media type.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printQuality
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Fast&quot;, &quot;Normal&quot;, or &quot;Best&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            duplex
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;None&quot;, &quot;Book&quot;, or &quot;Tablet&quot;. Use &quot;None&quot; if single-sided print is desired, &quot;Tablet&quot; if duplex is desired.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            dryTime
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Normal&quot;, &quot;Lower&quot;, or &quot;Minimum&quot;. Indicates the time needed to allow ink to dry. Usually not changed from default.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            color
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;Mono&quot; or &quot;Color&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            tray
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Output tray.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            numCopies
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Number of copies (1-99)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            borderless
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if print should extend to the edges of the media; <code>false</code> otherwise.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            autoRotate
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, input data is rotated to best match the printable area. Landscape photos are rotated to the printer's photo paper orientation while not affecting portrait photos.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            topInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from top (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            leftInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from left (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            rightInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from right (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            bottomInset
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            App-specified margin from bottom (in inches) if not operating in borderless mode.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageTopMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from top in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageLeftMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from left in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageRightMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from right in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageBottomMargin
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Printer-specified margin from bottom in inches. Cannot be changed by app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            paramsAdjusted
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if any parameter was changed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pixel_units
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Needed by WebKit for rendering. Same as DPI.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            width
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Width of printable area in pixels (minus insets and margins). Needed by WebKit for rendering.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            height
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Height of printable area in pixels (minus insets and margins). Needed by WebKit for rendering.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            renderInReverseOrder
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Needed by WebKit -- indicates the page rendering order. There are two classes of printers: ones that place the printed page in the out tray face down (typically lasers), and ones that place them face up (most inkjets). The user wants to pick up the stack with page one on top facing out. So, for a face-up printer, this flag should be <code>true</code> so pages are printed in reverse order, ..., 3, 2, 1. This way, page one appears on top, face up.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-14">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/jobs/getFinalParamsAndArea '{"jobID":1}'
+</pre>
+    <h4 id="example-output-14">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true,
+   "mediaSize":"Photo_4x6",
+   "mediaType":"Plain",
+   "printQuality":"Normal",
+   "duplex":"None",
+   "dryTime":"Lower",
+   "color":"Color",
+   "tray":"Photo",
+   "numCopies":1,
+   "borderless":false,
+   "autoRotate":true,
+   "autoScale":true,
+   "topInset ":1,
+   "leftInset ":1,
+   "rightInset ":1,
+   "bottomInset ":1,
+   "pageTopMargin ":0.125,
+   "pageLeftMargin ":0.125,
+   "pageRightMargin ":0.125,
+   "pageBottomMargin ":0.125,
+   "paramsAdjusted":false,
+   "pixelUnits":300,
+   "width":1125,
+   "height":1725,
+   "renderInReverseOrder":true
+}
+</pre><a name="getRenderStatus" id="getRenderStatus"></a>
+    <hr>
+    <h2 id="jobsgetrenderstatus">
+      jobs/getRenderStatus
+    </h2>
+    <p>
+      Returns status as files are being rendered/added. Status during printing is handled separately (although in multipage jobs they overlap).
+    </p>
+    <p>
+      Apps that want render status should subscribe before starting a job. The methods <a href="#setRenderStatus">jobs/setRenderStatus</a> and <a href="#addFile">jobs/addFile</a> both update render status.
+    </p>
+    <p>
+      <strong>Note</strong>: Use <a href="#getStatus">getStatus</a> to subscribe to print status.
+    </p>
+    <h3 id="syntax-15">
+      Syntax
+    </h3>
+    <pre>
+{
+    "subscribe" : boolean
+}
+</pre>
+    <h3 id="parameters-15">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Must be <code>true</code> to get status.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-15">
+      Returns
+    </h3>
+    <pre>
+{
+    "jobID"            : int,
+    "currentPage"      : int,
+    "totalPages"       : int,
+    "renderResultCode" : int,
+    "renderResultText" : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            currentPage
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Current page being rendered.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            totalPages
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Total pages rendered.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            renderResultCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned when rendering is done. 0 if okay, a negative number if error.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            renderResultText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-15">
+      Example
+    </h4>
+    <pre>
+luna-send -i palm://com.palm.printmgr/jobs/getRenderStatus '{"subscribe":true}'
+</pre>
+    <h4 id="example-output-15">
+      Example Output
+    </h4>
+    <pre>
+{"jobID":2,"currentPage":0,"totalPages":0}
+{"jobID":3,"currentPage":1,"totalPages":2}
+{"jobID":3,"currentPage":2,"totalPages":2}
+{"jobID":3,"renderResultCode":0}
+{"jobID":4,"currentPage":1,"totalPages":1}
+{"jobID":4,"renderResultCode":-1301,"renderResultText":"an Unknown error occurred"}
+</pre><a name="getStatus" id="getStatus"></a>
+    <hr>
+    <h2 id="jobsgetstatus">
+      jobs/getStatus
+    </h2>
+    <p>
+      Returns print job status. Once subscribed, status of jobs is updated as the job progresses.
+    </p>
+    <p>
+      Status is provided for each job state transition, at the start of each page, and at the end of each page.
+    </p>
+    <h3 id="syntax-16">
+      Syntax
+    </h3>
+    <pre>
+{
+    "subscribe" : boolean
+}
+</pre>
+    <h3 id="parameters-16">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Must be <code>true</code> to get status.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-16">
+      Returns
+    </h3>
+    <pre>
+{
+    "jobID"         : int,
+    "printerID"     : string,
+    "description"   : string,
+    "appName"       : string,
+    "statusId"      : string,
+    "printerState"  : string,
+    "currentPage"   : int,
+    "totalPages"    : int,
+    "timeActive"    : int,
+    "timeFromQueue" : int,
+    "jobStatus"     : string,
+    "blockedReasons" : string,
+    "pageNum"       : int,
+    "copyNum"       : int,
+    "currentPage"   : int,
+    "totalPages"    : int,
+    "pageCorrupted" : int,
+    "pageTime"      : int
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID
+          </td>
+        </tr>
+        <tr>
+          <td>
+            description
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            App-provided job description.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Application name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            statusId
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;JOBSTATE&quot; if job state transition, &quot;PAGESTARTINFO&quot; if page start or &quot;PAGEINFO&quot; if page end.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerState
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;JOBSTATE&quot;</code>. Can be &quot;QUEUED&quot;, &quot;RUNNING&quot;, &quot;BLOCKED&quot;, or &quot;DONE&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            currentPage
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;JOBSTATE&quot;</code>. Current page that is printing.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            totalPages
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;JOBSTATE&quot;</code>. Calculated when last page is added; -1 before this occurs.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            timeActive
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>printerState=&quot;DONE&quot;</code>. The time since the job last entered the active phase (i.e., RUNNING to DONE).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            timeFromQueue
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>printerState=&quot;DONE&quot;</code>. The time since the job entered the queue (QUEUED to DONE).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            jobStatus
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Returned if <code>printerState=&quot;DONE&quot;</code>. Job result - &quot;Success&quot;, &quot;Cancelled&quot;, &quot;Error&quot;, or &quot;Corrupt&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            blockedReasons
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            Returned if <code>printerState=&quot;BLOCKED&quot;</code> or <code>printerState=&quot;RUNNING&quot;</code>. All of these conditions may not be returned as this is a superset of what can be returned. Blocking conditions not explicitly called out are grouped under &quot;Service_Request&quot;. Most of the following only occur when <code>printerState = BLOCKED</code>, however &quot;Low_On_Ink&quot;, &quot;Low_On_Toner&quot; can occur when <code>printerState= RUNNING</code>. One or more of the following:
+            <ul>
+              <li>&quot;Unable_To_Connect&quot;
+              </li>
+              <li>&quot;Busy&quot;
+              </li>
+              <li>&quot;Cancelled&quot;
+              </li>
+              <li>&quot;Out_Of_Paper&quot;
+              </li>
+              <li>&quot;Out_Of_Ink&quot;
+              </li>
+              <li>&quot;Out_Of_Toner&quot;
+              </li>
+              <li>&quot;Jammed&quot;
+              </li>
+              <li>&quot;Door_Open&quot;
+              </li>
+              <li>&quot;Service_Request&quot;
+              </li>
+              <li>&quot;Low_On_Ink&quot;
+              </li>
+              <li>&quot;Low_On_Toner&quot;
+              </li>
+              <li>&quot;Very_Low_On_Ink&quot;
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageNum
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. Page number in 1 copy of the job that is being printed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            copyNum
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. Copy that is being printed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            currentPage
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. Current page being printed. This is calculated as &quot;(copyNum-1)*totalPage + pageNum&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            totalPages
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. Calculated when last page is added; -1 before this occurs.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageCorrupted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. This is <code>true</code> if the jpeg was corrupted, <code>false</code> otherwise.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageTime
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Returned if <code>statusId=&quot;PAGEINFOSTART&quot;</code> or <code>PAGEINFO</code>. Time since page start.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-16">
+      Example
+    </h4>
+    <pre>
+luna-send -i palm://com.palm.printmgr/jobs/getStatus '{"subscribe":true}'
+</pre>
+    <h4 id="example-output-16">
+      Example Output
+    </h4>
+    <pre>
+{
+   "jobID":4,
+   "printerID":"Photosmart Prem C410 series [E8D0A1]",
+   "description":"desc",
+   "appName":"app",
+   "statusId":"JOBSTATE",
+   "printerState":"QUEUED",
+   "currentPage":0,
+   "totalPages":0
+}
+{
+   "jobID":5,
+   "printerID":"Photosmart Prem C410 series [E8D0A1]",
+   "description":"desc",
+   "appName":"app",
+   "statusId":"JOBSTATE",
+   "printerState":"RUNNING",
+   "currentPage":1,
+   "totalPages":-1,
+   "blockedReasons":[
+
+   ]
+},
+{
+   "jobID":4,
+   "printerID":"Photosmart Prem C410 series [E8D0A1]",
+   "description":"desc",
+   "appName":"app",
+   "statusId":"PAGESTARTINFO",
+   "pageNum":1,
+   "copyNum":1,
+   "currentPage":1,
+   "totalPages":-1,
+   "pageCorrupted":"false",
+   "pageTime":0
+}
+</pre><a name="listAll" id="listAll"></a>
+    <hr>
+    <h2 id="jobslistall">
+      jobs/listAll
+    </h2>
+    <p>
+      Lists all Print Manager jobs, returned as an array. Each job's unprinted files are also returned as a sub-array. Pages already printed are not listed. This method is intended mainly for debugging.
+    </p>
+    <h3 id="syntax-17">
+      Syntax
+    </h3>
+    <p>
+      {}
+    </p>
+    <h3 id="parameters-17">
+      Parameters
+    </h3>
+    <p>
+      None
+    </p>
+    <h3 id="returns-17">
+      Returns
+    </h3>
+    <pre>
+{
+  [
+      {
+          "jobID"          : int,
+          "printerID"      : string
+          "printerAddress" : string,
+          "description"    : string,
+          "appName"        : string,
+          "nextPageNumber" : int,
+          "jobHandle"      : string,
+          "closed"         : boolean,
+          "pageFiles": [
+                            {
+                               "page" : int,
+                               "temp" : boolean,
+                               "size" : int,
+                               "path" : string
+                            },
+                           ...
+                       ]
+      },
+      ...
+   ]
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            printerAddress
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Printer IPv4 address.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            description
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            App-provided job description.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Application name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            nextPageNumber
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Next page number in job.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            jobHandle
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            An opaque integer the Print Manager uses to identify a job.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            closed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Can more pages be added to job flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pageFiles
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            object array
+          </td>
+          <td>
+            Inline object array, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            page
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Page number in job
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            temp
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is this an existing file (i.e., a photo in the photo app) or a temporary file (i.e., a WebKet rendered file). Typically, the latter are page-sized JPEGs that WebKit renders when printing from the browser, e-mail, or Quick Office. The method <a href="#newTempfile">jobs/newTempFile</a> can be called to create these files and <a href="#resizeTempFile">jobs/resizeTempFile</a> to increase their size. A page image file is added to a job with <a href="#addFile">jobs/addFile</a>. The printing process frees temp files as they are no longer needed.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            size
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Page size in bytes. Only used for temp files, for non-temp files this value is always 0.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            path
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Page path.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-17">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -f palm://com.palm.printmgr/jobs/listAll '{}'
+</pre>
+    <h4 id="example-output-17">
+      Example Output
+    </h4>
+    <pre>
+{
+   [
+      {
+         "jobID":4,
+         "printerID":"192.168.1.100",
+         "printerAddress":"192.168.1.100",
+         "description":"",
+         "appName":"Photos",
+         "nextPageNumber":3,
+         "jobHandle":"0x403",
+         "closed":true,
+         "pageFiles":[
+            {
+               "page":1,
+               "temp":false,
+               "size":0,
+               "path":"\/media\/internal\/screencaptures\/Unknown_2011-09-03_221900.png"
+            }
+         ]
+      },
+      {
+         "jobID":5,
+         "printerID":"192.168.1.100",
+         "printerAddress":"192.168.1.100",
+         "description":"",
+         "appName":"Browser",
+         "nextPageNumber":4,
+         "jobHandle":"0x504",
+         "closed":true,
+         "pageFiles":[
+            {
+               "page":1,
+               "temp":true,
+               "size":1334829,
+               "path":"\/var\/file-cache\/printmgr_page_image\/e\/4IGdAAFJ.jpg"
+            },
+            {
+               "page":2,
+               "temp":true,
+               "size":212715,
+               "path":"\/var\/file-cache\/printmgr_page_image\/T\/x9xnQAFK.jpg"
+            }
+         ]
+      }
+   ]
+}
+</pre><a name="newTempFile" id="newTempFile"></a>
+    <hr>
+    <h2 id="jobsnewtempfile">
+      jobs/newTempFile
+    </h2>
+    <p>
+      Creates a new file in the file cache.
+    </p>
+    <p>
+      The Print Manager service can print existing page images or aid in the management of temporary files containing pages rendered as needed. In webOS, transient files are managed through the File Cache service, which is informed about the life cycle of temporary files and ensures that enough space is available. The Print Manager wraps the needed calls to the file cache with the <a href="#newTempFile">newTempFile</a> and <a href="#resizeTempFile">resizeTempFile</a> methods. Currently, only WebKit calls these while it is rendering the page.
+    </p>
+    <h3 id="syntax-18">
+      Syntax
+    </h3>
+    <pre>
+{
+    "fileExtension" : string,
+    "jobID"         : int,
+    "size"          : int
+}
+</pre>
+    <h3 id="parameters-18">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            fileExtension
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File extension. Supports &quot;jpg&quot;, &quot;png&quot;, &quot;ppm&quot; and &quot;pdf&quot;, though not all printers support ppm and pdf.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            size
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            File size.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-18">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string,
+    "pathName"     : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -211, -212, -214, and -233. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            pathName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File path name.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-18">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/newTempFile '{"fileExtension":"jpg", size:12345}
+</pre>
+    <h4 id="example-output-18">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true,
+   "pathName":"/var/file-cache/printmgr_page_image/D/MuxIwAAC.jpg"
+}
+</pre><a name="open" id="open"></a>
+    <hr>
+    <h2 id="jobsopen">
+      jobs/open
+    </h2>
+    <p>
+      Opens a print job and returns a Print Manager job ID which can be used in calls to <a href="#getCurrentPrintParams">getCurrentPrintParams</a>, <a href="#editPrintParams">editPrintParams</a>, <a href="#getFinalParamsAndArea">getFinalParamsAndArea</a>, <a href="#addFile">addFile</a>, <a href="#close">close</a>, and <a href="#cancel">cancel</a>.
+    </p>
+    <p>
+      Subscribing to this call (<code>subscribe:true</code>) is <strong>strongly recommended</strong> to increase job robustness. Subscriptions are used when a call does not block waiting for a response. In one model, an app subscribes with a callback and, over time, receives a response or responses. In the model used here, the subscribed service (Print Manger) receives a signal if the subscriber goes away. So, if the calling app exits, the System Manager (luna-bus) can let the service know. If that happens, the Print Manager can close the job and perform necessary cleanup. However, apps can make this call without subscribing; this is primarily supported for scripted testing.
+    </p>
+    <p>
+      This call populates a job parameter structure with default parameters you can retrieve with <a href="#getCurrentPrintParams">getCurrentPrintParams</a>.
+    </p>
+    <h3 id="syntax-19">
+      Syntax
+    </h3>
+    <pre>
+{
+    "printerID"   : string,
+    "description" : string,
+    "appName"     : string,
+    "subscribe"   : boolean
+}
+</pre>
+    <h3 id="parameters-19">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            printerID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name or IPv4 address. Can be obtained from <a href="#list">printers/list</a>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            description
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Job description.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            App name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Setting this to <code>true</code> is strongly recommended. See explanation in overview.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-19">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string,
+    "jobID"        : int,
+    "subscribed"   : boolean
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -215, and -218. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Has caller been subscribed flag.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-19">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 -i palm://com.palm.printmgr/jobs/open '{"printerID":"192.168.1.113","description":"desc","appName":"app"", "subscribe":true }'
+</pre>
+    <h4 id="example-output-19">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue":true,
+    "jobID":1,
+    "subscribed":true
+}
+</pre><a name="resizeTempFile" id="resizeTempFile"></a>
+    <hr>
+    <h2 id="jobsresizetempfile">
+      jobs/resizeTempFile
+    </h2>
+    <p>
+      Adjusts the size of the cache allocated to the file, so the file has extra room as it grows or releases room it does not need. Call this before data is written to the file so the cache file can make room for the image. Needed only if rendering a page.
+    </p>
+    <p>
+      For each temp file, the Print Manager tracks the size passed to this API or <a href="#newTempFile">newTempFile</a>. When <a href="#addFile">addFile</a> is called with a temp file, the file's actual size is compared to the tracked size. If it is larger, an error (<a href="#ErrorCodes">-232</a>) is returned. If less, the Print Manager logs a debug message. This should be avoided.
+    </p>
+    <p>
+      The new file cache size is based on a worst case file size scenario. Files are rendered a <em>band</em> at a time. A band spans the width of the paper and, in the current implementation, is 300 pixels high. Since this is done in color, there are three bytes per pixel (red, green and blue). The worst case file size will be its current actual size, plus the worst case size of a band: (width in pixels * 3 * the height of the band in pixels). Because we are using the compressed JPEG format, the actual size after the band is rendered is less.
+    </p>
+    <h3 id="syntax-20">
+      Syntax
+    </h3>
+    <pre>
+{
+    "pathName" : string,
+    "newSize"  : int
+}
+</pre>
+    <h3 id="parameters-20">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            pathName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Returned from jobs/newTempFile.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            newSize
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            New cache size for file.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-20">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible values: -201, -211, -212, -214, and -233. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-20">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/resizeTempFile '{"pathName":" /var/file-cache/ printmgr_page_image/D/MuxIwAAC.jpg ","newSize":12345}'
+</pre>
+    <h4 id="example-output-20">
+      Example Output
+    </h4>
+    <pre>
+{
+    "returnValue" : true
+}
+</pre><a name="setRenderStatus" id="setRenderStatus"></a>
+    <hr>
+    <h2 id="jobssetrenderstatus">
+      jobs/setRenderStatus
+    </h2>
+    <p>
+      Render status when the rendering component (WebKit) is finished rendering the job. See <a href="#getRenderStatus">getRenderStatus</a> and <a href="#addFile">jobs/addFile</a> for additional operations related to render status.
+    </p>
+    <h3 id="syntax-21">
+      Syntax
+    </h3>
+    <pre>
+{
+    "jobID"             : int,
+    "renderResultCode"  : int,
+    "renderResultText"  : string
+}
+</pre>
+    <h3 id="parameters-21">
+      Parameters
+    </h3>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            jobID
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Job ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            renderResultCode
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            0 success; otherwise, one of the following: -201, -211, -212, -213, -216, -219, -220, -222, -232,-233, -234, -235, -237, -301, -302, -303, or -304. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            renderResultText
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Rendering result message
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-21">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue"  : boolean,
+    "errorCode"    : int,
+    "errorText"    : string
+}
+</pre>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Error code returned on failure. Possible codes: -201. See <a href="#ErrorCodes">Error Codes</a> table for full text.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="example-21">
+      Example
+    </h4>
+    <pre>
+luna-send -n 1 palm://com.palm.printmgr/jobs/setRenderStatus '{"jobID":"5","renderResultCode":-301, "renderResultText":"an Unknown error occurred"}'
+</pre>
+    <h4 id="example-output-21">
+      Example Output
+    </h4>
+    <pre>
+{
+   "returnValue":true
+}
+</pre>
+    <hr>
+    <h2 id="error-codes">
+      Error Codes
+    </h2><a name="ErrorCodes" id="ErrorCodes"></a>
+    <p>
+      <strong>Error Message Grouping</strong>
+    </p>
+    <p>
+      Errors are grouped in the following ranges. Note that these are not for end users, who should be given more specific and helpful error messages.
+    </p>
+    <pre>
+#define PM_ERR_USER_START               = -200      // Range for User errors        
+#define PM_ERR_USER_END                 = -299      // Range for User errors        
+#define PM_ERR_REND_START               = -300      // Range for Render errors     
+#define PM_ERR_REND_END                 = -399      // Range for Render errors 
+#define PM_ERR_COMM_START               = -400      // Range for Comm errors
+#define PM_ERR_COMM_END                 = -499      // Range for Comm errors
+#define PM_ERR_INFO_START               = -500      // Range for Info errors
+#define PM_ERR_INFO_END                 = -599      // Range for Info errors
+#define PM_ERR_PROG_START               = -600      // Range for Programming errors
+#define PM_ERR_PROG_END                 = -699      // Range for Programming errors
+#define PM_ERR_SYST_START               = -700      // Range for System errors
+#define PM_ERR_SYST_END                 = -799      // Range for System errors
+</pre>
+    <p>
+      <strong>User Error Messages</strong>
+    </p>
+    <pre>
+typedef enum
+{
+    PM_ERR_PRINTER_ID_UNKNOWN           = -202,     // "user: unknown printer ID"
+    PM_ERR_PRINTER_IP_NOT_VALID         = -206,     // "user: not a valid IP address"
+    PM_ERR_PRINTER_DUPLICATE_IP         = -205,     // "user: printer address already exists"
+    PM_ERR_PRINTER_DUPLICATE_IP_ZERO    = -245,     // "user: printer address already exists (zeroconf added)"
+    PM_ERR_PRINTER_DUPLICATE_ID         = -204,     // "user: printer ID already exists"
+    PM_ERR_PRINTER_NOT_SUPPORTED        = -238,     // "user: printer is not supported (no pcl3gui or pcl5)"
+    PM_ERR_PRINTER_NO_RESPONSE_MANUAL   = -203,     // "user: no reponse from manually added printer (IP valid, may be incorrect or printer not there)"
+    PM_ERR_JOB_NO_JOB_HANDLES           = -243,     // "recoverable: no job handles"
+    PM_ERR_JOB_TEMP_FILE_NO_ROOM        = -233,     // "recoverable: not enough room in file cache for temp file"
+    PM_ERR_JOB_UNKNOWN_ERROR            = -299,      // "unknown: unknown job error"
+
+    PM_ERR_JOB_NO_COMM                  = -401,     // "communication: could not communicate with printer"
+    PM_ERR_PRINTER_GET_CAPS             = -402,     // "communication: failed to get printer capabilities"
+    PM_ERR_PRINTER_NO_RESPONSE          = -403,     // "communication: no reponse from printer"
+    PM_ERR_JOB_ADDRESS_NOT_VALID        = -404,     // "communication: printer address no longer valid can't access"
+    PM_ERR_PRINTER_GET_CAPS_PING_FAIL   = -405,     // "communication: no response to ping before getting printer capabilities"
+    PM_ERR_PRINTER_UNKNOWN_ADDRESS      = -406,     // "communication: printer address is unknown"
+
+    PM_ERR_JOB_CLOSED                   = -501,     // "info: action invalid, job already closed"
+    PM_ERR_JOB_CANCEL_REQUESTED         = -502,     // "info: cancel requested for job."
+    PM_ERR_PRINTER_SET_CURRENT          = -503,     // "info: set currentPrinter failed"
+
+    PM_ERR_JOB_NO_0_FILE                = -601,     // "programming: 0 length file"
+    PM_ERR_JOB_CANT_SET_INSET           = -602,     // "programming: can't set insets with borderless"
+    PM_ERR_JOB_EMPTY_FILE_EXT           = -603,     // "programming: empty file extension"
+    PM_ERR_JOB_NO_FILE                  = -604,     // "programming: file does not exist"
+    PM_ERR_JOB_BAD_PARAM_COLOR          = -605,     // "programming: incorrect color"
+    PM_ERR_JOB_BAD_PARAM_DRYTIME        = -606,     // "programming: incorrect drytime"
+    PM_ERR_JOB_BAD_PARAM_DUPLEX         = -607,     // "programming: incorrect duplex"
+    PM_ERR_JOB_BAD_PARAM_SIZE           = -608,     // "programming: incorrect mediaSize"
+    PM_ERR_JOB_BAD_PARAM_TYPE           = -609,     // "programming: incorrect mediaType"
+    PM_ERR_INCORRECT_SYNTAX             = -610,     // "programming: incorrect parameter syntax"
+    PM_ERR_JOB_BAD_PARAM_PQ             = -611,     // "programming: incorrect printQuality"
+    PM_ERR_JOB_BAD_PARAM_TRAY           = -612,     // "programming: incorrect tray"
+    PM_ERR_JOB_INSET_OUTSIDE_PRINTABLE  = -613,     // "programming: inset outside printable area"
+    PM_ERR_JOB_NO_FILES_TO_PRINT        = -614,     // "programming: no files to print"
+    PM_ERR_JOB_OUT_OF_ORDER             = -615,     // "programming: out of order currentpage"
+    PM_ERR_JOB_TEMP_FILE_TOO_LARGE      = -616,     // "programming: temp file larger than specified"
+    PM_ERR_JOB_ID_BAD                   = -617,     // "programming: unknown job ID"
+    PM_ERR_JOB_NO_MIME                  = -618,     // "programming: unsupported or null mime type"
+    PM_ERR_JOB_NO_PORT                  = -619,     // "programming: unsupported port"
+    PM_ERR_JOB_NO_JOB_FOR_FILE          = -620,     // "programming: file not found in any job"
+
+    PM_ERR_FILE_CACHE_BAD_REPLY         = -701,     // "system: bad reply from file cache"
+    PM_ERR_PRINTER_DB_ACCESS            = -702,     // "system: can't access AddPrinter Database"
+    PM_ERR_JOB_ADD_PAGE_FAILED          = -703,     // "system: could not add page"
+    PM_ERR_JOB_FINAL_PARAMS_FAILED      = -704,     // "system: could not get final job params"
+    PM_ERR_FILE_CACHE_PATH              = -705,     // "system: no path to file cache"
+    PM_ERR_JOB_NO_PLUGIN                = -706,     // "system: no suitable plugin"
+    PM_ERR_JOB_SUBS_SET_CANCEL_FAILED   = -707,     // "system: subscription set cancel failed"
+    PM_ERR_JOB_ADD_JOB_FAILED           = -708,     // "system: unable to add job"
+    PM_ERR_JOB_CANCEL_FAILED            = -709,     // "system: unable to cancel"
+    PM_ERR_JOB_CANT_FLAG_LAST_PAGE      = -710,     // "system: unable to flag last page"
+    PM_ERR_JOB_START_FAILED             = -711,     // "system: unable to start job"
+}
+</pre>
+		</div>
+	</body>
+</html>

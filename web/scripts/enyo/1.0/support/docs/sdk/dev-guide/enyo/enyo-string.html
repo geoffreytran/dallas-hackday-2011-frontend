@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="enyo.string">
+      enyo.string
+    </h1>
+    <p>
+      <code>enyo.string</code> collects a number of utility methods for working with strings.
+    </p>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <h3 id="enyo.string.applyfilterhighlightintext-insearchtext-inclassname">
+      enyo.string.applyFilterHighlight(inText, inSearchText, inClassName)
+    </h3>
+    <p>
+      Performs a case-insensitive search for <code>inSearchText</code> within <code>inText</code>; any matches are wrapped in a <code>&lt;span&gt;</code> tag with a CSS class of <code>inClassName</code>, and the (potentially) modified <code>inText</code> string is returned.
+    </p>
+    <h3 id="enyo.string.escapehtmlintext">
+      enyo.string.escapeHtml(inText)
+    </h3>
+    <p>
+      Returns the passed-in string with <code>&lt;</code>, <code>&gt;</code>, and <code>&amp;</code> replaced by the corresponding HTML entities (<code>&amp;lt;</code>, <code>&amp;gt;</code>, and <code>&amp;amp;</code>).
+    </p>
+    <p>
+      For example, <code>enyo.string.escapeHtml(&quot;This &amp; That&quot;)</code> returns <code>This &amp;amp; That</code>.
+    </p>
+    <h3 id="enyo.string.escapehtmlattributeintext">
+      enyo.string.escapeHtmlAttribute(inText)
+    </h3>
+    <p>
+      Returns the passed-in string with <code>&amp;</code> and <code>&quot;</code> replaced by the corresponding HTML entities (<code>&amp;amp;</code> and <code>&amp;quot;</code>).
+    </p>
+    <h3 id="enyo.string.triminstring">
+      enyo.string.trim(inString)
+    </h3>
+    <p>
+      Returns the passed-in string with whitespace at the beginning and end removed.
+    </p>
+    <h3 id="enyo.string.stripquotesinstring">
+      enyo.string.stripQuotes(inString)
+    </h3>
+    <p>
+      Returns the passed-in string with leading and trailing quote characters removed.
+    </p>
+    <p>
+      For example, <code>enyo.string.stripQuotes(&quot;foo&quot;)</code> returns <code>foo</code>.
+    </p>
+    <h3 id="enyo.string.removehtmlinhtml">
+      enyo.string.removeHtml(inHtml)
+    </h3>
+    <p>
+      Returns a text-only version of a string that may contain HTML.
+    </p>
+    <h3 id="enyo.string.runtextindexerintext-inoptions">
+      enyo.string.runTextIndexer(inText, inOptions)
+    </h3>
+    <p>
+      Searches <code>inText</code> for URLs (web and mailto) and emoticons (if supported), and returns a new string with those entities replaced by HTML links and images (respectively).
+    </p>
+    <p>
+      <code>inOptions</code> is an object with fields having the following names and default values:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  phoneNumber: true,
+  emailAddress: true,
+  webLink: true,
+  schemalessWebLink: true,
+  emoticon: true
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Passing <code>false</code> as the value for a field will prevent LunaSysMgr from HTML-izing that text type.
+    </p>
+    <h3 id="enyo.string.tobase64intext">
+      enyo.string.toBase64(inText)
+    </h3>
+    <p>
+      Encodes the string <code>inText</code> to Base64 and returns the encoded string.
+    </p>
+    <h3 id="enyo.string.frombase64intext">
+      enyo.string.fromBase64(inText)
+    </h3>
+    <p>
+      Decodes the string <code>inText</code> from Base64 and returns the decoded string. Throws an exception on bad input.
+    </p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,11 @@
+/* Copyright 2009 Palm, Inc.  All rights reserved. */
+
+
+.palm-page-header .header-text {
+	text-transform: none !important;
+}           
+
+.palm-page-header.multi-line .title,
+.palm-page-header .title {    
+	text-transform: none !important;
+}

@@ -1,0 +1,102 @@
+/*
+   List Styling : Dark
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-dark .palm-page-header.multi-line {
+  -webkit-border-image: url(../images/palm-page-header-dark.png) 35 24 13 24 repeat stretch;
+}
+
+.palm-dark .palm-filter-open .palm-page-header,
+.palm-dark.palm-filter-open .palm-page-header {
+  -webkit-border-image: url(../images/palm-page-header-square-dark.png) 35 24 13 24 repeat stretch;
+}
+
+.palm-dark .palm-page-header.multi-line .title {
+  color: #aaa;
+  text-shadow: #000 0px -1px 0px;
+}
+.palm-dark .palm-page-header.multi-line .subtitle {
+  color: #888;
+}
+
+.palm-dark .palm-group {                                            
+  -webkit-border-image: url(../images/palm-group-dark.png) 40 18 18 18 repeat repeat;
+}
+
+.palm-dark .palm-group.unlabeled {
+  -webkit-border-image: url(../images/palm-group-unlabeled-dark.png) 18 18 18 18 repeat repeat;
+}
+
+.palm-dark .palm-group-title {
+  color: #888;
+  text-shadow: #000 0px 1px 0px;
+}
+
+.palm-dark .palm-drawer-container {
+  -webkit-border-image: url(../images/palm-drawer-background-dark.png) 20 1 20 1 repeat repeat;
+}
+
+.palm-dark .palm-row {
+  color: #fff;
+  background: url(../images/list-separator-dark.png) bottom left repeat-x;
+}
+
+.palm-dark .palm-row.disabled,
+.palm-dark .palm-list-selector.disabled .title,
+.palm-dark .palm-row .title.disabled {
+  color: #999999;
+}
+
+.palm-dark .label.mv-picker-label,
+.palm-dark .palm-row .label {
+  color: #aaa;
+  text-shadow: #222 0px -1px 0px;
+}
+
+.palm-dark .palm-row.selected {
+  background: none;
+}
+
+.palm-dark .palm-row.no-divider,
+.palm-dark .palm-row.no-separator,
+.palm-dark .palm-row.single,
+.palm-dark .palm-row.last {
+  background: none;
+  -webkit-border-image: none;
+}
+
+.palm-dark .palm-row.selected {
+  border: none;
+  background: none;
+  border-width: 24px 20px;
+  -webkit-border-image: url(../images/selection-gradient-default.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-dark .palm-group .palm-row.selected.first {
+  -webkit-border-image: url(../images/selection-gradient-first.png) 24 20 24 20 repeat repeat;
+}
+.palm-dark .palm-group .palm-row.selected.single {
+  -webkit-border-image: url(../images/selection-gradient-single.png) 24 20 24 20 repeat repeat;
+}
+.palm-dark .palm-group .palm-row.selected.last {
+  -webkit-border-image: url(../images/selection-gradient-last.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-dark .palm-row.palm-reorder-element {   
+  background:none;
+  -webkit-border-image: url(../images/palm-row-dragging-dark.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-dark .palm-row.palm-delete-element {
+  background: none;
+  -webkit-border-image: url(../images/palm-row-deleting-dark.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-dark .palm-row.palm-swipe-delete {
+  background: none;
+  -webkit-border-image: url(../images/palm-delete-dark.png) 24 20 24 20 repeat repeat;
+}

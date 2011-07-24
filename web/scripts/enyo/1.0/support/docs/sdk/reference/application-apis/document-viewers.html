@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="document-viewers">
+      Document Viewers
+    </h1>
+    <p>
+      Applications can use the <a href="/reference/services/application-manager.html">Application Manager's</a> <code>open</code> method with a target URI that points to a file encoded in a supported file format to view common office files from the /media partition. Several common office file formats are supported. For a full list of file formats, see <a href="/reference/services/application-manager.html#resources">Resource Types</a>.
+    </p>
+    <h2 id="examples">
+      Examples
+    </h2>
+    <p>
+      <strong>luna-send</strong>
+    </p>
+    <pre>
+luna://com.palm.applicationManager/open '{ "target": "http://www.somewebsite.com/InApp.jpg"}}'
+{ "processId": "success", "returnValue": true }
+</pre>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+. . .
+{
+    name: "openDocViewerCall",
+    kind: "PalmService",
+    service: "palm://com.palm.applicationManager/",
+    method: "open",
+    onSuccess: "openFinished",
+    onFailure: "openFail",
+    onResponse: "gotResponse",
+    subscribe: true
+},
+. . .
+
+openFinished : function(inSender, inResponse) {
+    enyo.log("Open success, results=" + enyo.json.stringify(inResponse));
+},
+openFail : function(inSender, inResponse) {
+    enyo.log("Open failure, results=" + enyo.json.stringify(inResponse));
+},
+openDocViewer : function(inSender, inResponse)
+{
+    this.$.openDocViewerCall.call({"target": "http://www.palm.com/us/support/handbooks/800W_Sprint_Datasheet.pdf"});
+}
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.applicationManager', {
+    method: 'open',
+    parameters: {
+        target: "http://www.palm.com/us/support/handbooks/800W_Sprint_Datasheet.pdf"
+    }
+ });
+
+ this.controller.serviceRequest('palm://com.palm.applicationManager', {
+     method: 'open',
+     parameters: {
+        target: Mojo.appPath + 'documents/Welcome_to_webOS_development.doc'
+     }
+}); 
+</pre>
+		</div>
+	</body>
+</html>

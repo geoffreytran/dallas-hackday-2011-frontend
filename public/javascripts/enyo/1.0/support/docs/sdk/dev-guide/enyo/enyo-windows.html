@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="enyo.windows">
+      enyo.windows
+    </h1>
+    <p>
+      <code>enyo.windows</code> provides a variety of utility methods for interacting with application windows.
+    </p>
+    <p>
+      To open a window or activate an existing window, call <code>enyo.windows.activate</code>. For example:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.windows.activate(undefined, &quot;SearchWindow&quot;);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Or, to open the window if it does not exist, add a url (the url may be absolute or relative).
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.windows.activate(&quot;search/index.html&quot;, &quot;SearchWindow&quot;);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To facilitate communication between application windows, parameters can be sent. To send parameters to the window to be activated, add a <code>params</code> object:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.windows.activate(&quot;search/index.html&quot;, &quot;SearchWindow&quot;,
+  {query: &quot;oranges&quot;});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note that the activated window will fire a <code>windowParamsChange</code> event. The window parameters are available in the <code>enyo.windowParams</code> object.
+    </p>
+    <blockquote>
+      <pre>
+<code>windowParamsChangeHandler: function() {
+  this.$.searchQueryInput.setValue(enyo.windowParams.query);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To send parameters to a window without activating it, use the <code>setWindowParams</code> method. For example:
+    </p>
+    <blockquote>
+      <pre>
+<code>var searchWindow = enyo.windows.fetchWindow(&quot;SearchWindow&quot;);
+enyo.windows.setWindowParams(searchWindow, {safeSearch: true});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      When a window is activated and deactivated by the user or system, corresponding events will fire on any created <code>enyo.ApplicationEvents</code> objects. To respond to activation, provide a listener for its <code>onWindowActivated</code> event; to respond to deactivation, provide a hander for <code>onWindowDeactivated</code>.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: enyo.ApplicationEvents, onWindowActivated: &quot;wakeup&quot;,
+  onWindowDeactivated: &quot;sleep&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      An application may be launched while it is already running (relaunch). By default, the application is simply brought into focus when this happens. This can occur either when a user launches the running application or a system service does so. In either case, new window params may be sent to the application. An application can customize its response to being relaunched based on this information by implementing a handler for the <code>onApplicationRelaunch</code> event as follows:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: enyo.ApplicationEvents, onApplicationRelaunch: &quot;relaunchHandler&quot;},
+...
+relaunchHandler: function(inSender, inEvent) {
+  if (enyo.windowParams.openSearchWindow = true) {
+      enyo.windows.activate(&quot;search/index.html&quot;, &quot;SearchWindow&quot;);
+      return true;
+  }
+},
+...
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Notice that the event handler activates a window and then returns <code>true</code>. The return value indicates that the event has been handled and the default action, focusing the root application window, should not occur.
+    </p>
+    <p>
+      The <code>applicationRelaunch</code> event is always sent to the root window of an application. The root window is, by default, the first window created by the application. The window-level handler passes on the event to the various <code>enyo.ApplicationEvents</code> objects that have been created.
+    </p>
+    <p>
+      When the application is headless (i.e., it specifies <code>noWindow: true</code> in its <code>appinfo.json</code> file), the root window is always the headless, non-displayed window. When the application is not headless, the root window may change. This occurs if the user closes the root window. In this case, the root window becomes the next window opened by the application. That window will now receive the <code>applicationRelaunch</code> event.
+    </p>
+    <p>
+      Applications should be careful to consider that on the root window, the <code>enyo.windowParams</code> object is set by the system. On other windows, this object is private to the application. Applications may treat the <code>applicationRelaunch</code> as an indicator that <code>enyo.windowParams</code> has been changed by the system.
+    </p>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <h3 id="activateinurl-inname-inparams-inattributes-inwindowinfo">
+      activate(inUrl, inName, inParams, inAttributes, inWindowInfo)
+    </h3>
+    <p>
+      Activates an application window by name. If the window is not already open, and a url is specified, the window will be opened.
+    </p>
+    <h4 id="parameters">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inUrl
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          URL for the window to open if it is not already opened. May be absolute or relative.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inName
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          Name of the window to activate
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Data to send to the activated window. Will be available as <code>enyo.windowParams</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inAttributes
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          (Optional) Window attributes, used to customize the window type
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inWindowInfo
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          (Optional) Window information, used to provide extra system info
+        </td>
+      </tr>
+    </table>
+    <h4 id="example">
+      Example
+    </h4>
+    <blockquote>
+      <pre>
+<code>enyo.windows.activate(&quot;search/index.html&quot;, &quot;Search&quot;, {query: &quot;oranges&quot;});
+</code>
+</pre>
+    </blockquote>
+    <h3 id="activatewindowinwindow-inparams">
+      activateWindow(inWindow, inParams)
+    </h3>
+    <p>
+      Activates a window by window reference, optionally sending window params to the window.
+    </p>
+    <h4 id="parameters-1">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inWindow
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Reference to the window to be activated
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          (Optional) Window params to send to the window
+        </td>
+      </tr>
+    </table>
+    <h4 id="example-1">
+      Example
+    </h4>
+    <blockquote>
+      <pre>
+<code>enyo.windows.activateWindow(myWindow, {message: &quot;Hello World&quot;});
+</code>
+</pre>
+    </blockquote>
+    <h3 id="addbannermessageinmessage-injson-inicon-insoundclass-insoundpath-insoundduration">
+      addBannerMessage(inMessage, inJson, inIcon, inSoundClass, inSoundPath, inSoundDuration)
+    </h3>
+    <p>
+      Adds a banner message that will be displayed briefly before disappearing.
+    </p>
+    <h4 id="parameters-2">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inMessage
+        </td>
+        <td>
+          Message to display
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inJson
+        </td>
+        <td>
+          JSON-formatted string to pass to <code>enyo.relaunch</code> if banner is tapped
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inIcon
+        </td>
+        <td>
+          (Optional) Icon to display
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inSoundClass
+        </td>
+        <td>
+          (Optional) Sound class to play
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inSoundPath
+        </td>
+        <td>
+          (Optional) Path to sound to play
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inSoundDuration
+        </td>
+        <td>
+          (Optional) Duration of sound to play
+        </td>
+      </tr>
+    </table>
+    <h3 id="deactivateinname">
+      deactivate(inName)
+    </h3>
+    <p>
+      Deactivates a window by name.
+    </p>
+    <h3 id="deactivatewindowinwindow">
+      deactivateWindow(inWindow)
+    </h3>
+    <p>
+      Deactivates a window by reference.
+    </p>
+    <h3 id="fetchwindowinname">
+      fetchWindow(inName)
+    </h3>
+    <p>
+      Returns a reference to the window object specified by the given name.
+    </p>
+    <p>
+      The specified name must correspond to a currently opened application window, i.e., a window in the list returned by <code>enyo.windows.getWindows()</code>.
+    </p>
+    <h3 id="getactivewindow">
+      getActiveWindow()
+    </h3>
+    <p>
+      Returns a reference to the window object of the currently active application window.
+    </p>
+    <h3 id="getrootwindow">
+      getRootWindow()
+    </h3>
+    <p>
+      Returns the root application window.
+    </p>
+    <h3 id="getwindows">
+      getWindows()
+    </h3>
+    <p>
+      Returns an object listing the open windows by name, e.g.:
+    </p>
+    <blockquote>
+      <pre>
+<code>{window1: &lt;window object&gt;, window2: &lt;window object&gt; }
+</code>
+</pre>
+    </blockquote>
+    <h3 id="opendashboardinurl-inname-inparams-inattributes">
+      openDashboard(inUrl, inName, inParams, inAttributes)
+    </h3>
+    <p>
+      Opens an application dashboard.
+    </p>
+    <h4 id="parameters-3">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inUrl
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          URL for the window's HTML file. May be absolute or relative.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inName
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          Name of the window. This name can be used to retrieve the window. If one is not specified, a default name is supplied.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Data to send to the opened window. Will be available as <code>enyo.windowParams</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inAttributes
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Specifies optional attributes, e.g., <code>{webosDragMode: &quot;manual&quot;}</code> to enable custom handling of drag events in dashboards, or <code>{clickableWhenLocked: true}</code> to make dashboards usable through the lock screen.
+        </td>
+      </tr>
+    </table>
+    <h3 id="openpopupinurl-inname-inparams-inattributes-inheight-throb">
+      openPopup(inUrl, inName, inParams, inAttributes, inHeight, throb)
+    </h3>
+    <p>
+      Opens an application popup.
+    </p>
+    <h4 id="parameters-4">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inUrl
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          URL for the window's HTML file. May be absolute or relative.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inName
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          Name of the window. This name can be used to retrieve the window. If one is not specified, a default name is supplied.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Data to send to the opened window. Will be available as <code>enyo.windowParams</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inAttributes
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Specifies optional attributes for special behavior.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inHeight
+        </td>
+        <td>
+          Integer
+        </td>
+        <td>
+          Height of the popup
+        </td>
+      </tr>
+      <tr>
+        <td>
+          throb
+        </td>
+        <td>
+          Boolean
+        </td>
+        <td>
+          If <code>true</code>, enables the LED throbber.
+        </td>
+      </tr>
+    </table>
+    <h3 id="openwindowinurl-inname-inparams-inattributes-inwindowinfo">
+      openWindow(inUrl, inName, inParams, inAttributes, inWindowInfo)
+    </h3>
+    <p>
+      Opens an application window. This method can also be used to open a specialized window by specifying <code>inAttributes</code> and <code>inWindowInfo</code>.
+    </p>
+    <h4 id="parameters-5">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inUrl
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          URL for the window's HTML file. May be absolute or relative.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inName
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          Name of the window. This name can be used to retrieve the window. If one is not specified, a default name is supplied.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Data to send to the opened window. Will be available as <code>enyo.windowParams</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inAttributes
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          (Optional) Window attributes, used to customize the window type.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inWindowInfo
+        </td>
+        <td>
+          String
+        </td>
+        <td>
+          (Optional) Window information, used to provide extra system info.
+        </td>
+      </tr>
+    </table>
+    <h4 id="example-2">
+      Example
+    </h4>
+    <blockquote>
+      <pre>
+<code>enyo.windows.openWindow(&quot;search/index.html&quot;, &quot;Search&quot;,
+  {query: &quot;oranges&quot;});
+</code>
+</pre>
+    </blockquote>
+    <h3 id="removebannermessageinid">
+      removeBannerMessage(inId)
+    </h3>
+    <p>
+      Removes a banner message. <code>inId</code> is a value returned by <code>addBannerMessage</code>.
+    </p>
+    <h3 id="renamewindowinwindow-inname">
+      renameWindow(inWindow, inName)
+    </h3>
+    <p>
+      Renames a window. Note that the final window name could be different from the one specified, if a collision occurs.
+    </p>
+    <h3 id="setwindowparamsinwindow-inparams">
+      setWindowParams(inWindow, inParams)
+    </h3>
+    <p>
+      Sends parameters to the given window. Application windows can communicate by sending window parameters to each other. Note that this method does not activate the window; if you want to activate the window, use <code>enyo.windows.activate</code>.
+    </p>
+    <p>
+      The window specified by <code>inWindow</code> will fire a <code>windowParamsChange</code> event asynchronously. This event can be handled so as to perform work related to the change in window parameters.
+    </p>
+    <h4 id="parameters-6">
+      Parameters
+    </h4>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          inWindow
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Window reference
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inParams
+        </td>
+        <td>
+          Object
+        </td>
+        <td>
+          Parameters to send to the window. This object will be made available as <code>enyo.windowParams</code>. Restricted to valid JSON (i.e., no functions, cycles, etc.).
+        </td>
+      </tr>
+    </table>
+    <h3 id="setwindowpropertiesinwindow-inprops">
+      setWindowProperties(inWindow, inProps)
+    </h3>
+    <p>
+      Sets webOS system properties of the window. Pass in a window reference to modify (use <code>'window'</code> for self) and a JavaScript object with name/value pairs as <code>inProps</code>.
+    </p>
+    <p>
+      Possible properties of <code>inProps</code> include the following:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          blockScreenTimeout
+        </td>
+        <td>
+          Boolean
+        </td>
+        <td>
+          If <code>true</code>, the screen will not dim or turn off in the absence of user activity. If <code>false</code>, the timeout behavior will be reinstated.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          setSubtleLightbar
+        </td>
+        <td>
+          Boolean
+        </td>
+        <td>
+          If <code>true</code>, makes the light bar somewhat dimmer than normal. If <code>false</code>, it will return to normal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          fastAccelerometer
+        </td>
+        <td>
+          Boolean
+        </td>
+        <td>
+          If <code>true</code>, the accelerometer rate will increase to 30 hz. The default value is <code>false</code>, with a rate of 4 hz. Note that the fast rate only applies to apps that are maximized.
+        </td>
+      </tr>
+    </table>
+		</div>
+	</body>
+</html>

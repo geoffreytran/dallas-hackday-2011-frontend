@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="popups">
+      Popups
+    </h1>
+    <p>
+      A popup is a set of floating elements embedded directly within the page context. It can open (&quot;pop up&quot;) at a specified position, and has support for modality and for clicking to dismiss.
+    </p>
+    <h2 id="opening-a-popup">
+      Opening a Popup
+    </h2>
+    <p>
+      Here's an example of a components block that implements a simple popup:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {kind: &quot;Popup&quot;, components: [
+      {content: &quot;Hello World!&quot;},
+      {kind: &quot;ListSelector&quot;, value: &quot;Foo&quot;, items: [&quot;Foo&quot;, &quot;Bar&quot;, &quot;Bot&quot;]}
+  ]},
+  {kind: &quot;Control&quot;, layoutKind: &quot;HFlexLayout&quot;,
+      style: &quot;width: 500px; height: 100px;&quot;,
+      pack: &quot;center&quot;, align: &quot;start&quot;, components: [
+          {kind: &quot;Button&quot;, caption: &quot;Open&quot;, onclick: &quot;openPopup&quot;},
+          {kind: &quot;Button&quot;, caption: &quot;Close&quot;, onclick: &quot;closePopup&quot;}
+      ]
+  }
+]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To open the popup in the default position (in the top-left corner of the screen), we can simply call the popup's <code>open</code> method:
+    </p>
+    <blockquote>
+      <pre>
+<code>openPopup: function(inSender, inEvent) {
+  this.$.popup.open();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Popups1.png" alt="Popup - Default Position"><br>
+      <br>
+      To open the popup centered onscreen, we can do the following:
+    </p>
+    <blockquote>
+      <pre>
+<code>openPopup: function() {
+  this.$.popup.openAtCenter();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Popups2.png" alt="Popup - Centered"><br>
+      <br>
+      (<strong>Note:</strong> In addition to <code>openAtCenter()</code>, the Popup kind has several other methods that let you control where the popup appears when first opened. More details are available in the API reference.)
+    </p>
+    <h2 id="closing-a-popup">
+      Closing a Popup
+    </h2>
+    <p>
+      You may close a popup programmatically by calling the <code>close</code> method. For instance, in our current example, we can define <code>closePopup</code> like so:
+    </p>
+    <blockquote>
+      <pre>
+<code>closePopup: function(inSender, inEvent) {
+  this.$.popup.close();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In addition, if the <code>dismissWithClick</code> property is set to <code>true</code> (default) and the <code>modal</code> property is <code>false</code> (also default), then clicking anywhere outside the popup will dismiss the popup. (The <code>dismissWithClick</code> and <code>modal</code> properties are not published, but you may set their values when declaring the popup in a <code>components</code> block.)
+    </p>
+    <p>
+      If <code>modal</code> is set to <code>true</code>, when the popup is displayed, the user will not be able to access the rest of the device UI until the popup is dismissed.
+    </p>
+    <h2 id="published-properties">
+      Published Properties
+    </h2>
+    <h3 id="showhidemode">
+      showHideMode
+    </h3>
+    <p>
+      The <code>showHideMode</code> property controls how the popup will be shown and hidden:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Value
+        </th>
+        <th>
+          Behavior
+        </th>
+      </tr>
+      <tr>
+        <td>
+          auto
+        </td>
+        <td>
+          When <code>open</code> and <code>close</code> are called, the popup will be shown and hidden.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          manual
+        </td>
+        <td>
+          When <code>open</code> and <code>close</code> are called, the popup will not be shown or hidden. Use this mode when controlling the popup via custom animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          transition
+        </td>
+        <td>
+          The popup will be shown when <code>open</code> is called and hidden when a CSS transition completes. Use this mode when animating via CSS transitions.
+        </td>
+      </tr>
+    </table>
+    <p>
+      The default value of <code>showHideMode</code> is <code>auto</code>.
+    </p>
+    <h3 id="openclassname">
+      openClassName
+    </h3>
+    <p>
+      The <code>openClassName</code> property may be used to specify the name of a CSS class that will be applied to the popup when it is opened.
+    </p>
+    <h2 id="technical-notes">
+      Technical Notes
+    </h2>
+    <p>
+      As of Enyo 0.10, the contents of all popups are created lazily by default. The <code>Popup</code> kind descends from <code>LazyControl</code>, which (optionally) defers creation of its components when its <code>lazy</code> property is set to <code>true</code>. A popup will automatically instantiate its contained components before it is opened for the first time. This is done by calling the <code>validateComponents</code> method. It is not necessary for you (the app developer) to call this method.
+    </p>
+    <p>
+      To make adjustments to controls within the popup before display, instances of <code>Popup</code> should handle the <code>onBeforeOpen</code> event. This event is fired after the contained components are created, but before the popup is opened.
+    </p>
+    <p>
+      Kinds that are based on <code>Popup</code> should defer initialization of sub-components by using the <code>componentsReady</code> method for initialization instead of the <code>create</code> method. Any published properties that need to interact with components should check for the existence of those components before doing so. You may check whether components have been initialized by testing the value of the <code>lazy</code> property (if <code>true</code>, then components are not yet available). In addition, you can forcibly ensure that components exist by calling <code>validateComponents</code>.
+    </p>
+    <p>
+      Finally, you may specify non-lazy behavior for any given popup by setting its <code>lazy</code> property to <code>false</code>.
+    </p>
+		</div>
+	</body>
+</html>

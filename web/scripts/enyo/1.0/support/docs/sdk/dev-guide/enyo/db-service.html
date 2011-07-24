@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="dbservice">
+      DbService
+    </h1>
+    <p>
+      <code>DbService</code> is a <code>PalmService</code> with some handy features:
+    </p>
+    <ul>
+      <li>
+        <code>dbKind</code> is a published property of <code>DbService</code>, so <code>&quot;putKind&quot;</code> can omit <code>&quot;id&quot;</code> and <code>&quot;find&quot;</code> can omit <code>&quot;from&quot;</code>.
+      </li>
+      <li>Setting the inherited <code>subscribe</code> property also sets <code>watch: true</code> on <code>&quot;find&quot;</code> and <code>&quot;search&quot;</code> requests.
+      </li>
+    </ul>
+    <p>
+      Use <code>DbService</code> like most PalmServices:
+    </p>
+    <blockquote>
+      <pre>
+<code>{name: &quot;findDoodads&quot;, kind: &quot;DbService&quot;, dbKind: &quot;com.palm.doodad:1&quot;,
+  method: &quot;find&quot;, onSuccess: &quot;gotDoodads&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To call the service:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.findDoodads.call({
+  query: {
+      // notice that 'from' is not needed since 'dbKind' is in the component
+      where: [...],
+      orderBy: &quot;name&quot;,
+      limit: 10
+  }
+});
+</code>
+</pre>
+    </blockquote>
+    <h2 id="grouping-dbservices">
+      Grouping DbServices
+    </h2>
+    <p>
+      Rather than declaring a bunch of similar services like this...
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  name: &quot;findRecentContacts&quot;, kind: &quot;DbService&quot;,
+  dbKind: &quot;com.palm.contact:1&quot;, method: &quot;find&quot;,
+  onSuccess: &quot;handleRecentContacts&quot;, onFailure: &quot;genericFailure&quot;
+},
+{
+  name: &quot;putContact&quot;, kind: &quot;DbService&quot;,
+  dbKind: &quot;com.palm.contact:1&quot;, method: &quot;put&quot;,
+  onSuccess: &quot;handlePutContact&quot;, onFailure: &quot;genericFailure&quot;
+},
+{
+  name: &quot;mergeContact&quot;, kind: &quot;DbService&quot;,
+  dbKind: &quot;com.palm.contact:1&quot;, method: &quot;merge&quot;,
+  onSuccess: &quot;handleMergeContact&quot;, onFailure: &quot;genericFailure&quot;
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      ...it's easier to introduce a parent <code>DbService</code> component in the hierarchy to house the boilerplate:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  kind: &quot;DbService&quot;, dbKind: &quot;com.palm.contact:1&quot;, onFailure: &quot;genericFailure&quot;,
+  components: [
+      {name: &quot;findRecentContacts&quot;, method: &quot;find&quot;,
+          onSuccess: &quot;handleRecentContacts&quot;},
+      {name: &quot;putContact&quot;, method: &quot;put&quot;, onSuccess: &quot;handlePutContact&quot;},
+      {name: &quot;mergeContact&quot;, method: &quot;merge&quot;,
+          onSuccess: &quot;handleMergeContact&quot;}
+  ]
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      This pattern is most useful for multiple related <code>DbService</code> components. The child components inherit the <code>kind</code>, <code>dbKind</code>, <code>onSuccess</code>, and <code>onFailure</code> properties.
+    </p>
+    <h2 id="published-properties">
+      Published Properties
+    </h2>
+    <table border="1">
+      <tr>
+        <th width="15%">
+          Name
+        </th>
+        <th width="15%">
+          Default
+        </th>
+        <th width="70%">
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          dbkind
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          The db8 kind for this store
+        </td>
+      </tr>
+      <tr>
+        <td>
+          recallWatches
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If <code>true</code>, DbService will refresh a query immediately when its watch fires.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          resubscribe
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If <code>true</code>, after a service failure, DbService will automatically attempt to resubscribe using the same parameters.
+        </td>
+      </tr>
+    </table>
+    <h2 id="published-events">
+      Published Events
+    </h2>
+    <table border="1">
+      <tr>
+        <th width="15%">
+          Name
+        </th>
+        <th width="15%">
+          Default
+        </th>
+        <th width="70%">
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          onWatch
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Set a handler for this event if you want to implement custom watch behavior--e.g., <code>onWatch: &quot;myHandler&quot;</code>.
+        </td>
+      </tr>
+    </table>
+		</div>
+	</body>
+</html>

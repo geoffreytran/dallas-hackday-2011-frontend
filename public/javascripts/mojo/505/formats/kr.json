@@ -1,0 +1,29 @@
+{
+	"numberTripleDivider": ",",
+	"numberDecimal": ".",
+	"currencyPrepend": "₩",
+	"currencyAppend": "",
+	"percentageSpace": false,
+
+	"fullDate": "yyyy년 M월 d일 EEEE",
+	"longDate": "yyyy년 M월 d일",
+	"mediumDate": "yyyy. M. d.",
+	"defaultDate": "yyyy. M. d.",
+	"shortDate": "yy. M. d.",
+	"dateFieldOrder": "ymd",
+
+	"fullTime24": "a HH시 mm분 ss초",
+	"fullTime12": "a hh시 mm분 ss초",
+	"longTime24": "a HH시 mm분 ss초 z",
+	"longTime12": "a hh시 mm분 ss초 z",
+	"mediumTime24": "a H:mm:ss",
+	"mediumTime12": "a h:mm:ss",
+	"defaultTime24": "a H:mm:ss",
+	"defaultTime12": "a h:mm:ss",
+	"shortTime24": "a H:mm",
+	"shortTime12": "a h:mm",
+	"dateTimeFormat" : "DATE TIME",
+
+	"is12HourDefault": true,
+	"firstDayOfWeek": 0
+}

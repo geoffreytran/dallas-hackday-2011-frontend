@@ -1,0 +1,99 @@
+/*
+   Button Styling : Dark
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-dark .palm-button.primary,
+.palm-dark .palm-button {
+  -webkit-border-image: url(../images/palm-button-dark.png) 0 17 104 17 repeat repeat;
+}
+
+.palm-dark .palm-button.selected.primary,
+.palm-dark .palm-button.selected {
+  -webkit-border-image: url(../images/palm-button-dark.png) 52 17 52 17 repeat repeat;
+}
+
+.palm-dark .palm-button.disabled.primary,
+.palm-dark .palm-button.disabled {
+  color: #999;
+  -webkit-border-image: url(../images/palm-button-dark.png) 104 17 0 17 repeat repeat;
+}
+
+.palm-dark .palm-button.secondary,
+.palm-dark .palm-button.dismiss {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-button-medium.png) 0 17 104 17 repeat repeat;
+}
+
+.palm-dark .palm-button.secondary.selected,
+.palm-dark .palm-button.dismiss.selected {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-button-medium.png) 52 17 52 17 repeat repeat;
+}
+
+.palm-dark .palm-button.disabled.secondary,
+.palm-dark .palm-button.disabled.dismiss {
+  color: #999;
+  -webkit-border-image: url(../images/palm-button-medium.png) 104 17 0 17 repeat repeat;
+}
+
+.palm-dark .palm-swipe-delete-button {
+  -webkit-border-image: url(../images/swipe-delete-button-down-dark.png) 0 14 0 14 repeat repeat;
+  -webkit-border-image: url(../images/swipe-delete-button-up-dark.png) 0 14 0 14 repeat repeat;
+}
+
+.palm-dark .palm-swipe-delete-button.selected {
+  -webkit-border-image: url(../images/swipe-delete-button-down-dark.png) 0 14 0 14 repeat repeat;
+}
+
+.palm-dark .palm-button.negative {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-button-negative.png) 0 17 104 17 repeat repeat;
+}
+
+.palm-dark .palm-button.negative.selected {
+  -webkit-border-image: url(../images/palm-button-negative.png) 52 17 52 17 repeat repeat;
+}
+
+.palm-dark .palm-button.negative.disabled {
+  color: #999;
+  -webkit-border-image: url(../images/palm-button-negative.png) 104 17 0 17 repeat repeat;
+}
+
+.palm-dark .palm-button.affirmative {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-button-affirmative.png) 0 17 104 17 repeat repeat;
+}
+
+.palm-dark .palm-button.affirmative.selected {
+  -webkit-border-image: url(../images/palm-button-affirmative.png) 52 17 52 17 repeat repeat;
+}
+
+.palm-dark .palm-button.affirmative.disabled {
+  color: #999;
+  -webkit-border-image: url(../images/palm-button-affirmative.png) 104 17 0 17 repeat repeat;
+}
+
+.palm-dark .palm-swipe-undo-button {
+  -webkit-border-image: url(../images/swipe-undo-button-down-dark.png) 0 14 0 14 repeat repeat;
+  -webkit-border-image: url(../images/swipe-undo-button-up-dark.png) 0 14 0 14 repeat repeat;
+}
+
+.palm-dark .palm-swipe-undo-button.selected {
+  -webkit-border-image: url(../images/swipe-undo-button-down-dark.png) 0 14 0 14 repeat repeat;
+}
+
+.palm-dark .palm-button.small-button {
+  -webkit-border-image: url(../images/palm-button-small-dark.png) 0 16 68 16 repeat repeat;
+}
+
+.palm-dark .palm-button.selected.small-button {
+  -webkit-border-image: url(../images/palm-button-small-dark.png) 34 16 34 16 repeat repeat;
+}
+
+.palm-dark .palm-button.disabled.small-button {
+  -webkit-border-image: url(../images/palm-button-small-dark.png) 68 16 0 16 repeat repeat;
+}

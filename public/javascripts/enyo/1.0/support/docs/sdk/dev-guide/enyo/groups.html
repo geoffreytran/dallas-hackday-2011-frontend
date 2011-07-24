@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="groups">
+      Groups
+    </h1>
+    <h2 id="group">
+      Group
+    </h2>
+    <p>
+      A <code>Group</code> is a container used to display multiple controls visually grouped together. You may use the optional <code>caption</code> property to provide a description of the group.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Group&quot;, caption: &quot;Audio/Video Options&quot;, style: &quot;width: 500px&quot;,
+  components: [
+      {kind: &quot;HFlexBox&quot;, align: &quot;center&quot;, style: &quot;padding: 5px&quot;, components: [
+          {content: &quot;Sound&quot;, flex: 1},
+          {kind: &quot;ToggleButton&quot;}
+      ]},
+      {kind: &quot;HFlexBox&quot;, align: &quot;center&quot;, style: &quot;padding: 5px&quot;, components: [
+          {content: &quot;Video&quot;, flex: 1},
+          {kind: &quot;ToggleButton&quot;}
+      ]}
+  ]
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Groups1.png" alt="Group Example"><br>
+    </p>
+    <h2 id="rowgroup">
+      RowGroup
+    </h2>
+    <p>
+      The <code>RowGroup</code> kind derives directly from <code>enyo.Group</code>. A RowGroup is a Group in which each control is automatically treated as a <code>RowItem</code> object, with small guide lines appearing between items.
+    </p>
+    <p>
+      If we implement the previous example as a RowGroup...
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;RowGroup&quot;, caption: &quot;Audio/Video Options&quot;, style: &quot;width: 500px&quot;,
+  components: [
+      {kind: &quot;HFlexBox&quot;, align: &quot;center&quot;, style: &quot;padding: 5px&quot;, components: [
+          {content: &quot;Sound&quot;, flex: 1},
+          {kind: &quot;ToggleButton&quot;}
+      ]},
+      {kind: &quot;HFlexBox&quot;, align: &quot;center&quot;, style: &quot;padding: 5px&quot;, components: [
+          {content: &quot;Video&quot;, flex: 1},
+          {kind: &quot;ToggleButton&quot;}
+      ]}
+  ]
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      ...the visual difference is readily apparent:
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Groups2.png" alt="RowGroup Example"><br>
+      <br>
+      RowGroups also differ from Groups in that they have access to methods for showing (<code>showRow</code>) and hiding (<code>hideRow</code>) the row at a given index.
+    </p>
+		</div>
+	</body>
+</html>

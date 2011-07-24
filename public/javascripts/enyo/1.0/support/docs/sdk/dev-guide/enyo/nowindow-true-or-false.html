@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="nowindow-true-or-false">
+      noWindow: true or false?
+    </h1>
+    <p>
+      Recently a number of questions have arisen concerning the optional <code>noWindow</code> field in <a href="/reference/config/appinfo.json.html">appinfo.json</a> as it pertains to Enyo applications.
+    </p>
+    <p>
+      The implementation of <code>noWindow</code> is on the native side, and is unchanged from Mojo.
+    </p>
+    <p>
+      The default value of <code>noWindow</code> is <code>false</code>; if you set the value to <code>true</code> in your <code>appinfo.json</code> file, when your application is first launched, the initial window will be permanently hidden instead of being a card. One curious implication of this is that if you want your &quot;noWindow&quot; app to display a card when it is launched, you need to manually create the card as a second window when your app starts up. For this reason, &quot;noWindow&quot; apps generally have more issues with slow launch time than other apps (except for those that are launched at boot and left running all the time, of course). This is all the same in Enyo as it was in Mojo.
+    </p>
+    <p>
+      The key difference between Enyo and Mojo as it pertains to &quot;noWindow&quot; is that the two frameworks have very different ways of handling multiple windows. In Mojo, the majority of the framework is only ever loaded once, in the &quot;main window&quot; of the app, and all the application's JavaScript code runs there, sharing the same global window object. By contrast, in Enyo the framework is loaded anew in each window, and the only global shared between windows is the <code>enyo.application</code> object. Applications usually set <code>noWindow:true</code> because they need some kind of global execution context that's independent of their more transient visible windows (which the user can close at any time). Since Enyo loads app code into each window, there's no point in loading any of your UI controls into your hidden window. You should load only the code needed to support the global context.
+    </p>
+    <p>
+      Let's look at the Email app as an example.
+    </p>
+    <p>
+      The <code>index.html</code> file at the top level is the entry point of the app, and this becomes the hidden window. This hidden window is responsible for a number of things, including:
+    </p>
+    <ul>
+      <li>
+        <p>
+          General app initialization
+        </p>
+      </li>
+      <li>
+        <p>
+          Monitoring changes to email messages and folders to make sure the data is maintained in a displayable state
+        </p>
+      </li>
+      <li>
+        <p>
+          Showing notification dashboards for new messages and account errors
+        </p>
+      </li>
+      <li>
+        <p>
+          Monitoring changes to the accounts themselves.
+        </p>
+      </li>
+      <li>
+        <p>
+          Handling relaunch arguments (relaunches always go to the hidden window), which usually means creating or activating some other window
+        </p>
+      </li>
+      <li>
+        <p>
+          Providing a bottleneck for preference updates and change notifications
+        </p>
+      </li>
+      <li>
+        <p>
+          Providing global tracking for attachment downloads (since they must continue with no cards open)
+        </p>
+      </li>
+    </ul>
+    <p>
+      Note that the hidden window doesn't do anything directly related to UI except create other windows (dashboards, cards, etc.). Thus the depends file for our top-level index doesn't include UI controls at all. The UI controls are kept together with their corresponding visible windows in other directories, each of which has its own index file.
+    </p>
+		</div>
+	</body>
+</html>

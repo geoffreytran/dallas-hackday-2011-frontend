@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="applicationevents">
+      ApplicationEvents
+    </h1>
+    <p>
+      Events that have no explicit target flow to instances of the <code>ApplicationEvents</code> component, introduced in Enyo 0.10.
+    </p>
+    <p>
+      Create an instance of this object wherever you want to handle these global events. Note that global events flow to all instances of <code>ApplicationEvents</code>, so application code will need to handle conflicts.
+    </p>
+    <p>
+      Example:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {kind: &quot;ApplicationEvents&quot;, onWindowRotated: &quot;windowRotated&quot;}
+...
+],
+...
+windowRotated: function(inSender) {
+  // do work when orientation changes
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note that you must specify your own handler methods (e.g., <code>&quot;windowRotated&quot;</code> above), as there are no handlers assigned by default.
+    </p>
+    <p>
+      The following table summarizes the events detected by <code>ApplicationEvents</code>.
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Event
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          onLoad
+        </td>
+        <td>
+          Sent after window has completed loading
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onUnload
+        </td>
+        <td>
+          Sent when window is closed
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onError
+        </td>
+        <td>
+          Sent when window cannot be loaded properly
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onWindowActivated
+        </td>
+        <td>
+          Sent when user brings window to the front
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onWindowDeactivated
+        </td>
+        <td>
+          Sent when user leaves window
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onWindowParamsChange
+        </td>
+        <td>
+          Sent when window parameters are changed via <code>enyo.windows</code> methods <code>activateWindow</code> or <code>setWindowParams</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onApplicationRelaunch
+        </td>
+        <td>
+          Sent when the application has been relaunched by the system manager
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onWindowRotated
+        </td>
+        <td>
+          Sent when user rotates device
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onOpenAppMenu
+        </td>
+        <td>
+          Sent when user taps app menu area on device or hits app menu key <code>(CTRL + ~)</code> on desktop
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onCloseAppMenu
+        </td>
+        <td>
+          Sent when app menu is dismissed
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onKeyup
+        </td>
+        <td>
+          Sent for DOM keyup event
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onKeydown
+        </td>
+        <td>
+          Sent for DOM keydown event
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onKeypress
+        </td>
+        <td>
+          Sent for DOM keypress event
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onBack
+        </td>
+        <td>
+          Sent when user makes back gesture on device or hits <code>ESC</code> key on desktop
+        </td>
+      </tr>
+    </table>
+		</div>
+	</body>
+</html>

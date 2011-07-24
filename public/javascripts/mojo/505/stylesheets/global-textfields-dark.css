@@ -1,0 +1,139 @@
+/*
+   Textfield Styling : Dark
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-dark .filter-field-container {
+  -webkit-border-image: url(../images/filter-search-dark-bg.png) 26 23 20 23 repeat repeat;
+}
+
+.palm-dark .filter-field-container .mag-glass-icon {
+  background: url(../images/filter-search-mag-dark.png) center center no-repeat;
+}
+
+.palm-dark .search-term {
+  color: #FFF;
+}
+
+.palm-dark .filter-field-container .previous-search-text {
+  color: #000;
+}
+
+.palm-dark .hint-text,
+.palm-dark .textfield-group .hint-text,
+.palm-dark .multiline-hint-text {
+  color: #fff;
+}
+
+.palm-dark .focused .hint-text,
+.palm-dark .textfield-group.focused .hint-text,
+.palm-dark .focused .multiline-hint-text {
+  color: #c3c3c3;
+}
+
+.palm-dark .textfield-group {
+  color: #fff;
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-shadow-dark-blur.png) 15 15 15 15 stretch stretch;
+}
+.palm-dark .textfield-group input {
+  color: #fff !important;
+}
+.palm-dark .textfield-group.focused,
+.palm-dark .palm-group .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-shadow-dark.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-dark .palm-group .textfield-group {
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-noshadow.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-dark .palm-group .palm-row.first .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-first-dark.png) 15 15 15 15 stretch stretch;
+}
+.palm-dark .palm-group .palm-row.last .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-last-dark.png) 15 15 15 15 stretch stretch;
+}
+.palm-dark .palm-group .palm-row.single .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-single-dark.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-dark .textfield-group.floating {
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-floating-dark-blur.png) 15 15 15 15 stretch stretch;
+}
+.palm-dark .textfield-group.floating.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-floating-dark.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-dark .palm-combobox {
+  -webkit-border-image: url(../images/combobox-dark-background.png) 45 20 0 20 repeat repeat;
+}
+.palm-dark .combo-selector-button {
+  background:url(../images/combobox-dark-button.png) center right no-repeat;
+}
+.palm-dark .combo-selector-button.selected {
+  background-image:url(../images/combobox-button-press.png);
+}
+.palm-dark .palm-combobox-textfield .truncating-text,
+.palm-dark .palm-combobox-textfield input {   
+  color:white;
+}
+
+
+.palm-dark .palm-dialog-content,
+.palm-dark .palm-dialog-content .hint-text,
+.palm-dark .palm-dialog-content .textfield-group .hint-text,
+.palm-dark .palm-dialog-content .multiline-hint-text {
+  color: #000;
+}
+
+.palm-dark .palm-dialog-content .focused .hint-text,
+.palm-dark .palm-dialog-content .textfield-group.focused .hint-text,
+.palm-dark .palm-dialog-content .focused .multiline-hint-text {
+  color: #898989;
+}
+
+.palm-dark .palm-dialog-content > .textfield-group input {
+  color: black !important;
+}
+
+.palm-dark .palm-dialog-content > .textfield-group {
+	color: black !important;
+  -webkit-border-image: url(../images/textfield-shadow-dialog-blur.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-dark .palm-dialog-content a {
+  color: #00c;
+}
+
+.palm-dark .palm-dialog-content a:active {
+  color: #f00;
+}
+
+.palm-dark .palm-dialog-content a:visited {
+  color: #551a8b;
+}
+
+.palm-dark .palm-dialog-content > .textfield-group.focused {
+  -webkit-border-image: url(../images/textfield-shadow-dialog.png) 15 15 15 15 stretch stretch;
+}
+
+/* Inline form errors */
+.palm-dark .palm-inline-error .error-message {
+  color: #ffcc00;
+}
+
+.palm-dark .palm-dialog-content .palm-inline-error .error-message {
+	color: #d70000;
+}
+

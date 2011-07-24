@@ -1,0 +1,10 @@
+/* Copyright 2009 Palm, Inc.  All rights reserved. */
+
+@import url(global-base.css);
+@import url(global-lists.css); 
+@import url(global-buttons.css);
+                                                          
+.palm-dialog-content .dialog-title, /* deprecate */
+.palm-dialog-title {
+	text-transform: none !important;
+}   

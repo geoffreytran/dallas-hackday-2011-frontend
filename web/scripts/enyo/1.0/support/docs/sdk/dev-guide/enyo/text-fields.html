@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="text-fields">
+      Text Fields
+    </h1>
+    <p>
+      The Enyo framework provides the <code>Input</code>, <code>PasswordInput</code>, and <code>RichText</code> controls to meet your text entry needs.
+    </p>
+    <h2 id="input">
+      Input
+    </h2>
+    <p>
+      An <code>Input</code> is a single-line text input control that supports auto-correction and hint text, and has default visual styling. To create an Input, do the following:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Input&quot;, hint: &quot;type something here&quot;, onchange: &quot;inputChange&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The <code>value</code> property specifies the text displayed in the input. The <code>onchange</code> event fires only when the input blurs (loses focus).
+    </p>
+    <p>
+      Other noteworthy events include <code>oninput</code>, which you can use to get notifications as the content of the input changes, and <code>onkeypress</code>, which may be handled so as to filter out invalid characters before they appear in the input.
+    </p>
+    <p>
+      It is common to use <code>getValue</code> and <code>setValue</code> to get and set the value of an input. For example, to set the value of one input to that of another:
+    </p>
+    <blockquote>
+      <pre>
+<code>buttonClick: function() {
+  var x = this.$.input1.getValue();
+  this.$.input2.setValue(x);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      On its own, an unfocused input is rather amorphous in appearance, so you will commonly find an input nested inside another control, such as a RowGroup:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;RowGroup&quot;, caption: &quot;I'm the RowGroup's caption...&quot;, components: [
+  {kind: &quot;Input&quot;,
+      components: [
+          {kind: &quot;Button&quot;, caption: &quot;OK&quot;, onclick: &quot;buttonClick&quot;}
+      ],
+      hint: &quot;I'm an Input inside a RowGroup...&quot;
+  }
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-TextFields1.png" alt="Input inside in a RowGroup"><br>
+    </p>
+    <h3 id="published-properties">
+      Published Properties
+    </h3>
+    <p>
+      The <code>enyo.Input</code> kind provides access to the following published properties:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Property
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          hint
+        </td>
+        <td>
+          <pre>
+enyo._$L("Tap Here To Type")
+</pre>
+        </td>
+        <td>
+          Hint text displayed when the input is empty and unfocused.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          value
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Current value of the input
+        </td>
+      </tr>
+      <tr>
+        <td>
+          tabIndex
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Tab index of the input
+        </td>
+      </tr>
+      <tr>
+        <td>
+          spellcheck
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If true, applies spell-checking to the entered text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autocorrect
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If true, applies auto-correction to the entered text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autoKeyModifier
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Possible settings are &quot;num-lock&quot;, &quot;caps-lock&quot;, &quot;shift-lock&quot;, &quot;shift-single&quot;, and &quot;num-single&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autoCapitalize
+        </td>
+        <td>
+          &quot;sentence&quot;
+        </td>
+        <td>
+          Possible settings are &quot;sentence&quot;, &quot;title&quot;, and &quot;lowercase&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autoEmoticons
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, enables auto-emoticons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autoLinking
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, enables auto-linking.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          autoWordComplete
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If true, enables automatic word completion.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inputType
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Specifies the &quot;type&quot; attribute on the input field. On webOS, this modifies the virtual keyboard layout. Supported values are &quot;email&quot; and &quot;url&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          inputClassName
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          CSS class to apply to the inner input control
+        </td>
+      </tr>
+      <tr>
+        <td>
+          focusClassName
+        </td>
+        <td>
+          &quot;enyo-input-focus&quot;
+        </td>
+        <td>
+          CSS class to apply on focus
+        </td>
+      </tr>
+      <tr>
+        <td>
+          spacingClassName
+        </td>
+        <td>
+          &quot;enyo-input-spacing&quot;
+        </td>
+        <td>
+          CSS class to control spacing of inner controls
+        </td>
+      </tr>
+      <tr>
+        <td>
+          alwaysLooksFocused
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, makes the input look focused when it's not.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          selection
+        </td>
+        <td>
+          null
+        </td>
+        <td>
+          <p>
+            An object describing the selected text. The <code>start</code> and <code>end</code> properties specify the zero-based starting and ending indices of the selection.
+          </p>
+          <p>
+            For example, if the value of an input is &quot;Value&quot; and <code>getSelection</code> returns <code>{start: 1, end: 3}</code>, then &quot;al&quot; is selected.
+          </p>
+          <p>
+            To select &quot;alu&quot;, call <code>this.$.input.setSelection({start: 1, end: 4});</code>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          disabled
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, disables the input.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          changeOnInput
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, fires the <code>onchange</code> event as well as the <code>oninput</code> event whenever the content is changed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          keypressInputDelay
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          Number of milliseconds to delay the input event when a key is pressed. If another key is pressed within the delay interval, the input will be postponed and fired once only after the delay has elapsed without a key being pressed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          styled
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If true, applies default styling to the input.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          selectAllOnFocus
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If true, selects all text when the input gains focus.
+        </td>
+      </tr>
+    </table>
+    <h2 id="passwordinput">
+      PasswordInput
+    </h2>
+    <p>
+      <code>PasswordInput</code>, which extends <code>enyo.Input</code>, is a single-line text input control for typing in passwords and other confidential information.
+    </p>
+    <p>
+      The characters entered into a PasswordInput are masked, but the value of the input may still be retrieved via <code>getValue</code>:
+    </p>
+    <blockquote>
+      <pre>
+<code>buttonClick: function() {
+  var password = this.$.passwordInput.getValue();
+}
+</code>
+</pre>
+    </blockquote>
+    <h2 id="richtext">
+      RichText
+    </h2>
+    <p>
+      <code>RichText</code>, which also extends <code>enyo.Input</code>, is a multi-line text input control that supports rich formatting, such as boldface, italics, and underlining. Note that rich formatting may be disabled by setting the <code>richContent</code> property to <code>false</code>.
+    </p>
+    <p>
+      Use the <code>value</code> property to get or set the displayed text. The <code>onchange</code> event fires when the control blurs.
+    </p>
+    <p>
+      Here's an example of a simple kind that implements a RichText:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.kind({
+  name: &quot;MyApps.Sample&quot;,
+  kind: &quot;enyo.VFlexBox&quot;,
+  components: [
+      {kind: &quot;RowGroup&quot;, caption: &quot;RichText Example&quot;, components: [
+          {kind: &quot;RichText&quot;, value:&quot;To &lt;b&gt;boldly&lt;/b&gt; go...&quot;,
+              onchange: &quot;richTextChange&quot;, components: [
+                  {kind: &quot;Button&quot;, caption: &quot;Go&quot;, onclick: &quot;buttonClick&quot;}
+              ]
+          }
+      ]}
+  ],
+  buttonClick: function(inSender, inEvent) {
+      // handle click
+  },
+  richTextChange: function(inSender, inEvent) {
+      // handle change
+  }
+});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-TextFields2.png" alt="RichText Example"><br>
+    </p>
+    <h3 id="published-properties-1">
+      Published Properties
+    </h3>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          richContent
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Set to false to disable rich formatting.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          maxTextHeight
+        </td>
+        <td>
+          null
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          selection
+        </td>
+        <td>
+          null
+        </td>
+        <td>
+          A DOM Selection object describing the selected text. It cannot be set. Instead, the selection may be altered by manipulating the object directly via the DOM Selection object API. For example: <code>this.$.richText.getSelection().collapseToEnd();</code>
+        </td>
+      </tr>
+    </table>
+		</div>
+	</body>
+</html>

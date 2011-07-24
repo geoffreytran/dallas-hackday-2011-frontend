@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="mojo-test-framework">
+      Mojo Test Framework
+    </h1>
+    <p>
+      by Rob Tsuk, Principal Architect
+    </p>
+    <p>
+      <em>Author's note: I'd like to thank Mark Bessey of the Palm engineering team for his contribution to this article.</em>
+    </p>
+    <p>
+      <code>Mojo.Test</code> is a set of unit-testing facilities built into the framework. Development teams can use it for test-driven development as well as automated testing or continuous integration.
+    </p>
+    <p>
+      <code>Mojo.Test</code> is in the style of the <a href="http://www.martinfowler.com/bliki/Xunit.html">xUnit family</a> of testing frameworks. Tests are grouped into objects with individual testing methods. These testing methods can directly return test results, and exceptions during test method execution will automatically cause a test failure to be reported. Test objects can have optional before and after methods.
+    </p>
+    <p>
+      Where <code>Mojo.Test</code> diverges from the usual xUnit-type framework is in support for testing components that depend on asynchronous callbacks. <code>Mojo.Test</code> provides a callback function for results that can be used at the end of a chain of any number of callbacks from the component under test. It also maintains a test timer, which will cause the failure of any test that doesn't report a result within a configurable time limit.
+    </p>
+    <p>
+      While <code>Mojo.Test</code> provides a simple test runner UI, it can be run without one. Test results are returned as an array of JavaScript objects, which could easily be converted to JSON for processing by some other process.
+    </p>
+    <h2 id="a-sample-test-object">
+      A Sample Test Object
+    </h2>
+    <p>
+      Test objects are created by test constructor functions whose prototype contains one or more methods whose name begins with test. Listing 1 provides an example.
+    </p>
+    <p>
+      <strong>Listing 1</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>function SimpleTests() {
+}
+SimpleTests.prototype.testAdd = function() {
+  Mojo.requireEqual(2, 1+1, &quot;one plus one must equal two.&quot;);
+  return Mojo.Test.passed;
+}; 
+</code>
+</pre>
+    </blockquote>
+    <p>
+      When this test is run, the <code>SimpleTests</code> function will be used as a constructor function to construct a new test object once for every method in its prototype whose name begins with &quot;test&quot;, in this case just <code>testAdd</code>. Each test method will be called once, and any return other than <code>undefined</code> will be treated as the test result. Only the object referenced by <code>Mojo.Test.passed</code> will be considered a passing test. Any string returned will be reported as a test failure.
+    </p>
+    <p>
+      The <code>Mojo.require</code> set of methods are convenient to use in tests, because the exceptions they generate when their requirements aren't met will cause the test to fail with a useful message. But anything that generates an exception will cause a test failure to be reported, as will returning a string containing a description of the test failure.
+    </p>
+    <h2 id="adding-tests-to-your-application">
+      Adding Tests to Your Application
+    </h2>
+    <p>
+      The recommended structure for unit tests is to have a <code>tests</code> directory at the same level as the <code>app</code> directory in your project. As illustrated in Listing 2, there should be one test file for each major area of functionality, and a test specification file named <code>all_tests.json</code>, which lists all of the tests.
+    </p>
+    <p>
+      This structure is required if you want to use the default test runner. If you intend not to use the framework's test runner, you may still choose to adopt this structure, but you'll be responsible for loading your tests yourself (see &quot;Creating Your Own Test Runner&quot; below).
+    </p>
+    <p>
+      <strong>Listing 2</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>MyApp/
+  app/
+  tests/
+      all_tests.json
+      SimpleTests.js
+      ComplexTests.js
+  appinfo.json
+  framework_config.json
+  index.html
+  sources.json
+  icon.png  
+</code>
+</pre>
+    </blockquote>
+    <h2 id="test-specification-file">
+      Test Specification File
+    </h2>
+    <p>
+      By specifying your tests in the <code>all_tests.json</code> test specification file, you can avoid loading your test code until you actually run the tests. Listing 3 illustrates the format of the JSON test specification file.
+    </p>
+    <p>
+      <strong>Listing 3</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>[
+  {
+      &quot;title&quot;: &quot;Cookie Tests&quot;,
+      &quot;source&quot;: &quot;tests/cookie_tests.js&quot;,
+      &quot;testFunction&quot;: &quot;CookieTests&quot;
+  },
+  {
+      &quot;title&quot;: &quot;Timing Tests&quot;,
+      &quot;source&quot;: &quot;tests/timing_tests.js&quot;,
+      &quot;testFunction&quot;: &quot;TimingTests&quot;
+  },
+  {
+      &quot;title&quot;: &quot;View Tests&quot;,
+      &quot;source&quot;: &quot;tests/view_tests.js&quot;,
+      &quot;testFunction&quot;: &quot;ViewTests&quot;
+  }
+] 
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The <code>source</code> property is a path relative to the application's <code>index.html</code> file.
+    </p>
+    <h2 id="running-unit-tests-the-easy-way">
+      Running Unit Tests (the easy way)
+    </h2>
+    <p>
+      Provided that you've structured and specified your tests as described in the previous sections, the built-in test runner can be invoked from your code by simply calling <code>Mojo.Test.pushTestScene()</code> from one of your stage assistants, passing the currently active stage controller:
+    </p>
+    <blockquote>
+      <pre>
+<code>Mojo.Test.pushTestScene(this.controller);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Alternatively, you can pass the <code>mojoTest</code> parameter to the Mojo SDK <code>palm-launch</code> program to launch your application with the testing UI already loaded:
+    </p>
+    <blockquote>
+      <pre>
+<code>palm-launch -p &quot;{mojoTest:true}&quot; com.mycompany.myapp  
+</code>
+</pre>
+    </blockquote>
+    <h2 id="asynchronous-testing-support">
+      Asynchronous Testing Support
+    </h2>
+    <p>
+      In the first example, the test method could run to completion and return a result. More often, though, testing JavaScript components requires waiting for a callback function to be called before one can validate that the component behaves as expected.
+    </p>
+    <h2 id="callbacks">
+      Callbacks
+    </h2>
+    <p>
+      In order to allow testing a component that requires a callback, <code>Mojo.Test</code> passes a callback function as the first parameter to every test method, as shown in Listing 4.
+    </p>
+    <p>
+      <strong>Listing 4</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>function AsyncTests() {
+}
+AsyncTests.prototype.testSetTimeout = function(reportResults) {
+  var timeoutFired = function() {
+      reportResults();
+  };
+  window.setTimeout(timeoutFired, 200);
+};
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Notice that the test method shown in Listing 4 doesn't return <code>Mojo.Test.passed</code>. Instead it returns nothing, causing <code>undefined</code> to be returned to <code>Mojo.Test</code> and indicating that the result of this test can't be known immediately. Instead, the result of this test is required to be passed as the first parameter of the <code>reportResults</code> callback function.
+    </p>
+    <p>
+      Assuming that <code>window.setTimeout</code> is working correctly, <code>reportResults</code> will be called after 200 milliseconds, and <code>Mojo.Test</code> will move on to the next test. If it doesn't, though, a timer started by <code>Mojo.Test</code> will abort the test and report a failure after one second.
+    </p>
+    <p>
+      <code>reportResults</code> accepts one parameter, either <code>Mojo.Test.passed</code> to indicate a test passed, or a string describing the failure if it failed. Calling <code>reportResults</code> with no arguments, as in this example, is a shortcut for indicating a test passed, since <code>reportResults</code> treats <code>undefined</code> the same as <code>Mojo.Test.passed</code>.
+    </p>
+    <h2 id="controlling-timing">
+      Controlling Timing
+    </h2>
+    <p>
+      If the callback needed for testing might take longer than one second, the timeout value can be customized for a test object by adding a <code>timeoutInterval</code> property to the test object's constructor function. This property should be the number of milliseconds the test runner needs to wait before aborting the test. See Listing 5.
+    </p>
+    <p>
+      <strong>Listing 5</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>function AsyncTests(tickleFunction) {
+}
+AsyncTests.timeoutInterval = 5000
+AsyncTests.prototype.testSetTimeout = function(reportResults) {
+  var timeoutFired = function() {
+      reportResults();
+  };
+  window.setTimeout(timeoutFired, 2000);
+};
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The tickle function should be used if a test needs to wait for a series of callback functions and you don't want to set the timeout to an amount of time long enough for the entire series.
+    </p>
+    <p>
+      The tickle function is passed as the first parameter to the test object's constructor function. If the test wishes to use it, it should save a copy. Every time this tickle function is called, the test's timeout timer is reset. In this simple example, the tickle function was not used.
+    </p>
+    <h2 id="validate">
+      Validate
+    </h2>
+    <p>
+      When an exception occurs during the initial call to the test function, it will be caught and the exception used to create the test result.
+    </p>
+    <p>
+      When a test is continuing execution after a callback, though, <code>Mojo.Test</code> can't establish an exception handler. In order to get the same convenient conversion of exceptions to test failures, use <code>Mojo.Test.validate</code>, as shown in Listing 6.
+    </p>
+    <p>
+      <strong>Listing 6</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>function AsyncTests() {
+}
+AsyncTests.prototype.testSetTimeout = function(reportResults) {
+  var startTime = Date.now();
+  var validateTimePassed = function() {
+      Mojo.require(Date.now() &gt; startTime, &quot;time must have passed.&quot;)
+  };
+  var timeoutFired = function() {
+      Mojo.Test.validate(reportResults, validateTimePassed);
+  };
+  window.setTimeout(timeoutFired, 200);
+};   
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Using <code>Mojo.Test.validate()</code> allows <code>Mojo.Test</code> to establish an exception handler that will catch any exception, including the ones generated when a call to one of the require methods isn't satisfied by its parameters.
+    </p>
+    <h2 id="before-and-after-methods">
+      Before and After Methods
+    </h2>
+    <p>
+      If a test object has a method named <code>before</code>, that method will be called immediately before each individual test is run. Likewise, if the test object has a method named <code>after</code>, that method will be called immediately after each test finishes. These methods are useful for doing a setup that will be common across the test and cleanup after a test.
+    </p>
+    <p>
+      Since it is very likely that test setup and cleanup will also require waiting for some asynchronous event, these functions are passed a callback function that they must call to allow testing to continue. This callback must complete within the timeout period specified by <code>timeoutInterval</code>.
+    </p>
+    <p>
+      If the before method doesn't need to do an asynchronous operation, it can return <code>Mojo.Test.beforeFinished</code> to indicate that the test can continue immediately.
+    </p>
+    <p>
+      There is no shortcut for the <code>after</code> method; if it is present, it will be called and it must call the callback function it is passed as its first parameter.
+    </p>
+    <h2 id="creating-your-own-test-runner">
+      Creating Your Own Test Runner
+    </h2>
+    <p>
+      If the test runner provided by the framework doesn't meet your needs, you can create your own test runner. The basic steps to do this are outlined in Listing 7.
+    </p>
+    <p>
+      <strong>Listing 7</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>//create an array of test specifications
+var tests = [
+  SimpleTests,
+  ComplexTests
+];
+
+// create a test runner object
+this.runner = new Mojo.Test.CollectionRunner(tests);
+
+// start the tests, call &quot;whenCompleted&quot; when done
+this.runner.start(whenCompleted);  
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In the above example, <code>whenCompleted</code> is a function that you want called when the tests are all finished running. Note that in this example, the test function is specified with a reference to the function, rather than the name. This means that you'll need to have loaded the test code by some other method before running this code. The results are in the results field of the <code>runner</code> object.
+    </p>
+    <p>
+      The results are an array of test result objects, which have the format shown in Listing 8.
+    </p>
+    <p>
+      <strong>Listing 8</strong>
+    </p>
+    <blockquote>
+      <pre>
+<code>[
+  {
+      passed: false,
+      suite: &quot;SimpleTests&quot;,
+      method: &quot;testAdd&quot;,
+      message: &quot;one plus one must equal two.&quot;
+  }
+]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      A passed test will have passed equal to <code>true</code> and the message will be <code>Passed</code>.
+    </p>
+    <p>
+      <strong>Rob Tsuk is a principal architect at Palm working on current and future versions of HP webOS. Before Palm, Rob worked on other groundbreaking mobile platforms, including the Apple iPod.</strong>
+    </p>
+		</div>
+	</body>
+</html>

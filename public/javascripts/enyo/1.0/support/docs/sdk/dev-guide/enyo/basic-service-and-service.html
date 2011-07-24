@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="basicservice-and-service">
+      BasicService and Service
+    </h1>
+    <p>
+      When looking at how Enyo works with services--processes whose responses are available asynchronously--a good place to start is with <code>BasicService</code> and its subkind, <code>Service</code>.
+    </p>
+    <h2 id="basicservice">
+      BasicService
+    </h2>
+    <p>
+      Applications will not typically create instances of <code>BasicService</code>, but rather of <code>Service</code> or a descendant of <code>Service</code>. Still, it's instructive to examine <code>BasicService</code>, since this kind contains the low-level plumbing common to all Enyo service kinds.
+    </p>
+    <p>
+      Like all Enyo services, a <code>BasicService</code> manages interaction with an asynchronous process. When the process is complete, the <code>onResponse</code> event, containing the service response, fires. If the response was successful, the <code>onSuccess</code> event fires; if not, the <code>onFailure</code> event fires.
+    </p>
+    <p>
+      A <code>BasicService</code> is initiated by calling the <code>request</code> method. Any properties relevant to the request should be passed to this method in the <code>inProps</code> object.
+    </p>
+    <p>
+      Note that a <code>BasicService</code> makes no assumptions about the actual asynchronous process. Instead, the <code>request</code> method creates an <code>enyo.Request</code> component, which manages the service request. (This component is, in fact, the return value of the <code>request</code> call.) You may specify the kind for the request component by setting the <code>requestKind</code> property of the <code>inProps</code> object.
+    </p>
+    <p>
+      Here's an example of a BasicService:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;BasicService&quot;, onResponse: &quot;serviceResponse&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To initiate the service and handle the response, do the following:
+    </p>
+    <blockquote>
+      <pre>
+<code>buttonClick: function() {
+  this.$.basicService.request({index: 27, message: &quot;&quot;});
+},
+serviceResponse: function(inSender, inResponse, inRequest) {
+  // process response
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To cancel all requests:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.basicService.cancel();
+</code>
+</pre>
+    </blockquote>
+    <h3 id="published-properties">
+      Published Properties
+    </h3>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          service
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          The name of the service. This information is delegated to the Request component.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          timeout
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          The timeout, specified in milliseconds, after which the service should return a failure condition. If a request times out, the request object will have its <code>didTimeout</code> property set to <code>true</code>.
+        </td>
+      </tr>
+    </table>
+    <h2 id="service">
+      Service
+    </h2>
+    <p>
+      <code>Service</code> extends <code>BasicService</code>, adding support for making multiple request calls. Use the <code>call</code> method (rather than <code>request</code>) to initiate a <code>Service</code> call.
+    </p>
+    <p>
+      The <code>call</code> method takes two arguments. The first, <code>inParams</code>, is an object containing the parameters the request should use to make the service request. The optional second argument, <code>inProps</code>, is an object whose fields specify values for the properties of the request itself. (These properties may include <code>onSuccess</code>, <code>onFailure</code>, <code>onResponse</code>, and <code>name</code>.)
+    </p>
+    <p>
+      Note: Event handler delegate names are most commonly passed via <code>call</code>.
+    </p>
+    <p>
+      Here's a simple service declaration:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Service&quot;, service: &quot;importantService&quot;, onResponse: &quot;genericResponse&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      This service could be called in a variety of ways, e.g.:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.service.call({index: 5});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In the following case, the <code>genericResponse</code> method will be called with the service response:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.service.call({index: 10}, {onResponse: &quot;&quot;});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To cancel a specific service call request, use <code>cancelCall(inName)</code>, where <code>inName</code> is the name of the service call to cancel.
+    </p>
+    <p>
+      Finally, note that Enyo includes several subkinds of <code>Service</code>--e.g., <a href="palm-service.html">PalmService</a>, <a href="db-service.html">DbService</a>, and <a href="web-service.html">WebService</a>--that are useful for working with specific types of services.
+    </p>
+		</div>
+	</body>
+</html>

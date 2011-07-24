@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="headers">
+      Headers
+    </h1>
+    <h2 id="header">
+      Header
+    </h2>
+    <p>
+      A <code>Header</code> is a styled control fitting across the top of the application region.
+    </p>
+    <p>
+      Textual content for a <code>Header</code> may be specified via the <code>content</code> property:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Header&quot;, content: &quot;Header Content&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Controls may be placed inside a <code>Header</code> by defining them in a <code>components</code> block:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Header&quot;, components: [
+  {content: &quot;Header Content&quot;, flex: 1},
+  {kind: &quot;Button&quot;, caption: &quot;Right-aligned button&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Headers1.png" alt="Header Example"><br>
+    </p>
+    <h2 id="pageheader">
+      PageHeader
+    </h2>
+    <p>
+      The Enyo framework also contains a separate <code>PageHeader</code> kind, which is derived directly from <code>Header</code>. In Enyo version 1.0, the two kinds are identical in both appearance and functionality.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;PageHeader&quot;, components: [
+  {content: &quot;PageHeader Content&quot;, flex: 1},
+  {kind: &quot;Button&quot;, caption: &quot;Right-aligned button&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Headers2.png" alt="PageHeader Example"><br>
+    </p>
+		</div>
+	</body>
+</html>

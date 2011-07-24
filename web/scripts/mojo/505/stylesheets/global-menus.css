@@ -1,0 +1,860 @@
+/*
+   Menu Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+/* Menu System
+ * There are a number of combinations of connected button groupings that let developers combine
+ * similar functions on a single object. The button groupings are from two to five, and can be
+ * arranged using the same classes as the single buttons.
+ */
+
+.palm-menu {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  z-index: 11001;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-menu.view-menu {
+  width: 100%;
+  top: 0px;
+}
+
+.palm-menu > .palm-menu-fade {
+  width: 100%;
+  height: 50px;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-default > .palm-menu-fade {
+  background: url(../images/view-menu-gradient.png) top left repeat-x;
+}
+
+.palm-menu.view-menu.palm-white > .palm-menu-fade {
+  background: url(../images/view-menu-gradient-white.png) top left repeat-x;
+}
+
+.palm-menu.command-menu,
+.palm-menu-text,
+.palm-menu-label {
+  -webkit-transition-duration: .25s;
+}
+
+.palm-menu.command-menu {
+  width: 100%;
+  bottom: -1px;
+  
+  -webkit-transition-property: opacity;
+}
+
+.palm-menu.command-menu.faded {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.palm-menu.command-menu.palm-default > .palm-menu-fade {
+  background: url(../images/command-menu-gradient.png) bottom left repeat-x;
+}
+
+.palm-menu.command-menu.palm-white > .palm-menu-fade {
+  background: url(../images/command-menu-gradient-white.png) bottom left repeat-x;
+}
+
+.palm-menu-spacer {
+  height: 56px;
+}
+
+.palm-menu-button {
+  position: absolute;
+  top: 0px;
+  height: 50px;
+  max-width: 50px;
+  background: none;
+  -webkit-border-image: url(../images/palm-menu-button.png) 0 25 200 25 repeat repeat;
+  -webkit-user-select: none;
+  border-width: 0 25px 0 25px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 48px;
+  color: white;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: .25s;
+}
+  
+.palm-menu-button.selected {
+  -webkit-border-image: url(../images/palm-menu-button.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-menu-button.selected .palm-menu-icon {
+  background-position: bottom;
+}
+
+.palm-menu-text,
+.palm-menu-label {
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  height: 50px;
+  background: none;
+  -webkit-border-image: url(../images/palm-menu-button.png) 0 25 200 25 repeat repeat;
+  -webkit-user-select: none;
+  border-width: 0 25px 0 25px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 48px;
+  color: white;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  
+  -webkit-transition-property: color;
+}
+
+.palm-menu.command-menu.faded .palm-menu-text,
+.palm-menu.command-menu.faded .palm-menu-label {
+  color: rgba(255, 255, 255, 0);
+}
+
+.palm-menu-text.selected {
+  -webkit-border-image: url(../images/palm-menu-button.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-menu-group {
+  position: absolute;
+  top: 0px;
+  height: 56px;
+}
+
+/* Grouped buttons */
+
+.palm-menu-group .palm-menu-button,
+.palm-menu-group .palm-menu-label,
+.palm-menu-group .palm-menu-text {
+  top: 0px;
+  -webkit-border-image: url(../images/palm-menu-segment-middle.png) 0 25 200 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-button:first-child,
+.palm-menu-group .palm-menu-label:first-child,
+.palm-menu-group .palm-menu-text:first-child {
+  -webkit-border-image: url(../images/palm-menu-segment-first.png) 0 25 200 25 repeat repeat;
+  padding-left: 10px;
+}
+
+.palm-menu-group .palm-menu-button:last-child,
+.palm-menu-group .palm-menu-label:last-child,
+.palm-menu-group .palm-menu-text:last-child {
+  -webkit-border-image: url(../images/palm-menu-segment-last.png) 0 25 200 25 repeat repeat;
+  padding-right: 10px;
+}
+
+.palm-menu-group .palm-menu-button:only-child,
+.palm-menu-group .palm-menu-label:only-child,
+.palm-menu-group .palm-menu-text:only-child {
+  -webkit-border-image: url(../images/palm-menu-button.png) 0 25 200 25 repeat repeat;
+  padding: 0px;
+}
+
+.palm-menu-group .palm-menu-button.selected,
+.palm-menu-group .palm-menu-label.selected,
+.palm-menu-group .palm-menu-text.selected {
+  top: 0px;
+  -webkit-border-image: url(../images/palm-menu-segment-middle.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-button.selected:first-child,
+.palm-menu-group .palm-menu-label.selected:first-child,
+.palm-menu-group .palm-menu-text.selected:first-child {
+  -webkit-border-image: url(../images/palm-menu-segment-first.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-button.selected:last-child,
+.palm-menu-group .palm-menu-label.selected:last-child,
+.palm-menu-group .palm-menu-text.selected:last-child {
+  -webkit-border-image: url(../images/palm-menu-segment-last.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-button.selected:only-child,
+.palm-menu-group .palm-menu-label.selected:only-child,
+.palm-menu-group .palm-menu-text.selected:only-child {
+  -webkit-border-image: url(../images/palm-menu-button.png) 50 25 150 25 repeat repeat;
+}
+
+/* Selected toggle buttons */
+
+.palm-menu-group .palm-menu-text.palm-depressed,
+.palm-menu-group .palm-menu-label.palm-depressed,
+.palm-menu-group .palm-menu-button.palm-depressed {
+  -webkit-border-image: url(../images/palm-menu-segment-middle.png) 100 25 100 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-depressed:first-child,
+.palm-menu-group .palm-menu-label.palm-depressed:first-child,
+.palm-menu-group .palm-menu-button.palm-depressed:first-child {
+  -webkit-border-image: url(../images/palm-menu-segment-first.png) 100 25 100 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-depressed:last-child,
+.palm-menu-group .palm-menu-label.palm-depressed:last-child,
+.palm-menu-group .palm-menu-button.palm-depressed:last-child {
+  -webkit-border-image: url(../images/palm-menu-segment-last.png) 100 25 100 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-depressed:only-child,
+.palm-menu-group .palm-menu-label.palm-depressed:only-child,
+.palm-menu-group .palm-menu-button.palm-depressed:only-child {
+  -webkit-border-image: url(../images/palm-menu-button.png) 100 25 100 25 repeat repeat;
+}
+
+/* Selected active toggle buttons */
+
+.palm-menu-group .palm-menu-text.selected.palm-depressed,
+.palm-menu-group .palm-menu-label.selected.palm-depressed,
+.palm-menu-group .palm-menu-button.selected.palm-depressed {
+  -webkit-border-image: url(../images/palm-menu-segment-middle.png) 150 25 50 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.selected.palm-depressed:first-child,
+.palm-menu-group .palm-menu-label.selected.palm-depressed:first-child,
+.palm-menu-group .palm-menu-button.selected.palm-depressed:first-child {
+  -webkit-border-image: url(../images/palm-menu-segment-first.png) 150 25 50 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.selected.palm-depressed:last-child,
+.palm-menu-group .palm-menu-label.selected.palm-depressed:last-child,
+.palm-menu-group .palm-menu-button.selected.palm-depressed:last-child {
+  -webkit-border-image: url(../images/palm-menu-segment-last.png) 150 25 50 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.selected.palm-depressed:only-child,
+.palm-menu-group .palm-menu-label.selected.palm-depressed:only-child,
+.palm-menu-group .palm-menu-button.selected.palm-depressed:only-child {
+  -webkit-border-image: url(../images/palm-menu-button.png) 150 25 50 25 repeat repeat;
+}
+
+.palm-menu-label div {
+  margin-left: -7px;
+  margin-right: -7px;
+  text-transform: none;
+}
+
+.palm-menu-text div {
+  margin-left: -7px;
+  margin-right: -7px;
+}
+
+/* Disabled states for menu system buttons. */
+
+.palm-menu-button.palm-disabled,
+.palm-menu-button.selected.palm-disabled,
+.palm-menu-text.palm-disabled,
+.palm-menu-text.selected.palm-disabled,
+.palm-menu-label.palm-disabled,
+.palm-menu-label.selected.palm-disabled {
+  -webkit-border-image: url(../images/palm-menu-button.png) 200 25 0 25 repeat repeat;
+  color: #dadada;
+}
+
+.palm-menu-group .palm-menu-text.palm-disabled,
+.palm-menu-group .palm-menu-label.palm-disabled,
+.palm-menu-group .palm-menu-button.palm-disabled {
+  -webkit-border-image: url(../images/palm-menu-segment-middle.png) 200 25 0 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-disabled:first-child,
+.palm-menu-group .palm-menu-label.palm-disabled:first-child,
+.palm-menu-group .palm-menu-button.palm-disabled:first-child {
+  -webkit-border-image: url(../images/palm-menu-segment-first.png) 200 25 0 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-disabled:last-child,
+.palm-menu-group .palm-menu-label.palm-disabled:last-child,
+.palm-menu-group .palm-menu-button.palm-disabled:last-child {
+  -webkit-border-image: url(../images/palm-menu-segment-last.png) 200 25 0 25 repeat repeat;
+}
+
+.palm-menu-group .palm-menu-text.palm-disabled:only-child,
+.palm-menu-group .palm-menu-label.palm-disabled:only-child,
+.palm-menu-group .palm-menu-button.palm-disabled:only-child {
+  -webkit-border-image: url(../images/palm-menu-button.png) 200 25 0 25 repeat repeat;
+}
+
+/* Icon placement within the buttons */
+
+.palm-menu-icon {
+  position: relative;
+  left: -16px;
+  top: 9px;
+  margin: 0;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+}
+
+.palm-menu-icon.selected {
+  background-position: bottom left;
+}
+
+.palm-disabled .palm-menu-icon {
+	opacity: 0.4;
+}
+
+/* Example Icons */
+
+.palm-menu-icon.back 			{ background-image: url(../images/menu-icon-back.png); }
+.palm-menu-icon.forward 		{ background-image: url(../images/menu-icon-forward.png); }
+.palm-menu-icon.refresh 		{ background-image: url(../images/menu-icon-refresh.png); }
+.palm-menu-icon.search 			{ background-image: url(../images/menu-icon-search.png); }
+.palm-menu-icon.new 			{ background-image: url(../images/menu-icon-new.png); }
+.palm-menu-icon.stop 			{ background-image: url(../images/menu-icon-stop.png); }
+.palm-menu-icon.attach 			{ background-image: url(../images/menu-icon-attach.png); }
+.palm-menu-icon.compose 		{ background-image: url(../images/menu-icon-compose.png); }
+.palm-menu-icon.conversation 	{ background-image: url(../images/menu-icon-conversation.png); }
+.palm-menu-icon.delete 			{ background-image: url(../images/menu-icon-delete.png); }
+.palm-menu-icon.file 			{ background-image: url(../images/menu-icon-file.png); }
+.palm-menu-icon.forward-email 	{ background-image: url(../images/menu-icon-forward-email.png); }
+.palm-menu-icon.info 			{ background-image: url(../images/menu-icon-info.png); }
+.palm-menu-icon.priority 		{ background-image: url(../images/menu-icon-priority.png); }
+.palm-menu-icon.reply-all 		{ background-image: url(../images/menu-icon-reply-all.png); }
+.palm-menu-icon.reply 			{ background-image: url(../images/menu-icon-reply.png); }
+.palm-menu-icon.save 			{ background-image: url(../images/menu-icon-save.png); }
+.palm-menu-icon.send 			{ background-image: url(../images/menu-icon-send.png); }
+.palm-menu-icon.sync 			{ background-image: url(../images/menu-icon-sync.png); }
+.palm-menu-icon.edit-profile 	{ background-image: url(../images/menu-icon-edit-profile.png); }
+.palm-menu-icon.make-vip 		{ background-image: url(../images/menu-icon-make-vip.png); }
+.palm-menu-icon.new-contact 	{ background-image: url(../images/menu-icon-new-contact.png); }
+.palm-menu-icon.remove-vip 		{ background-image: url(../images/menu-icon-remove-vip.png); }
+.palm-menu-icon.down 			{ background-image: url(../images/menu-icon-down.png); }
+
+/* Menu Panels */
+
+.palm-menu-panel {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 2px;
+  left: 0px;
+  right: 0px;
+  z-index: 19000;
+  border-width: 24px 24px 24px 24px;
+  -webkit-border-image: url(../images/palm-menu-panel.png) 24 24 24 24 repeat stretch;
+  -webkit-box-sizing: border-box;
+}
+
+.palm-menu-panel-wrapper {
+  margin: 0 -16px -8px -16px;
+  max-height: 258px;
+}
+
+.palm-menu-panel-wrapper > .palm-list {
+  padding-top: 20px;
+}
+
+.palm-menu-panel-fade-top {
+  margin: 0 -24px -15px -24px;
+  left: 0px;
+  right: 0px;
+  top: -16px;
+  height: 28px;
+  position: absolute;
+  z-index: 19001;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-menu-panel-fade-top-bg {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 28px;
+  border-width: 0 24px;
+  -webkit-border-image: url(../images/palm-menu-panel-fade-top.png) 0 24 0 24 repeat repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-menu-panel-fade-bottom {
+  margin: 0 -24px -15px -24px;
+  left: 0px;
+  right: 0px;
+  bottom: -1px;
+  height: 28px;
+  position: absolute;
+  z-index: 19001;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-menu-panel-fade-bottom-bg {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 28px;
+  border-width: 0 24px;
+  -webkit-border-image: url(../images/palm-menu-panel-fade-bottom.png) 0 24 0 24 repeat repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-menu-panel-fade-bottom-arrow {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 28px;
+  background: url(../images/palm-popup-fade-arrow-down.png) center center no-repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+
+/* Popup Menus, List Selectors */
+
+.palm-popup-container {
+  min-width: 180px;
+  margin: 5px 0 0 0;
+  padding: 0;
+  z-index: 199500;
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  border-width: 24px;
+  -webkit-box-sizing: border-box;
+  -webkit-border-image: url(../images/palm-popup-background.png) 24 24 24 24 stretch stretch;
+}
+
+.palm-popup-wrapper {
+  margin: -24px;
+}
+
+.palm-popup-content {
+  margin: 17px 8px 18px 8px;
+  padding: 0px;
+  max-height: 368px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.palm-touch-rows-7 .palm-popup-content {
+	max-height: 286px;
+}
+
+.palm-popup-content .palm-list {
+  min-width: 180px;
+  max-width: 300px;
+}
+
+#palm-app-menu .palm-popup-content .palm-list {
+  max-width: 330px; /* 318px */
+}
+
+.palm-popup-fade-top {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  height: 25px;
+  top: -16px;
+  -webkit-palm-mouse-target: ignore;
+}
+.palm-popup-fade-top > .fade-background {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  border-width: 0 24px;
+  -webkit-border-image: url(../images/palm-popup-fade-top.png) 0 24 0 24 repeat repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+.palm-popup-fade-top > .fade-arrow {
+  position: absolute;
+  width: 100%;
+  margin-left: 24px;
+  height: 25px;
+  background: url(../images/palm-popup-fade-arrow-up.png) center center no-repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-popup-fade-bottom {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  height: 25px;
+  bottom: -16px;
+  -webkit-palm-mouse-target: ignore;
+}
+.palm-popup-fade-bottom > .fade-background {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  border-width: 0 24px;
+  -webkit-border-image: url(../images/palm-popup-fade-bottom.png) 0 24 0 24 repeat repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+.palm-popup-fade-bottom > .fade-arrow {
+  position: absolute;
+  width: 100%;
+  margin-left: 24px;
+  height: 25px;
+  background: url(../images/palm-popup-fade-arrow-down.png) center center no-repeat;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-popup-icon.palm-account-icon,
+.palm-popup-icon {
+  display: inline-block;
+  width: 40px;
+  height: 48px;
+  margin: 0 14px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.palm-popup-icon.left {
+  float: left;
+  margin-right: 0;
+}
+.palm-popup-icon.right {
+  float: right;
+  margin-left: 0;
+}
+
+.palm-popup-icon.status-available {
+  width: 12px;
+  height: 48px;
+  background-image: url(../images/status-available.png);
+}
+
+.palm-popup-icon.status-away {
+  width: 12px;
+  height: 48px;
+  background-image: url(../images/status-away.png);
+}
+
+.palm-popup-icon.status-busy {
+  width: 12px;
+  height: 48px;
+  background-image: url(../images/status-busy.png);
+}
+
+.palm-popup-icon.status-offline {
+  width: 12px;
+  height: 48px;
+  background-image: url(../images/status-offline.png);
+}
+
+.palm-popup-content .popup-item-checkmark,
+.palm-popup-content .chosen .popup-item-checkmark {
+  float: right;
+  width: 32px;
+  height: 30px;
+  margin: 11px 10px 0px 0px;
+  background: url(../images/checkmark.png) center center no-repeat;
+}
+
+.palm-popup-content .palm-divider.labeled {
+  margin-top: -7px;
+  margin-bottom: -6px;
+}
+
+.palm-popup-content .palm-divider.labeled .label {
+  font-size: 14px;
+  line-height: 28px;
+  height: 28px;
+  margin: 3px -2px 0 -2px;
+  text-transform: none;
+}
+
+/* List Selector */
+
+.palm-list-selector {
+  margin: 0px;
+  padding: 0px;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.palm-list-selector .label {
+  float: right;
+  color: #1f75bf;
+  text-shadow: #ffffff 0px 1px 0px;
+  font-size: 14px;
+  margin-top: 3px;
+  text-transform: uppercase;
+}
+
+.list-selector-value {
+  overflow: hidden;
+}
+
+.palm-row .list-selector-triangle {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin: 6px -4px 0 4px;
+  background: url(../images/list-selector-triangle.png) top no-repeat;
+}
+
+.palm-row.selected .list-selector-triangle {
+  background: url(../images/list-selector-triangle.png) bottom no-repeat;
+}
+
+.palm-list-selector.right .title {
+  text-align: right;
+}
+
+.palm-list-selector.right .label {
+  float: left;
+  text-align: left;
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+.palm-list-selector .title:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.textfield-group .palm-list-selector {
+  height: 48px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.textfield-group .palm-list-selector .title {
+  margin-top: 13px !important;
+  padding-top: 28px;
+}
+
+/* Application and Device Menus */
+
+#palm-app-menu.palm-popup-container,
+#palm-device-menu.palm-popup-container {
+  font-family: "Prelude" !important;
+  text-align: left !important;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  z-index: 199600;
+  border-width: 30px 28px 35px 28px;
+  -webkit-border-image: url(../images/system-menu-background.png) 30 28 35 28 stretch stretch;
+  color: #FFF;
+  /* pre-load images */
+  background-image: url(../images/system-menu-selection-gradient-default.png);
+  background-image: url(../images/system-menu-selection-gradient-first.png);
+  background-image: url(../images/system-menu-selection-gradient-last.png);
+  background-image: none;
+}
+
+#palm-app-menu.palm-popup-container.palm-touch-rows-7,
+#palm-device-menu.palm-popup-container.palm-touch-rows-7 {
+  -webkit-border-image: url(../images/system-menu-background-solid.png) 30 28 35 28 repeat repeat;
+}
+
+#palm-app-menu.palm-popup-container {
+  top: -2px;
+  left: -6px;
+  min-width: 278px;
+  max-height: 413px;
+}
+
+#palm-device-menu.palm-popup-container {
+  top: -2px;
+  right: -6px;
+  min-width: 278px;
+  max-height: 413px;
+}
+
+#palm-app-menu > .palm-popup-wrapper,
+#palm-device-menu > .palm-popup-wrapper {
+  margin: -58px -21px -48px -52px;
+}
+
+#palm-app-menu .palm-popup-fade-top,
+#palm-app-menu .palm-popup-fade-bottom,
+#palm-device-menu .palm-popup-fade-top,
+#palm-device-menu .palm-popup-fade-bottom {
+  margin-right: 9px;
+  margin-left: 9px;
+}
+
+#palm-app-menu .palm-popup-fade-top {
+  left: -32px;
+  top: -27px;
+}
+#palm-app-menu .palm-popup-fade-bottom {
+  left: -32px;
+  bottom: -24px;
+}
+#palm-device-menu .palm-popup-fade-top {
+  left: -33px;
+  top: -27px;
+}
+#palm-device-menu .palm-popup-fade-bottom {
+  left: -33px;
+  bottom: -24px;
+}
+
+
+#palm-app-menu .palm-popup-fade-top > .fade-background,
+#palm-device-menu .palm-popup-fade-top > .fade-background {
+  -webkit-border-image: url(../images/system-menu-fade-top.png) 0 24 0 24 repeat repeat;
+}
+#palm-app-menu .palm-popup-fade-top > .fade-arrow,
+#palm-device-menu .palm-popup-fade-top > .fade-arrow {
+  background: url(../images/palm-popup-fade-arrow-up-dark.png) center center no-repeat;
+}
+#palm-app-menu .palm-popup-fade-bottom > .fade-background,
+#palm-device-menu .palm-popup-fade-bottom > .fade-background {
+  -webkit-border-image: url(../images/system-menu-fade-bottom.png) 0 24 0 24 repeat repeat;
+}
+#palm-app-menu .palm-popup-fade-bottom > .fade-arrow,
+#palm-device-menu .palm-popup-fade-bottom > .fade-arrow {
+  background: url(../images/palm-popup-fade-arrow-down-dark.png) center center no-repeat;
+}
+
+#palm-app-menu.palm-touch-rows-7 .palm-popup-fade-top > .fade-background,
+#palm-device-menu.palm-touch-rows-7 .palm-popup-fade-top > .fade-background {
+  -webkit-border-image: url(../images/system-menu-fade-top-solid.png) 0 24 0 24 repeat repeat;
+}
+#palm-app-menu.palm-touch-rows-7 .palm-popup-fade-bottom > .fade-background,
+#palm-device-menu.palm-touch-rows-7 .palm-popup-fade-bottom > .fade-background {
+  -webkit-border-image: url(../images/system-menu-fade-bottom-solid.png) 0 24 0 24 repeat repeat;
+}
+
+#palm-app-menu .palm-popup-content,
+#palm-device-menu .palm-popup-content {
+  margin: 31px 0 26px 31px;
+}
+
+#palm-app-menu .palm-row,
+#palm-device-menu .palm-row {
+  background: url(../images/list-separator-dark-taper.png) bottom left no-repeat;
+}
+
+#palm-app-menu .palm-row.single,
+#palm-device-menu .palm-row.single,
+#palm-app-menu .palm-row.last,
+#palm-device-menu .palm-row.last {
+  background: none;
+  -webkit-border-image: none;
+}
+
+#palm-app-menu .label,
+#palm-device-menu .label {
+  color: #AAA;
+  text-shadow: #333 0 -1px 0;
+}
+
+/* meta shortcut icon in app menu */
+#palm-app-menu .palm-row .label {
+  color: #2f3032;
+  font-size: 16px;
+  text-shadow: #898989 0 1px 0;
+  height: 32px;
+  margin-top: 10px;
+  padding-left: 30px;
+  line-height: 32px;
+  background: url(../images/app-menu-icon-meta.png) left center no-repeat;
+}
+
+#palm-app-menu .palm-row.selected,
+#palm-device-menu .palm-row.selected,
+#palm-app-menu .palm-row.selected.submenu-group,
+#palm-device-menu .palm-row.selected.submenu-group {
+  background: none;
+  -webkit-border-image: url(../images/system-menu-selection-gradient-default.png) 24 20 24 20 repeat repeat;
+}
+
+#palm-app-menu .palm-popup-content > .palm-list > .menu-start.selected,
+#palm-device-menu .palm-popup-content > .palm-list > .menu-start.selected,
+#palm-app-menu .palm-row.first.selected.submenu-group {
+  background: none;
+  -webkit-border-image: url(../images/system-menu-selection-gradient-first.png) 24 20 24 20 repeat repeat;
+}
+
+#palm-app-menu .palm-popup-content > .palm-list > .menu-end.selected,
+#palm-device-menu .palm-popup-content > .palm-list > .menu-end.selected {
+  background: none;
+  -webkit-border-image: url(../images/system-menu-selection-gradient-last.png) 24 20 24 20 repeat repeat;
+}
+
+#palm-app-menu .palm-row.submenu-group,
+#palm-device-menu .palm-row.submenu-group {
+  -webkit-border-image: none;
+  background: url(../images/system-menu-section-divider.png) bottom left no-repeat;
+}
+
+#palm-app-menu .palm-drawer-container,
+#palm-device-menu .palm-drawer-container {
+  position: relative;
+  top: 0px;
+  overflow: visible;
+  border: none !important;
+  -webkit-border-image: none !important;
+  background: url(../images/system-menu-section-divider.png) bottom left no-repeat;
+}
+
+#palm-app-menu .palm-drawer-contents,
+#palm-device-menu .palm-drawer-contents {
+  margin: 0;
+  position: relative;
+  background: url(../images/list-separator-dark-taper.png) no-repeat;
+}
+
+#palm-app-menu .palm-drawer-contents .palm-row .title,
+#palm-device-menu .palm-drawer-contents .palm-row .title {
+  margin-left: 14px;
+}
+
+#palm-app-menu .palm-row .title.dim,
+#palm-device-menu .palm-row .title.dim {
+  color: #BBB;
+}
+
+#palm-app-menu .palm-drawer-contents .palm-row .label,
+#palm-device-menu .palm-drawer-contents .palm-row .label {
+  margin-right: 24px;
+}
+
+/* Support for togglable drawer handles in submenus */
+
+.palm-submenu-drawer-handle {
+  width: 24px;
+  height: 24px;
+  float: right;
+  margin: 13px 8px 15px;
+  background: url(../images/system-menu-drawer-arrows.png) 0px 0px no-repeat;
+}
+
+.palm-submenu-group-opened .palm-submenu-drawer-handle {
+  background-position: 0px -24px;
+}
+
+.palm-list .palm-row.submenu-group .title {
+  padding-right: 0px;
+}
+
+.palm-list .palm-row.palm-section-divider {
+  min-height: 4px;
+  height: 4px;
+  padding: 0;
+  background: url(../images/system-menu-section-divider.png) bottom left no-repeat;
+}
+
+/* Menu Panel Error */
+.palm-header .icon.error {
+  background:url(../images/header-warning-icon.png) center center no-repeat;
+  width: 48px;
+  height: 48px;
+  float: right;
+  margin-right: -18px;
+  margin-top: 2px;
+}
+
+.palm-menu-panel .error-message {
+  color: #d70000;
+  font-size: 16px;
+  padding: 25px 17px 0px;
+}

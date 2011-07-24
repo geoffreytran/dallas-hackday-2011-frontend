@@ -1,0 +1,46 @@
+<style type="text/css" media="screen">
+.test-passed-true {
+	color: green;
+}
+
+.test-passed-false {
+	color: red;
+}
+
+.test-result {
+	padding-left: 10px;
+}
+
+</style>
+<div class="palm-group">
+	<div class="palm-group-title">Select Test</div>
+	<div class="palm-list">
+		<div class="palm-row">
+			<div id="test_selector" x-mojo-element="ListSelector">
+			</div>
+		</div>
+		<div class="palm-row">
+			<div class="palm-row-wrapper">
+				<div id="perf_toggle" x-mojo-element="ToggleButton"></div>
+				<div class="title">Performance Tests</div>    
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="palm-group">
+	<div class="palm-group-title">Result Summary</div>
+	<div class="palm-list">
+		<div class="row info-text single">
+			<div x-mojo-element="Spinner" id="test-running-spinner">
+			</div>
+			<div id="summary">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="test-results" x-mojo-element="List" >
+</div>
+

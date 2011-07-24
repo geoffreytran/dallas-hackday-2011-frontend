@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="htmlcontent">
+      HtmlContent
+    </h1>
+    <p>
+      <code>HtmlContent</code> is a control that displays HTML content defined in a web page's HTML source. Using an <code>HtmlContent</code> is a convenient way to specify a large amount of HTML.
+    </p>
+    <p>
+      The <code>content</code> property of a control can be used to specify HTML content, but it's not desirable to place a large amount of content in a <code>components</code> block:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {content: &quot;This is some short text.&quot;}
+]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Instead, use an <code>HtmlContent</code>. In an application's <code>index.html</code> file, place the content in a <code>&lt;div&gt;</code> and give the <code>&lt;div&gt;</code> an <code>id</code>. For example:
+    </p>
+    <blockquote>
+      <pre>
+<code>&lt;body&gt;
+  &lt;div id=&quot;myContent&quot;&gt;This could be a &lt;b&gt;large&lt;/b&gt; chunk of &lt;a href=&quot;http://www.w3.org/html&quot;&gt;HTML&lt;/a&gt;.&lt;/div&gt;
+&lt;/body&gt;
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Then, in a kind's <code>components</code> block, reference the content via the <code>srcId</code> property:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;HtmlContent&quot;, srcId: &quot;myContent&quot;, onLinkClick: &quot;htmlContentLinkClick&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      (Note: Remember that in web page parsing, elements in the page defined after a <code>&lt;script&gt;</code> element aren't accessible to the script, as they've not yet been parsed and added to the DOM. So you should define the content-containing <code>&lt;div&gt;</code> elements in your document's body before the <code>&lt;script&gt;</code> tag creates the application objects.)
+    </p>
+    <p>
+      <code>HtmlContent</code> provides special handling for links. Instead of navigating to the web page specified in a link when it is clicked, an <code>onLinkClick</code> event is generated. The second event argument is the URL of the link:
+    </p>
+    <blockquote>
+      <pre>
+<code>htmlContentLinkClick: function(inSender, inUrl) {
+  // do something when the link is clicked.
+  this.$.webView.setUrl(inUrl);
+}
+</code>
+</pre>
+    </blockquote>
+    <h2 id="published-properties">
+      Published Properties
+    </h2>
+    <table border="1">
+      <tr>
+        <th width="15%">
+          Name
+        </th>
+        <th width="15%">
+          Default
+        </th>
+        <th width="70%">
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          srcId
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Optional ID of an element in the page from which to pull HTML content. If not set, the <code>HtmlContent</code> acts like an <code>enyo.Control</code> whose <code>allowHtml</code> property is set to <code>true</code>.
+        </td>
+      </tr>
+    </table>
+    <h2 id="published-events">
+      Published Events
+    </h2>
+    <table border="1">
+      <tr>
+        <th width="15%">
+          Name
+        </th>
+        <th width="15%">
+          Default
+        </th>
+        <th width="70%">
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          onLinkClick
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Event sent when a link inside the <code>HtmlContent</code> is clicked.
+        </td>
+      </tr>
+    </table>
+		</div>
+	</body>
+</html>

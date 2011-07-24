@@ -1,0 +1,14 @@
+{
+	"id": "com.palmdts.app.orientation-layout",
+	"version": "1.0.0",
+	"title": "Flex Layout with Orientation Change Demo",
+	"uiRevision": 2,
+	"type": "web",
+	"main": "index.html",
+	"vendor": "HP",
+	"icon": "icon.png",
+	"splashicon": "icon-256x256.png",
+	"keywords": [
+	    "demo", "example", "flex box", "orientation"
+	  ]
+}

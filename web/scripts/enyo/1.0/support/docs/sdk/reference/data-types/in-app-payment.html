@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="in-app-payment">
+      In-App Payment
+    </h1><a name="receipt" id="receipt"></a>
+    <h2 id="receipt-object">
+      Receipt Object
+    </h2>This object is provided for on-device app information. It is <strong>NOT</strong> the &quot;signedReceipt&quot; field used for purchase verification of off-site content.
+    <pre>
+{
+    "version"         : string,
+    "receiptId"       : int,
+    "orderNo"         : int,
+    "purchaseTime"    : number,
+    "type"            : string,
+    "appId"           : string,
+    "itemId"          : string,
+    "quantity"        : int,
+    "vendorData"      : string BLOB,
+    "accountUniqueId" : string BLOB,
+    "deviceUniqueId"  : string BLOB
+}
+</pre>
+    <table cellspacing="5" cellpadding="5" border="1">
+      <thead>
+        <tr bgcolor="lightgrey">
+          <th>
+            Attribute
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            version
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Receipt version.<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            receiptId
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Receipt ID. Uniquely identifies the receipt.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            orderNo
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Order number. Can be used correlate the receipt to a payment transaction.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            purchaseTime
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Time of purchase denoted in milliseconds since Epoch (January 1, 1970), aka Unix time.<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            type
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            &quot;P&quot; (perishable) or &quot;N&quot; (non-perishable). Subscriptions are not currently supported.<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appId
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Application ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            itemId
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Item ID. 64 characters maximum.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            quantity
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Number of this item. Relevant for perishable items, always 1 for non-perishable items.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            vendorData
+          </td>
+          <td>
+            string BLOB
+          </td>
+          <td>
+            Sent from vendor when purchasing an item. Developers can use this field to add their own security features. 256 bytes maximum. Sample uses for this field could include: encoding purchase metadata, subscription information (start date, expiration date), or an app-specific user-account.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            accountUniqueId
+          </td>
+          <td>
+            string BLOB
+          </td>
+          <td>
+            Account BLOB. An uncorrelated account identifier, unique to the developer selling the item. This can be used to differentiate receipts belonging to different users without revealing the user's identity.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            deviceUniqueId
+          </td>
+          <td>
+            string BLOB
+          </td>
+          <td>
+            Device BLOB. Identifies the device where the receipt was requested. Based on the developer ID and the device's NDUID (a 20-byte (160 bit) SHA-1 digest unique to each device).
+          </td>
+        </tr>
+      </tbody>
+    </table>
+		</div>
+	</body>
+</html>

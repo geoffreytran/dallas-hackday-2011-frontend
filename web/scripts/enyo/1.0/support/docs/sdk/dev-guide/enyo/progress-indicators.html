@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="progress-indicators">
+      Progress Indicators
+    </h1>
+    <p>
+      The Enyo framework provides a variety of controls for displaying the progress of an activity. All of these are descendants of the <code>enyo.Progress</code> kind.
+    </p>
+    <h2 id="enyo.progress">
+      enyo.Progress
+    </h2>
+    <p>
+      <code>enyo.Progress</code> is a virtual base class for anything with a range and a position within that range, such as a <code>ProgressBar</code> or <code>Slider</code>.
+    </p>
+    <p>
+      To create a Progress, do the following:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Progress&quot;, minimum: 50, maximum: 220, position: 70}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The default values for <code>minimum</code>, <code>maximum</code>, and <code>position</code> are 0, 100, and 0, respectively, so if you create a Progress without specifying values for these properties, it will have a range of 0 to 100, and an initial position of 0.
+    </p>
+    <p>
+      When the position needs to be updated, call the <code>setPosition</code> method:
+    </p>
+    <blockquote>
+      <pre>
+<code>madeProgress: function(inValue) {
+  this.$.progress.setPosition(inValue);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In addition to the aforementioned <code>minimum</code>, <code>maximum</code>, and <code>position</code>, Progress has one other published property, <code>snap</code>. When you call <code>setPosition</code>, the position value you pass in will be rounded to the nearest multiple of the <code>snap</code> value. For example, if you set <code>snap</code> to 5 and then call <code>setPosition(27)</code>, the new position will be the multiple of 5 that's closest to 27--that is, 25.
+    </p>
+    <p>
+      The default value of <code>snap</code> is 1.
+    </p>
+    <h2 id="progressbar">
+      ProgressBar
+    </h2>
+    <p>
+      A <code>ProgressBar</code> is a control that shows the current progress of a process in a horizontal bar. The <code>ProgressBar</code> kind extends <code>enyo.Progress</code>, adding support for animating progress changes. This animation is enabled by default, but you can disable it by setting the <code>animationPosition</code> property to <code>false</code>.
+    </p>
+    <p>
+      Here's an example of a very simple ProgressBar:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;ProgressBar&quot;, style: &quot;width: 400px&quot;, position: 60}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Progress1.png" alt="ProgressBar Example"><br>
+    </p>
+    <h2 id="slider">
+      Slider
+    </h2>
+    <p>
+      A <code>Slider</code> is a control that presents a range of selection options in the form of a horizontal slider with a control knob that can be tapped and dragged to the desired location. The <code>Slider</code> kind extends <code>ProgressBar</code>, adding support for setting the position based on user input (i.e., dragging or tapping the bar).
+    </p>
+    <p>
+      Here's some code that creates a simple Slider:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Slider&quot;, style: &quot;width: 400px&quot;, position: 40,
+  onChanging: &quot;sliderChanging&quot;, onChange: &quot;sliderChange&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Progress2.png" alt="ProgressBar Example"><br>
+      <br>
+      The <code>onChanging</code> event is fired while the user is dragging the control knob. The <code>onChange</code> event is fired when the position is set, either at the completion of a drag or when the bar registers a tap.
+    </p>
+    <p>
+      If you want to disable the ability to change position by tapping on the bar, set the <code>tapPosition</code> property to <code>false</code>.
+    </p>
+    <h2 id="progressslider">
+      ProgressSlider
+    </h2>
+    <p>
+      A <code>ProgressSlider</code> is a control that combines a Slider and a ProgressBar. The <code>ProgressSlider</code> kind derives from <code>Slider</code>, which, in, turn, derives from <code>ProgressBar</code>.
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Progress3.png" alt="ProgressSlider Example"><br>
+      <br>
+      The position of a progress slider may be changed by the user or by the application.
+    </p>
+    <p>
+      You may use the <code>lockBar</code>, <code>barPosition</code>, <code>barMinimum</code>, and <code>barMaximum</code> properties to constrain the user's ability to change the position. For example, the following code creates a progress slider that allows dragging between 50 and 70.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;ProgressSlider&quot;, lockBar: true, barMinimum: 50, barMaximum: 70}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note that <code>barPosition</code>, <code>barMinimum</code>, and <code>barMaximum</code> are only active if the value of <code>lockBar</code> is <code>true</code>. (It is <code>false</code> by default.)
+    </p>
+    <p>
+      To create a progress slider whose position snaps to multiples of 10, do this:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;ProgressSlider&quot;, lockBar: true, snap: 10}
+</code>
+</pre>
+    </blockquote>
+		</div>
+	</body>
+</html>

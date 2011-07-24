@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="connection-manager">
+      Connection Manager
+    </h1>
+    <p>
+      The Connection Manager service -- <code>com.palm.connectionmanager</code> -- has one method: <code>getstatus</code>.
+    </p>
+    <hr>
+    <h2 id="getstatus">
+      getStatus
+    </h2>
+    <p>
+      Returns the current data connection status and, optionally, alllows subscription to status change notifications.
+    </p>
+    <h3 id="syntax">
+      Syntax
+    </h3>
+    <pre>
+{
+    "subscribe" : boolean
+}
+</pre>
+    <h3 id="parameters">
+      Parameters
+    </h3>
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Set to <code>true</code> to receive connection updates. Default is <code>false</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns">
+      Returns
+    </h3>
+    <pre>
+{
+   "returnValue"                   : boolean,
+   "isInternetConnectionAvailable" : boolean,
+   "wifi":
+   {
+      "state"                  : string,
+      "ipAddress"              : string,
+      "interfaceName"          : string,
+      "ssid"                   : string,
+      "bssid"                  : string,
+      "networkConfidenceLevel" : string,
+      "onInternet"             : string,
+      "isWakeOnWifiEnabled"    : boolean
+   },
+   "wan":
+   {
+      "state"                  : string,
+      "ipAddress"              : string,
+      "network"                : string,
+      "networkConfidenceLevel" : string,
+      "onInternet"             : string   
+   },
+   "vpn":
+   {
+      "state"          : string,
+      "interfaceName"  : string,
+      "ipAddress"      : string,
+      "vpnProfileName" : string                   
+   },
+   "bridge":
+   {
+      "state"          : string,
+      "ipAddress"      : string,
+      "interfaceName"  : string,
+      "clients"        : object array,
+      [{
+           "ipAddress" : string,
+           "type"      : string
+      }],                 
+   },
+   "errorCode" : string,
+   "errorText" : string
+}
+</pre>
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            isInternetConnectionAvailable
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is Internet connection available flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            wifi
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Wifi object, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            state
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            connected|disconnected
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ipAddress
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            IP address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            interfaceName
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Interface name, i.e., &quot;eth0&quot;
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ssid
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The Service Set IDentifier (SSID) for the connected wireless access point (WAP).
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            bssid
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The Basic Service Set IDentifier (BSSID) for the connected virtual access point (VAP).
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            networkConfidenceLevel
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following:
+            <ul>
+              <li>none -- No confidence in this connection, typically seen when the connection is unusable for getting to local network. Refer to onInternet for connectivity to Internet.
+              </li>
+              <li>poor -- No persistent connection or the radios are communicating that the network is not very reliable.
+              </li>
+              <li>fair -- Steady connection but the bandwidth is not good.
+              </li>
+              <li>excellent -- Network connection should be operating at it fullest potential.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            onInternet
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following:
+            <ul>
+              <li>yes -- Connected to Internet.
+              </li>
+              <li>no -- Not connected to Internet.
+              </li>
+              <li>testing -- Testing connectivity to Internet.
+              </li>
+              <li>captivePortal -- The captive portal technique forces an HTTP client on a network to see a special web page (usually for authentication purposes) before using the Internet normally. Captive portals are used at most Wi-Fi hotspots.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            isWakeOnWifiEnabled
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If &quot;true&quot;, the WiFi interface will stay up even when suspended.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            wan
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            WAN object, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            state
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            connected|disconnected
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            interfaceName
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of the WAN interface connected to the client, i.e., &quot;ppp0&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ipAddress
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            IP address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            network
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following:
+            <ul>
+              <li>unknown -- Network unknown.
+              </li>
+              <li>unusable -- The WAN interface is still connected, but data cannot be sent or received.
+              </li>
+              <li>gprs-- (General Packet Radio Service.) Provides the transmission of IP packets over existing cellular networks.
+              </li>
+              <li>edge -- (Enhanced Data rates for GSM Evolution.) The EDGE network is a data network used by AT&amp;T and T-Mobile. It is not a true 3G network (considered 2G), as its speeds don't exceed 200 Kbps, but it is sometimes called a &quot;high-speed&quot; network.
+              </li>
+              <li>umts -- (Universal Mobile Telecommunication System.) The UMTS network is a wireless 3G network that provides high bandwidth voice and data service.
+              </li>
+              <li>hsdpa -- (High-Speed Downlink Packet Access.) A fast 3G network used by AT&amp;T and T-Mobile. HSDPA is the fastest of the fast 3G networks; sometimes called a 3.5G network.
+              </li>
+              <li>1x -- (Single carrier (1x) radio transmission technology.) A 3G wireless technology based on the CDMA platform.
+              </li>
+              <li>evdo -- (Evolution-Data Optimized or Evolution-Data only (EV-DO, EV, etc.).) A telecommunications standard for the wireless transmission of data through radio signals, typically for broadband Internet access
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            networkConfidenceLevel
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following:
+            <ul>
+              <li>none -- No confidence in this connection, typically seen when the connection is unusable for getting to the local network. Refer to <code>onInternet</code> for connectivity to the Internet.
+              </li>
+              <li>poor -- No persistent connection or the radios are communicating that the network is not very reliable.
+              </li>
+              <li>fair -- Steady connection, but the bandwidth is not good.
+              </li>
+              <li>excellent -- Network connection should be operating at its fullest potential.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            onInternet
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following:
+            <ul>
+              <li>yes -- Connected to Internet.
+              </li>
+              <li>no -- Not connected to Internet.
+              </li>
+              <li>testing -- Testing connectivity to Internet.
+              </li>
+              <li>captivePortal -- The captive portal technique forces an HTTP client on a network to see a special web page (usually for authentication purposes) before using the Internet normally. Captive portals are used at most Wi-Fi hotspots.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            vpn
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            VPN object, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            state
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            connected|disconnected
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ipAddress
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            IP address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            interfaceName
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of the VPN interface connected to the client.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            vpnProfileName
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of the active VPN Profile.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            bridge
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Bridge object, see fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            state
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            connected|disconnected
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ipAddress
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            IP address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            interfaceName
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of the VPN interface connected to the client.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            clients
+          </td>
+          <td>
+            object array
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            ipAddress
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            IP address
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            type
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            bluetooth|wifi
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error code on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="examples">
+      Examples
+    </h3>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "getConnMgrStatus",
+    kind : "PalmService",
+    service : "palm://com.palm.connectionmanager/",
+    method : "getStatus",
+    onSuccess : "statusFinished",
+    onFailure : "statusFail",
+    onResponse : "gotResponse",
+    subscribe : true
+},
+
+...
+
+statusFinished : function(inSender, inResponse) {
+    enyo.log("getStatus success, results=" + enyo.json.stringify(inResponse));
+},
+statusFail : function(inSender, inResponse) {
+    enyo.log("getStatus failure, results=" + enyo.json.stringify(inResponse));
+},
+getStatus : function(inSender, inResponse)
+{
+    this.$.getConnMgrStatus.call({ "subscribe": true });
+}
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.connectionmanager', {
+     method: 'getstatus',
+     parameters: {},
+     onSuccess : function (e){ Mojo.Log.info("getStatus success, results="+JSON.stringify(e)); },
+     onFailure : function (e){ Mojo.Log.info("getStatus failure, results="+JSON.stringify(e)); }
+});
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+getStatus success, results=
+{
+   "returnValue":true,
+   "isInternetConnectionAvailable":true,
+   "wifi":{
+      "state":"connected",
+      "ipAddress":"10.91.1.98",
+      "interfaceName":"eth0",
+      "ssid":"OneTeam",
+      "bssid":"00:17:DF:A9:F7:6D",
+      "networkConfidenceLevel":"excellent",
+      "onInternet":"yes",
+      "isWakeOnWifiEnabled":true
+   },
+   "wan":{
+      "state":"disconnected"
+   },
+   "vpn":{
+      "state":"disconnected"    
+   },
+   "bridge":{
+      "state":"disconnected"
+   }
+}
+</pre>
+    <p>
+      <strong>Sample Code</strong>
+    </p>
+    <p>
+      See Services Sample.
+    </p>
+		</div>
+	</body>
+</html>

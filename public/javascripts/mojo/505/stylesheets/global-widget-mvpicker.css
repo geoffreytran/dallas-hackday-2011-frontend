@@ -1,0 +1,197 @@
+/*
+   Multi-value Picker Widget Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.capsules-container {
+  display: inline-block;
+}
+
+.focused .mv-picker-capsule,
+.focused .mv-picker-container {
+  z-index: 99000;
+}
+
+.palm-row .label.mv-picker-label {
+  padding-top: 19px;
+}
+
+.label.left.mv-picker-label {
+  float: left;
+  margin: 20px 4px 0px 13px;
+  padding-right: 5px;
+}
+
+.focused .mv-picker-label {
+  z-index: 99000;
+  position: relative;
+}
+
+.active-popup .mv-picker-label {
+  color: white;
+}
+
+.palm-row.selected .mv-picker-container .title {
+  color: #000;
+}
+
+.mv-picker-container,
+.mv-picker-capsule {
+  border-width: 19px;
+  -webkit-border-image: url(../images/mv-picker/background-pill.png) 19 19 19 19 repeat repeat;
+  -webkit-box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  margin: 2px 5px -2px -1px;
+}
+
+.palm-dialog-box .label.left.mv-picker-label {
+  display: none;
+}
+
+.palm-dialog-box .mv-picker-capsule {
+  margin: 4px 7px -4px -2px;
+}
+
+.mv-picker-container {
+  padding: 0px 2px 0px 4px;
+}
+
+.mv-picker-wrapper {
+  margin: -15px -8px -17px -11px;
+}
+
+.mv-picker-container .mv-picker-wrapper {
+  margin: 0px -19px 0px -21px;
+}
+
+.mv-value,
+.palm-dark .palm-dialog-content .mv-value {
+  overflow: hidden;
+  line-height: 48px;
+  padding-right: 11px;
+  padding-left: 11px;
+  color: #000;
+  min-width: 24px;
+  text-align: center;
+}
+
+.active-popup .focused .mv-picker-capsule,
+.palm-dark .palm-dialog-content  .active-popup .focused .mv-picker-capsule,
+.active-popup .focused .mv-picker-container,
+.palm-dark .palm-dialog-content  .active-popup .focused .mv-picker-container {
+  -webkit-border-image: url(../images/mv-picker/background-pill-focus.png) 19 19 19 19 repeat repeat;
+}
+
+.active-popup .focused .mv-picker-container {
+  margin: 0px 0px 0px 0px;
+}
+
+.mv-picker-capsule:focus .mv-value,
+.palm-dark .palm-dialog-content .mv-picker-capsule:focus .mv-value {
+  font-weight: bold;
+}
+
+.mv-picker-capsule:focus,
+.palm-dark .palm-dialog-content .mv-picker-capsule:focus {
+  -webkit-border-image: url(../images/mv-picker/background-pill-text-input.png) 19 19 19 19 repeat repeat;
+}
+
+.mv-picker-capsule.selected,
+.palm-dark .palm-dialog-content  .mv-picker-capsule.selected {
+  -webkit-border-image: url(../images/mv-picker/background-pill-downstate.png) 19 19 19 19 repeat repeat;
+}
+
+.current-value {
+  font-weight: bold;
+}
+
+.mv-top-fade,
+.palm-dark .palm-dialog-content .mv-top-fade {
+  height: 19px;
+  width: 100%;
+  border-width: 0px 19px;
+  -webkit-border-image: url(../images/mv-picker/mv-list-top-fade.png) 0 19 0 19 repeat repeat;
+  position: absolute;
+  top: 0px;
+  margin: -19px 0px 0px -2px;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.mv-bottom-fade,
+.palm-dark .palm-dialog-content .mv-bottom-fade {
+  height: 19px;
+  width: 100%;
+  border-width: 0px 19px;
+  -webkit-border-image: url(../images/mv-picker/mv-list-bottom-fade.png) 0 19 0 19 repeat repeat;
+  position: absolute;
+  bottom: 0px;
+  margin: 0px 0px -19px -2px;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.mv-value-list {
+  text-align: center;
+}
+
+.picker-popup,
+.palm-dark .palm-dialog-content .picker-popup {
+  padding: 13px 20px 15px 17px;
+  margin: 0px;
+  background: url(../images/list-separator-light.png) bottom left repeat-x;
+}
+
+.mv-value-list .picker-popup:last-child {
+  background: none;
+}
+
+.mv-value-list .picker-popup.selected,
+.palm-dark .palm-dialog-content .mv-value-list .picker-popup.selected {
+  background: #888888;
+  color: #FFFFFF;
+}
+
+.palm-dark .mv-picker-container,
+.palm-dark .mv-picker-capsule {
+  -webkit-border-image: url(../images/mv-picker/background-pill-dark.png) 19 19 19 19 repeat repeat;
+}
+
+.palm-dark .active-popup .focused .mv-picker-capsule,
+.palm-dark .active-popup .focused .mv-picker-container {
+  -webkit-border-image: url(../images/mv-picker/background-pill-focus-dark.png) 19 19 19 19 repeat repeat;
+}
+
+.palm-dark .mv-picker-capsule:focus {
+  -webkit-border-image: url(../images/mv-picker/background-pill-text-input-dark.png) 19 19 19 19 repeat repeat;
+}
+
+.palm-dark .mv-picker-capsule.selected {
+  -webkit-border-image: url(../images/mv-picker/background-pill-downstate-dark.png) 19 19 19 19 repeat repeat;
+}
+
+.palm-dark .mv-top-fade {
+  -webkit-border-image: url(../images/mv-picker/mv-list-top-fade-dark.png) 0 19 0 19 repeat repeat;
+}
+
+.palm-dark .mv-bottom-fade {
+  -webkit-border-image: url(../images/mv-picker/mv-list-bottom-fade-dark.png) 0 19 0 19 repeat repeat;
+}
+
+.palm-dark .mv-value {
+  color: #FFF;
+}
+
+.palm-dark .mv-picker-capsule:focus .mv-value {
+  color: #000;
+}
+
+.palm-dark .picker-popup {
+  background: url(../images/list-separator-dark.png) bottom left repeat-x;
+}
+
+.palm-dark .picker-popup.selected {
+  background: #555555;
+}

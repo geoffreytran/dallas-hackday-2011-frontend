@@ -1,0 +1,71 @@
+<div id="main" class="palm-hasheader">
+	<div class="palm-header center" id="main-hdr">
+	  Buttons
+	</div>
+</div>
+<div id="area-to-update">Press first button to activate spinner. It will stop spinning after 3 seconds</div>
+<div x-mojo-element="Button" id="button-1"></div>
+<div x-mojo-element="Button" id="button-2" class="myclass"></div>
+<div x-mojo-element="Button" id="button-3"></div>
+<div x-mojo-element="Button" class="palm-button primary"
+    x-mojo-tap-highlight="momentary" id="update_button1">
+    <div class="palm-button-wrapper">
+         palm-button primary
+    </div>
+</div>  
+
+<div x-mojo-element="Button" class="palm-button secondary" 
+x-mojo-tap-highlight="persistent" id="update_button2">
+    <div class="palm-button-wrapper" id="update_button2text">
+         palm-button secondary
+    </div>
+</div> 
+<div x-mojo-element="Button" class="palm-button selected"
+    x-mojo-tap-highlight="momentary" id="update_button3">
+    <div class="palm-button-wrapper">
+        palm-button selected
+    </div>
+</div> 
+<div x-mojo-element="Button" class="palm-button affirmative"
+    x-mojo-tap-highlight="momentary" id="update_button4">
+    <div class="palm-button-wrapper">
+         palm-button affirmative
+    </div>
+</div> 
+<div x-mojo-element="Button" class="palm-button negative"
+    x-mojo-tap-highlight="momentary" id="update_button5">
+    <div class="palm-button-wrapper">
+         palm-button negative
+    </div>
+</div> 
+<div x-mojo-element="Button" class="palm-button dismissal"
+    x-mojo-tap-highlight="momentary" id="update_button6">
+    <div class="palm-button-wrapper">
+         palm-button dismissal
+    </div>
+</div> 
+<table width="100%">
+	<tr>
+		<td width="33%">
+			<div x-mojo-element="Button" class="palm-button affirmative buttonfloat" x-mojo-tap-highlight="momentary" id="saveButton">
+			    <div class="palm-button-wrapper">
+			         Green
+			    </div>
+			</div>
+		</td>
+		<td width="33%">
+			<div x-mojo-element="Button" class="palm-button buttonfloat" x-mojo-tap-highlight="momentary" id="restoreButton">
+			    <div class="palm-button-wrapper">
+			         Gray
+			    </div>
+			</div>
+		</td>
+		<td width="33%">
+			<div x-mojo-element="Button" class="palm-button negative buttonfloat" x-mojo-tap-highlight="momentary" id="removeButton">
+			    <div class="palm-button-wrapper">
+			         Red
+			    </div>
+			</div>
+		</td>
+	</tr>
+</table>	

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="initialization-and-allocations">
+      Initialization and Allocations
+    </h1>
+    <h2 id="overview">
+      Overview
+    </h2>
+    <p>
+      Here are some tips to improve general performance:
+    </p>
+    <ul>
+      <li>
+        <p>
+          As much as you can, initialize the object properties (i.e., fields and methods) in your class' initialize() method.
+        </p>
+      </li>
+      <li>
+        <p>
+          Avoid allocations in your critical (i.e., should be fast) code paths.
+        </p>
+      </li>
+    </ul>
+    <p>
+      These two items are related. JavaScript does not require upfront declaration of the fields that you want to use. When you first need to use it, just use it. The JavaScript virtual machine (VM) adds it to your object and things will just work.
+    </p>
+    <h2 id="behind-the-scenes">
+      Behind the Scenes
+    </h2>
+    <p>
+      The JavaScript interpreter in the HP webOS platform uses the concept of hidden classes. The following is sort of how it works:
+    </p>
+    <ul>
+      <li>
+        <p>
+          Create an object, as follows:
+        </p>
+        <blockquote>
+          <pre>
+<code>var myObject = {};
+</code>
+</pre>
+        </blockquote>
+        <p>
+          Behind the scenes, the VM creates a class C1 for that object and the object itself.
+        </p>
+      </li>
+      <li>
+        <p>
+          Use a field, as follows:
+        </p>
+        <blockquote>
+          <pre>
+<code>myObject.field1 = true;
+</code>
+</pre>
+        </blockquote>
+        <p>
+          Behind the scenes, the system creates a new class C1 and re-allocates the object so that it has room to fit the new field. Actually, the system allocates a few more fields than it needs each time. It just uses up the unused fields until it runs out; then it reallocates. Currently, that buffer is about four or five fields.
+        </p>
+      </li>
+    </ul>
+    <h2 id="what-does-this-mean">
+      What Does This Mean?
+    </h2>
+    <p>
+      When you use a field for the first time, you trigger the creation of a new hidden class, if an appropriate one does not already exists. This may also trigger some reallocation costs for your object (i.e., the equivalent of malloc + copy + free). This is certainly a lot of work for a simple field assignment, but it is necessary in JavaScript.
+    </p>
+    <p>
+      And, if the allocation of memory for the class or for resizing your object occurs when memory pressure is high, you end up triggering a Garbage Collection (GC). That would certainly add even more work to the CPU.
+    </p>
+    <p>
+      GCs can trigger small GCs (approx. 16 ms in average) or big GCs (approx. 300 ms, and up). Currently, our webkit configuration forces the system to do a big GC every time it runs; see --gc_global under JavaScript in /etc/palm/browser.conf. That means every GC gives you a 300+ ms hit every time.
+    </p>
+    <p>
+      So, if you are just doing field assignments in your code without pre-initializing it in initialize(), you may get a surprise at runtime where you may see an unexpected 300+ ms blurp of slowness on the first use of a field.
+    </p>
+    <p>
+      Of course, this is only a one-time hit. Subsequent accesses should be as fast as can be.
+    </p>
+    <h2 id="other-reasons-for-pre-initializing">
+      Other Reasons for Pre-Initializing
+    </h2>
+    <p>
+      This section describes the reasons for pre-intializing your app.
+    </p>
+    <h3 id="symmetry">
+      Symmetry
+    </h3>
+    <p>
+      If you are allocating objects in initialize() and setup(), it follows that you should do the equivalent clean up in cleanup(). This creates symmetry in your code, making it easier to review and find bugs.
+    </p>
+    <p>
+      Symmetry gives you well-defined places to do the setup and cleanup, allowing you to verify that things are being done as expected. Otherwise, you have to search through your code to see if cleanup is being done appropriately in all cases. Of course, there are always exceptions to these guidelines. So, apply them appropriately.
+    </p>
+    <h3 id="awareness-at-a-glance">
+      Awareness at a Glance
+    </h3>
+    <p>
+      Pre-initializing all of the fields in initialize() and setup() allows for a more representative view of the app's memory consumption. This way, you can also determine if there is a way to reduce the complexity of your data structures. Otherwise, you have to search through your code to find all the objects.
+    </p>
+    <h2 id="how-to-avoid-allocations">
+      How to Avoid Allocations
+    </h2>
+    <p>
+      Allocations of any sort can trigger GCs. It is almost impossible to avoid allocations in JavaScript because it allocates lots of objects just by running the most innocent-looking code. This section provides a few examples of how to lessen the memory pressure and make GCs less likely.
+    </p>
+    <h3 id="pre-cache-callback-handlers">
+      Pre-Cache Callback Handlers
+    </h3>
+    <p>
+      With every call to bind(), you create a new function. So, make the call once in initialize, and then reuse that same one every time. However, remember that pre-caching only works if the arguments that you are binding the method to do not change. If you need to bind it to different arguments every time, you cannot pre-cache.
+    </p>
+    <h3 id="pre-initialize-all-fields">
+      Pre-Initialize All Fields
+    </h3>
+    <p>
+      Explained above.
+    </p>
+    <h3 id="predefined-methods-for-callbacks">
+      Predefined Methods for Callbacks
+    </h3>
+    <p>
+      The following is a common code pattern used in our framework and app code:
+    </p>
+    <blockquote>
+      <pre>
+<code>myArray.each(method(element) {
+  ... // Do something with element.
+});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      This operation is actually a lot more expensive than doing it the traditional way, like this:
+    </p>
+    <blockquote>
+      <pre>
+<code>var length = myArray.length;
+for (var i = 0; i &lt; length; i++) {
+  var element = myArray[i];
+  ... // Do something with element.
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The following example explains why:
+    </p>
+    <blockquote>
+      <pre>
+<code>// Global vars:
+previousFunction = undefined;
+function test(index, callback) {
+  var result = (callback === previousFunction) ? &quot;SAME&quot; : &quot;DIFFERENT&quot;;
+  console.log(callback() + &quot;: try &quot; + index + &quot;, result = &quot; + result);
+  previousFunction = callback;
+}
+
+function callback2() {
+  return &quot;callback 2&quot;;
+}
+
+function main() {
+  function callback3() {
+      return &quot;callback 3&quot;;
+  }
+  for (var i = 0; i &lt; 3; i++) {
+      test(i, function() {
+          return &quot;callback 1&quot;;
+      });
+  }
+  for (var i = 0; i &lt; 3; i++) {
+      test(i, callback2);
+  }
+  for (var i = 0; i &lt; 3; i++) {
+      test(i, callback3);
+  }
+}
+main();
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In this example, you call each of the three callbacks three times. For each callback, it records the called callback method. Therefore, it makes sense that the first iteration of calling each callback prints a result of &quot;DIFFERENT&quot;. But how about the subsequent calls to the &quot;same&quot; callback function?
+    </p>
+    <p>
+      Here are the actual results:
+    </p>
+    <blockquote>
+      <pre>
+<code>callback 1: try 0, result = DIFFERENT
+callback 1: try 1, result = DIFFERENT
+callback 1: try 2, result = DIFFERENT
+callback 2: try 0, result = DIFFERENT
+callback 2: try 1, result = SAME
+callback 2: try 2, result = SAME
+callback 3: try 0, result = DIFFERENT
+callback 3: try 1, result = SAME
+callback 3: try 2, result = SAME
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note that if you declare an inner method similar to the Array.each() pattern, you are actually creating a different method every time. That means you are doing the following work:
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>Allocating memory for the method object.
+      </li>
+      <li>Initializing the method object (e.g., associating with its prototype).
+      </li>
+      <li>Compiling the method for execution.
+      </li>
+    </ol>
+    <p>
+      If you use the pattern in callback 2 or callback 3, you are not doing the above in each loop iteration. Remember, any time you do allocation, you could trigger a GC or at least increasing memory pressure and increasing GC frequency.
+    </p>
+    <p>
+      If you use the patterns of callback 2 or callback 3, you avoid the above costs, but you still incur the overhead of a method call for each iteration. This is not as cheap as you think.
+    </p>
+    <p>
+      If you create a traditional loop, you avoid all of the above. On the other hand, the each() pattern is flexible and good for some things. One advantage is that it may result in more readable code. Use with discretion.
+    </p>
+    <p>
+      In general, and especially in critical (i.e., supposedly fast) code, avoid using inner methods, and avoid each() if you can. If you must use each, pre-define the callback method. If you define it inside the scope of a method like in pattern three, you are probably creating a new one with each call to your method (like main() above). It is better to define it in your class object, which only creates it once per instance of your class.
+    </p>
+    <p>
+      We are sure that there are plenty of other examples of allocations in your code that you may not be aware of. Try your best to raise your awareness of where objects are being created (i.e., memory allocated).
+    </p>
+    <h2 id="downside-of-pre-initializing">
+      Downside of Pre-Initializing
+    </h2>
+    <p>
+      This section describes the downside of pre-initializing.
+    </p>
+    <ul>
+      <li>
+        <p>
+          Incurs the worst-case memory consumption every time on initialization. The alternative is to use less at startup, and slowly end up using the same amount of memory anyway.
+        </p>
+      </li>
+      <li>
+        <p>
+          Slows down the application/scene startup. You have to trade this off with the performance blurp showing up at runtime (e.g., while animating something). Usually, the blurp is small enough to notice at start up, but not so small when doing interactive or animation work at runtime. Exercise discretion.
+        </p>
+      </li>
+    </ul>
+		</div>
+	</body>
+</html>

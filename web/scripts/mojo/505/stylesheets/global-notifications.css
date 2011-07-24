@@ -1,0 +1,274 @@
+/*
+   Notification Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+/* dashboard notification specifics */
+
+.dashboard-window {
+  background-image: none;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.palm-dashboard-notification  {
+  background: transparent;
+  color: #ffffff;
+}
+
+.palm-banner-notification,
+.palm-popup-notification {
+  background-image: none;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.palm-dashboard-container	{
+  background: #000;
+  color: #fff;
+ }
+
+/* Dashboard module */
+
+.dashboard-notification-module {
+  min-width: 320px;
+  max-width: 480px;
+  height: 48px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* individual targets */
+
+.palm-dashboard-icon-container {
+  width: 54px;
+  height: 48px;
+  float: left;
+  clear: right;
+ margin-right: 4px;
+  -webkit-border-image: url(../images/dashboard-container.png) 0 12 0 12 repeat stretch;
+  -webkit-box-sizing: border-box;
+  border-width: 0px 12px 0px 12px;
+}
+
+.palm-dashboard-text-container {
+  height: 48px;
+  width: auto;
+  max-width: 480px;
+  overflow: hidden;
+  -webkit-border-image: url(../images/dashboard-container.png) 0 12 0 12 repeat stretch;
+  -webkit-box-sizing: border-box;
+  vertical-align: middle;
+  border-width: 0px 12px 0px 12px;
+  font-size: 16px;
+}
+
+.palm-dashboard-icon-container:active,
+.palm-dashboard-text-container:active,
+.palm-dashboard-icon-container.selected,
+.palm-dashboard-text-container.selected {
+  -webkit-border-image: url(../images/dashboard-container-active.png) 0 12 0 12 repeat stretch;
+}
+
+/* items within the containers */
+
+.palm-dashboard-icon	{
+  width: 48px;
+  height: 48px;
+  margin-left: -9px;
+  background: url(../images/notification-large-info.png) center center no-repeat;
+}
+
+.palm-dashboard-icon.alert {
+  background: url(../images/notification-alert.png) center left no-repeat;
+}
+
+.dashboard-newitem {
+  float: right;
+  line-height: 30px;
+  font-weight: bold;
+  height: 28px;
+  min-width: 24px;
+  margin-top: -5px;
+  margin-right: -15px;
+  text-align: center;
+  vertical-align: baseline;
+  -webkit-border-image: url(../images/dashboard-newitem-badge.png) 0 12 0 12 repeat stretch;
+  -webkit-box-sizing: border-box;
+  border-width: 0px 12px 0px 12px;
+}
+
+.palm-dashboard-icon-container:active .dashboard-newitem,
+.palm-dashboard-icon-container.selected .dashboard-newitem {
+  -webkit-border-image: url(../images/dashboard-newitem-badge-active.png) 0 12 0 12 repeat stretch;
+}
+
+.dashboard-newitem span {
+  position:relative;
+  top:-3px;
+  margin: 0 -6px;
+  font-size: 16px;
+}
+
+.dashboard-title,
+.palm-dashboard-text {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom:1px;
+}
+.dashboard-title {
+  padding-top: 3px;
+  font-weight: bold;
+}
+.palm-dashboard-text {
+  margin-top:-1px;
+}
+
+/* single version of the notification */
+
+.single .dashboard-newitem {
+  display: none;
+}
+.single .palm-dashboard-icon-container {
+  margin-right: 0px;
+  width: 57px;
+  -webkit-border-image: url(../images/dashboard-container-sprite.png) 0 1 144 12 repeat stretch;
+}
+.single .palm-dashboard-text-container {
+  -webkit-border-image: url(../images/dashboard-container-sprite.png) 96 12 48 1 repeat stretch;
+}
+.single:active .palm-dashboard-icon-container,
+.single.selected .palm-dashboard-icon-container {
+  -webkit-border-image: url(../images/dashboard-container-sprite.png) 48 1 96 12 repeat stretch;
+}
+.single:active .palm-dashboard-text-container,
+.single.selected .palm-dashboard-text-container {
+  -webkit-border-image: url(../images/dashboard-container-sprite.png) 144 12 0 1 repeat stretch;
+}
+
+/* banner notification specifics */
+
+.palm-banner-container {
+  width: 320px;
+  height: 24px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.palm-banner-container .banner-text	{
+  width: 290px;
+  height: 24px;
+  margin-top: 0px;
+  overflow: hidden; /* migrate */
+  white-space: nowrap; /* migrate */
+  text-overflow: ellipsis; /* migrate */
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+}
+
+/* This is a duplicate from global.css for account sycning dashboard scenes */
+.palm-activity-indicator-small {
+  background: url(../images/activity-indicator-32x32.png) no-repeat;
+  height: 32px;
+  width: 32px;
+}
+
+.palm-dark .palm-activity-indicator-small {
+  background: url(../images/activity-indicator-32x32-dark.png) no-repeat;
+}
+
+/* anchor tag text colors */
+
+a {
+  color: #69a8f5;
+}
+
+a:active {
+  color: #ff7474;
+}
+
+a:visited {
+  color: #b874f6;
+}
+
+/* System Notification button styles */
+
+/* standard (black) button */
+
+.palm-button {
+  clear: both;
+  margin: 5px 0 5px 0;
+  height: 52px;
+  padding: 0;
+  font-size: 20px;
+  text-align: center;
+  text-transform: capitalize;
+  color: #fff;
+  line-height: 52px;
+  background: none;
+  border-width: 0 22px;
+  -webkit-box-sizing: border-box;
+  -webkit-border-image: url(../images/palm-notification-button.png) 0 22 104 22 repeat repeat;
+}
+
+.palm-button.selected.primary,
+.palm-button.selected {
+  -webkit-border-image: url(../images/palm-notification-button.png) 52 22 52 22 repeat repeat;
+}
+
+.palm-button.disabled.primary,
+.palm-button.disabled {
+  -webkit-border-image: url(../images/palm-notification-button.png) 104 22 0 22 repeat repeat;
+}
+
+/* negative (red) button */
+
+.palm-button.negative {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-notification-button-negative.png) 0 22 104 22 repeat repeat;
+}
+
+.palm-button.negative.selected {
+  -webkit-border-image: url(../images/palm-notification-button-negative.png) 52 22 52 22 repeat repeat;
+}
+
+.palm-button.negative.disabled {
+  -webkit-border-image: url(../images/palm-notification-button-negative.png) 104 22 0 22 repeat repeat;
+}
+
+/* alternate (amber) button */
+
+.palm-button.alternate {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-notification-button-alternate.png) 0 22 104 22 repeat repeat;
+}
+
+.palm-button.alternate.selected {
+  -webkit-border-image: url(../images/palm-notification-button-alternate.png) 52 22 52 22 repeat repeat;
+}
+
+.palm-button.alternate.disabled {
+  -webkit-border-image: url(../images/palm-notification-button-alternate.png) 104 22 0 22 repeat repeat;
+}
+
+/* affirmative (green) button */
+
+.palm-button.affirmative {
+  color: #fff;
+  -webkit-border-image: url(../images/palm-notification-button-affirmative.png) 0 22 104 22 repeat repeat;
+}
+
+.palm-button.affirmative.selected {
+  -webkit-border-image: url(../images/palm-notification-button-affirmative.png) 52 22 52 22 repeat repeat;
+}
+
+.palm-button.affirmative.disabled {
+  -webkit-border-image: url(../images/palm-notification-button-affirmative.png) 104 22 0 22 repeat repeat;
+}

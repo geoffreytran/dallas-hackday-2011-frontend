@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="menus">
+      Menus
+    </h1>
+    <h2 id="menu">
+      Menu
+    </h2>
+    <p>
+      A <code>Menu</code> is a control that displays a set of items in a popup. The <code>Menu</code> kind derives directly from <code>enyo.Popup</code>.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Menu&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Items may be specified as child components of the menu:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Menu&quot;, components: [
+  {caption: &quot;Palm&quot;},
+  {caption: &quot;Yahoo&quot;},
+  {caption: &quot;Facebook&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Items may also be set using the <code>setItems</code> method:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.menu.setItems([&quot;Palm&quot;, &quot;Yahoo&quot;, &quot;Facebook&quot;]);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      By default, items are created as instances of <code>MenuItem</code>, but you can change this behavior by setting the <code>defaultKind</code> property. For example, you could create a menu whose items are <code>MenuCheckItem</code> objects:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Menu&quot;, defaultKind: &quot;MenuCheckItem&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Being derived from the <code>Popup</code> kind, menus inherit the positioning methods available to popups, such as <code>openAtCenter</code>:
+    </p>
+    <blockquote>
+      <pre>
+<code>openMenu: function() {
+  this.$.menu.openAtCenter();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In addition, <code>Menu</code> has a published property called <code>autoCloseSubItems</code>. The default value is <code>true</code>, meaning that whenever the menu is opened, any subitems will be shown as closed.
+    </p>
+    <h2 id="menuitem">
+      MenuItem
+    </h2>
+    <p>
+      A <code>MenuItem</code> is a labeled item with an optional icon. It is meant to go inside a <code>Menu</code>.
+    </p>
+    <p>
+      When clicked, a menu item fires an <code>onclick</code> event.
+    </p>
+    <h3 id="published-properties">
+      Published Properties
+    </h3>
+    <p>
+      The following table summarizes the published properties of the <code>MenuItem</code> kind.
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          caption
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Caption to display for the menu item
+        </td>
+      </tr>
+      <tr>
+        <td>
+          value
+        </td>
+        <td>
+          undefined
+        </td>
+        <td>
+          Value associated with the menu item
+        </td>
+      </tr>
+      <tr>
+        <td>
+          icon
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Filename for optional icon
+        </td>
+      </tr>
+      <tr>
+        <td>
+          orderStyle
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          CSS style to apply to menu item
+        </td>
+      </tr>
+      <tr>
+        <td>
+          open
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If <code>true</code>, menu item is shown in expanded (non-collapsed) state.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          disabled
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If <code>true</code>, menu item is disabled.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          hideIcon
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If <code>true</code>, icon is hidden.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          tapHighlight
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          If <code>true</code>, item is highlighted when tapped.
+        </td>
+      </tr>
+    </table>
+    <h2 id="menucheckitem">
+      MenuCheckItem
+    </h2>
+    <p>
+      The aforementioned <code>MenuCheckItem</code> extends <code>MenuItem</code>, adding a checkmark to the labeled item with icon.
+    </p>
+    <p>
+      To display the checkmark, set the <code>checked</code> property to <code>true</code>.
+    </p>
+    <h2 id="appmenu">
+      AppMenu
+    </h2>
+    <p>
+      An <code>AppMenu</code> is an application menu that appears in the upper-left corner of the screen when the user taps the left-hand side of the status bar.
+    </p>
+    <p>
+      The <code>AppMenu</code> kind extends <code>Menu</code>; by default, its items are instances of <code>AppMenuItem</code>.
+    </p>
+    <p>
+      Here's an example of a menu with two items and a submenu:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;AppMenu&quot;, components: [
+  {caption: &quot;New Card&quot;, onclick: &quot;openNewCard&quot;},
+  {caption: &quot;Help&quot;, onclick: &quot;showHelpContent&quot;},
+  {caption: &quot;Find&quot;, components: [
+      {caption: &quot;Find Next&quot;},
+      {caption: &quot;Find Prev&quot;}
+  ]}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Menus1.png" alt="AppMenu Example"><br>
+      <br>
+      To signal that the app menu should be shown, an <code>openAppMenu</code> event is fired to the application. When it should be hidden, a <code>closeAppMenu</code> event is fired. An application should implement methods to respond to these events as follows:
+    </p>
+    <blockquote>
+      <pre>
+<code>openAppMenuHandler: function() {
+  this.$.appMenu.open();
+},
+closeAppMenuHandler: function() {
+  this.$.appMenu.close();
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The menu opens automatically, provided that its <code>automatic</code> property is set to the default value, <code>true</code>.
+    </p>
+    <h2 id="appmenuitem">
+      AppMenuItem
+    </h2>
+    <p>
+      The <code>AppMenuItem</code> kind extends <code>MenuItem</code>, applying specialized visual styling.
+    </p>
+    <h2 id="editmenu">
+      EditMenu
+    </h2>
+    <p>
+      <code>EditMenu</code>, which extends <code>AppMenuItem</code>, is a submenu designed to go inside a <code>Menu</code>, with items to perform select all, cut, copy, and paste operations. The <code>onSelectAll</code>, <code>onCut</code>, <code>onCopy</code>, and <code>onPaste</code> events are fired when the respective items are selected.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;AppMenu&quot;, components: [
+  {kind: &quot;EditMenu&quot;},
+  {caption: &quot;Other Menu Item&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In its open state, the <code>EditMenu</code> looks like this:
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Menus2.png" alt="EditMenu Example"><br>
+      <br>
+      If the <code>autoDisableItems</code> property is set to <code>true</code> (its default value), the edit menu's items will be automatically disabled if the focused element does not support editing. This setting will override the <code>disabled</code> properties of individual items.
+    </p>
+    <p>
+      <code>EditMenu</code> has additional properties that, if set to <code>true</code>, will disable the text operations individually (<code>selectAllDisabled</code>, <code>cutDisabled</code>, <code>copyDisabled</code>, and <code>pasteDisabled</code>). All of these default to <code>false</code>.
+    </p>
+    <h2 id="helpmenu">
+      HelpMenu
+    </h2>
+    <p>
+      Like <code>EditMenu</code>, <code>HelpMenu</code> is a specialized <code>AppMenuItem</code>. As such, it is designed to go inside an <code>AppMenu</code>.
+    </p>
+    <p>
+      <code>HelpMenu</code> should be used by applications to initiate the display of help content. Returning to our earlier <code>AppMenu</code> example, the addition of a <code>HelpMenu</code> obviates the need for a separate <code>showHelpContent</code> method:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;AppMenu&quot;, components: [
+  {caption: &quot;New Card&quot;, onclick: &quot;openNewCard&quot;},
+  {kind: &quot;HelpMenu&quot;, target: &quot;http://help.palm.com/phone/index.html&quot;},
+  {caption: &quot;Find&quot;, components: [
+      {caption: &quot;Find Next&quot;},
+      {caption: &quot;Find Prev&quot;}
+  ]}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note that this change does not have any effect on the app menu's outward appearance.
+    </p>
+		</div>
+	</body>
+</html>

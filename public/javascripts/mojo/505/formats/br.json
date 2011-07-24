@@ -1,0 +1,32 @@
+{
+	"is12HourDefault": false,
+
+	"numberTripleDivider": ".",
+	"numberDecimal": ",",
+	"currencyPrepend": "R$",
+	"currencyAppend": "",
+	"percentageSpace": false,
+
+	"defaultDate": "yyyy-MM-dd",
+	"shortDate": "yy-MM-dd",
+	"mediumDate": "yyyy-MM-dd",
+	"longDate": "d MMMM yyyy",
+	"fullDate": "EEEE, d MMMM yyyy",
+	"dateFieldOrder": "ymd",
+
+	"dateTimeFormat": "DATE TIME",
+
+	"defaultTime12": "hh:mm:ss a",
+	"shortTime12": "hh:mm a",
+	"mediumTime12": "hh:mm:ss a",
+	"longTime12": "hh:mm:ss a zzz",
+	"fullTime12": "hh'h'mm'min'ss's' a zzz",
+
+	"defaultTime24": "HH:mm:ss",
+	"shortTime24": "HH:mm",
+	"mediumTime24": "HH:mm:ss",
+	"longTime24": "HH:mm:ss zzz",
+	"fullTime24": "HH'h'mm'min'ss's' zzz",
+
+	"firstDayOfWeek": 1
+}

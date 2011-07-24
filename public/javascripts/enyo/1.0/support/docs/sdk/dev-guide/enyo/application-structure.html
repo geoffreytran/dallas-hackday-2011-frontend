@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="application-structure">
+      Application Structure
+    </h1>
+    <p>
+      Let's look at the structure of a simple Enyo application, the &quot;FeedReader&quot; app from the <a href="/dev-guide/enyo/tutorial.html">Enyo Tutorial</a>. In most cases, you'll want to structure your own Enyo applications along similar lines.
+    </p>
+    <p>
+      Here is a list of the files and directories that make up the FeedReader application:
+    </p>
+    <blockquote>
+      <pre>
+<code>FeedReader/
+  -&gt; appinfo.json
+  -&gt; depends.js
+  -&gt; framework_config.json
+  -&gt; index.html
+  -&gt; css/
+      -&gt; css/FeedReader.css
+  -&gt; mock/
+      -&gt; feedReader_preferences_preferencesService.json
+  -&gt; source/
+      -&gt; source/Detail.js
+      -&gt; source/FeedReader.js
+      -&gt; source/Preferences.js
+      -&gt; source/Search.js
+</code>
+</pre>
+    </blockquote>
+    <h2 id="application-folder">
+      Application Folder
+    </h2>
+    <p>
+      Inside the <code>FeedReader</code> directory, we find four files (<code>appinfo.json</code>, <code>depends.js</code>, <code>framework_config.json</code>, and <code>index.html</code>) at the top level. These are required in every Enyo application. Turning to the subdirectories, while the presence of <code>css</code> and <code>source</code> is not mandatory, it is recommended that you create these subdirectories and use them to house stylesheets and application code, respectively. The <code>mock</code> subdirectory is only needed under specific circumstances, as mentioned below.
+    </p>
+    <h3 id="appinfo.json">
+      appinfo.json
+    </h3>
+    <p>
+      The <code>appinfo.json</code> file provides the framework with information it needs in order to load the application and run it.
+    </p>
+    <p>
+      Here are the contents of the <code>appinfo.json</code> file from FeedReader:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  &quot;id&quot;: &quot;com.palm.feedreader&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;vendor&quot;: &quot;HP&quot;,
+  &quot;type&quot;: &quot;web&quot;,
+  &quot;main&quot;: &quot;index.html&quot;,
+  &quot;title&quot;: &quot;Enyo FeedReader&quot;,
+  &quot;uiRevision&quot;: &quot;2&quot;
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Of particular note is the <code>uiRevision</code> property. Its value must be set to <code>&quot;2&quot;</code> in order for an application to run at full screen resolution on the TouchPad.
+    </p>
+    <p>
+      More information about each property, including possible values, is available in <a href="/reference/config/appinfo.json.html">appinfo.json</a>.
+    </p>
+    <h3 id="depends.js">
+      depends.js
+    </h3>
+    <p>
+      The <code>depends.js</code> file is new in Enyo; it is a manifest of the JavaScript and CSS files that make up the application.
+    </p>
+    <p>
+      Here's what the <code>depends.js</code> file for FeedReader looks like:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.depends(
+  &quot;source/FeedReader.js&quot;,
+  &quot;source/Search.js&quot;,
+  &quot;source/Detail.js&quot;,
+  &quot;source/Preferences.js&quot;,
+  &quot;css/FeedReader.css&quot;
+);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note the first and last lines--every <code>depends.js</code> file is structured as a call to the <code>enyo.depends</code> function.
+    </p>
+    <h3 id="framework_config.json">
+      framework_config.json
+    </h3>
+    <p>
+      The <code>framework_config.json</code> file may be used to configure a variety of settings, including the logging level. This is what the FeedReader app does in its <code>framework_config.json</code> file:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  &quot;logLevel&quot;: 99
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Here a value of 99 corresponds to the maximum logging level.
+    </p>
+    <p>
+      This file may also be used to enable debugging, via the <code>debuggingEnabled</code> property. Additional information on this and other properties is available in <a href="/reference/config/framework_config.json.html">framework_config.json</a>.
+    </p>
+    <h3 id="index.html">
+      index.html
+    </h3>
+    <p>
+      <code>index.html</code> is the file loaded at application startup.
+    </p>
+    <p>
+      Technically, this file doesn't have to be called <code>index.html</code>, but its name must match the value of the <code>main</code> property in <code>appinfo.json</code>. In practice, you'll probably want to name the file <code>index.html</code> for simplicity's sake.
+    </p>
+    <p>
+      The <code>index.html</code> file from FeedReader is simple, but it illustrates a pattern that you'll see over and over in Enyo applications:
+    </p>
+    <blockquote>
+      <pre>
+<code>&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Enyo FeedReader&lt;/title&gt;
+&lt;script src=&quot;../../enyo/1.0/framework/enyo.js&quot; launch=&quot;nobridge&quot;
+  type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+  new MyApps.FeedReader().renderInto(document.body);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The most interesting things here are the two <code>&lt;script&gt;</code> elements. The first, inside the <code>&lt;head&gt;</code>, loads the Enyo framework. (<strong>Note: If you're following along on your own computer, you'll need to edit the path to <code>enyo.js</code> to match the location of your Enyo installation.</strong>) In this case, we have specified <code>launch=&quot;nobridge&quot;</code> because we are using mock data to test the app. (See the discussion of &quot;mock&quot; below).
+    </p>
+    <p>
+      The second <code>&lt;script&gt;</code>, inside the <code>&lt;body&gt;</code>, creates an instance of the main application kind.
+    </p>
+    <h3 id="css">
+      css
+    </h3>
+    <p>
+      By convention, the <code>css</code> subdirectory contains any CSS stylesheets that are specific to the current application. These files do not have to be referenced explicitly in <code>index.html</code>, but do have to be listed in <code>depends.js</code>.
+    </p>
+    <h3 id="mock">
+      mock
+    </h3>
+    <p>
+      The <code>mock</code> subdirectory is required if (and only if) you are testing your application by feeding it mock service data. In that case, <code>mock</code> will contain one or more files of JSON-formatted mock data. Note that these mock data files do not need to be added to <code>depends.js</code>. (For more information on using mock data, see <a href="/dev-guide/enyo/tutorial/tutorial6.html">Part 6</a> of the Enyo Tutorial.)
+    </p>
+    <h3 id="source">
+      source
+    </h3>
+    <p>
+      By convention, the kinds that constitute the core of the application (in our current example, <code>FeedReader.js</code>, <code>Detail.js</code>, <code>Search.js</code>, and <code>Preferences.js</code>) are kept in a subdirectory called <code>source</code> under the app directory. You are free to create subdirectories under <code>source</code>, if you wish.
+    </p>
+    <h2 id="exercise-adding-an-application-icon">
+      Exercise: Adding an application icon
+    </h2>
+    <p>
+      If we wanted to add an icon to represent the <code>FeedReader</code> application, we would do the following:
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>
+        <p>
+          Create the icon as a PNG file named <code>icon.png</code>. (For complete specifications for icon files, see the <a href="/design/design-enyo.html">Enyo Design Guide</a>.)
+        </p>
+      </li>
+      <li>
+        <p>
+          Add <code>icon.png</code> to the top level of the app directory, so the directory structure now looks like this:
+        </p>
+        <blockquote>
+          <pre>
+<code>FeedReader/
+  -&gt; appinfo.json
+  -&gt; depends.js
+  -&gt; framework_config.json
+  -&gt; icon.png
+  -&gt; index.html
+  -&gt; css/
+      -&gt; css/FeedReader.css
+  -&gt; mock/
+      -&gt; feedReader_preferences_preferencesService.json
+  -&gt; source/
+      -&gt; source/Detail.js
+      -&gt; source/FeedReader.js
+      -&gt; source/Preferences.js
+      -&gt; source/Search.js
+</code>
+</pre>
+        </blockquote>
+      </li>
+      <li>
+        <p>
+          Define <code>icon.png</code> to be the application's icon by adding a line to <code>appinfo.json</code>:
+        </p>
+        <blockquote>
+          <pre>
+<code>{
+  &quot;id&quot;: &quot;com.palm.feedreader&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;vendor&quot;: &quot;HP&quot;,
+  &quot;type&quot;: &quot;web&quot;,
+  &quot;main&quot;: &quot;index.html&quot;,
+  &quot;title&quot;: &quot;Enyo FeedReader&quot;,
+  &quot;uiRevision&quot;: &quot;2&quot;,
+  &quot;icon&quot;: &quot;icon.png&quot;
+}
+</code>
+</pre>
+        </blockquote>
+      </li>
+    </ol>
+    <p>
+      If our application had additional image files, by convention, we would add them under <code>FeedReader/images/</code>.
+    </p>
+    <p>
+      Note that it is not necessary to list image files or other media assets in <code>depends.js</code>.
+    </p>
+		</div>
+	</body>
+</html>

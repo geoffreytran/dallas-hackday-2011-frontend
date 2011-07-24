@@ -1,0 +1,177 @@
+/*
+   Common Iconography
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.checkmark {
+  width: 32px;
+  height: 25px;
+  background: url(../images/checkmark.png) center center no-repeat;
+  float: right;
+  margin-right: 10px;
+}
+.palm-dark .checkmark {
+  background-image: url(../images/checkmark-dark.png);
+}
+
+/* Contact Status Indicators */
+
+.status-available,
+.status-away,
+.status-busy,
+.status-idle,
+.status-offline {
+  width: 32px;
+  height: 32px;
+}
+
+.status-available {
+  background: url(../images/status-available.png) center center no-repeat;
+}
+.status-available.partial {
+  background: url(../images/status-available-partial.png) center center no-repeat;
+}
+.status-away {
+  background: url(../images/status-away.png) center center no-repeat;
+}
+.status-busy {
+  background: url(../images/status-busy.png) center center no-repeat;
+}
+.status-busy.partial {
+  background: url(../images/status-busy-partial.png) center center no-repeat;
+}
+.status-idle {
+  background: url(../images/status-idle.png) center center no-repeat;
+}
+.status-offline {
+  background: url(../images/status-offline.png) center center no-repeat;
+}
+
+.palm-dark .status-available {
+  background: url(../images/status-available-dark.png) center center no-repeat;
+}
+.palm-dark .status-available.partial {
+  background: url(../images/status-available-partial-dark.png) center center no-repeat;
+}
+.palm-dark .status-away {
+  background: url(../images/status-away-dark.png) center center no-repeat;
+}
+.palm-dark .status-busy {
+  background: url(../images/status-busy-dark.png) center center no-repeat;
+}
+.palm-dark .status-busy.partial {
+  background: url(../images/status-busy-partial-dark.png) center center no-repeat;
+}
+.palm-dark .status-idle {
+  background: url(../images/status-idle-dark.png) center center no-repeat;
+}
+.palm-dark .status-offline {
+  background: url(../images/status-offline-dark.png) center center no-repeat;
+}
+
+/* account iconography */
+
+.palm-account-icon {
+  width: 32px;
+  height: 32px;
+}
+.palm-account-icon.medium {
+  width: 48px;
+  height: 48px;
+}
+
+.palm-button .palm-account-icon {
+  margin: 9px 11px 0 5px;
+  float: left;
+}
+
+.palm-account-icon.aim {
+  background: url(../images/accounts/aim-32x32.png) center center no-repeat;
+}
+.palm-account-icon.aol {
+  background: url(../images/accounts/aol-32x32.png) center center no-repeat;
+}
+.palm-account-icon.aol.medium {
+  background: url(../images/accounts/aol-48x48.png) center center no-repeat;
+}
+.palm-account-icon.eas {
+  background: url(../images/accounts/eas-32x32.png) center center no-repeat;
+}
+.palm-account-icon.eas.medium {
+  background: url(../images/accounts/eas-48x48.png) center center no-repeat;
+}
+.palm-account-icon.facebook {
+  background: url(../images/accounts/facebook-32x32.png) center center no-repeat;
+}
+.palm-account-icon.facebook.medium {
+  background: url(../images/accounts/facebook-48x48.png) center center no-repeat;
+}
+.palm-account-icon.favorites {
+  background: url(../images/accounts/favorites-32x32.png) center center no-repeat;
+}
+.palm-account-icon.generic {
+  background: url(../images/accounts/envelope-closed-32x32.png) center center no-repeat;
+}
+.palm-account-icon.generic.medium {
+  background: url(../images/accounts/envelope-closed-48x48.png) center center no-repeat;
+}
+.palm-account-icon.google {
+  background: url(../images/accounts/google-32x32.png) center center no-repeat;
+}
+.palm-account-icon.google.medium {
+  background: url(../images/accounts/google-48x48.png) center center no-repeat;
+}
+.palm-account-icon.gmail {
+  background: url(../images/accounts/gmail-32x32.png) center center no-repeat;
+}
+.palm-account-icon.gmail.medium {
+  background: url(../images/accounts/gmail-48x48.png) center center no-repeat;
+}
+.palm-account-icon.googletalk {
+  background: url(../images/accounts/googletalk-32x32.png) center center no-repeat;
+}
+.palm-account-icon.googletalk.medium {
+  background: url(../images/accounts/googletalk-48x48.png) center center no-repeat;
+}
+.palm-account-icon.inboxes {
+  background: url(../images/accounts/inboxes-32x32.png) center center no-repeat;
+}
+.palm-account-icon.local {
+  background: url(../images/accounts/mypalm-32x32.png) center center no-repeat;
+}
+.palm-account-icon.local.medium {
+  background: url(../images/accounts/mypalm-48x48.png) center center no-repeat;
+}
+.palm-account-icon.linkedin {
+  background: url(../images/accounts/linkedin-32x32.png) center center no-repeat;
+}
+.palm-account-icon.linkedin.medium {
+  background: url(../images/accounts/linkedin-48x48.png) center center no-repeat;
+}
+.palm-account-icon.msn {
+  background: url(../images/accounts/msnmessenger-32x32.png) center center no-repeat;
+}
+.palm-account-icon.msn.medium {
+  background: url(../images/accounts/msnmessenger-48x48.png) center center no-repeat;
+}
+.palm-account-icon.photobucket {
+  background: url(../images/accounts/photobucket-32x32.png) center center no-repeat;
+}
+.palm-account-icon.sim {
+  background: url(../images/accounts/sim-32x32.png) center center no-repeat;
+}
+.palm-account-icon.yahoo {
+  background: url(../images/accounts/yahoo-32x32.png) center center no-repeat;
+}
+.palm-account-icon.yahoo.medium {
+  background: url(../images/accounts/yahoo-48x48.png) center center no-repeat;
+}
+.palm-account-icon.youtube {
+  background: url(../images/accounts/youtube-32x32.png) center center no-repeat;
+}
+.palm-account-icon.youtube.medium {
+  background: url(../images/accounts/youtube-48x48.png) center center no-repeat;
+}

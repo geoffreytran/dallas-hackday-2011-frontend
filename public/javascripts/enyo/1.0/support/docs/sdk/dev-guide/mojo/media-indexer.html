@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="media-indexer">
+      Media Indexer
+    </h1><img src="/images/MediaIndexer.jpg">
+    <p>
+      The Media Indexer automatically stores and maintains information about all device audio and video media. This information is kept in the device's resident db8 <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> database. Using API calls provided with Palm's JavaScript Foundation libraries for accessing the db8 service (<code>com.palm.db</code>), 3rd party applications can read (but not write) media information organized into the following categories:
+    </p>
+    <ul>
+      <li>Albums
+      </li>
+      <li>Album images
+      </li>
+      <li>Artists
+      </li>
+      <li>Audio files
+      </li>
+      <li>Genres - For example: country, blues, reggae, etc. Each media file has a genre field and the Media Indexer keeps track of genre totals.
+      </li>
+      <li>Images
+      </li>
+      <li>Playlists - Organized lists of audio files.
+      </li>
+      <li>Video files
+      </li>
+    </ul>
+    <p>
+      <strong>Note:</strong> Accessing media data is granted only after the user has indicated your app has permission to do so.
+    </p>
+    <h2 id="accessing-media-indexer-data">
+      Accessing Media Indexer Data
+    </h2>
+    <p>
+      The Media Indexer keeps device media information in db8 database storage as JSON data objects. db8 is an addition to the webOS JavaScript Framework's current storage methods designed to meet the needs of robust, high-performance applications. Though not a database itself, it is a service (<code>com.palm.db</code>) available on the device bus that interfaces to an embedded database. Besides the usual <code>serviceRequest</code> calls, Javascript applications can also use API calls provided with the JavaScript Foundation libraries (<code>Foundations.DB</code>) to interface with the db8 service.
+    </p>
+    <p>
+      See <a href="https://developer.palm.com/content/api/reference/data-types/media-indexer.html">Media Indexer</a> in the &quot;webOS Data Types&quot; section for information about media data and how to access it using db8 service calls.
+    </p>
+		</div>
+	</body>
+</html>

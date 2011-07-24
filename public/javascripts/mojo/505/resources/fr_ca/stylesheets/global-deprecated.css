@@ -1,0 +1,11 @@
+/* Copyright 2009 Palm, Inc.  All rights reserved. */
+
+
+button.palm-button, 
+input[type=button].palm-button {
+	text-transform: none !important;
+}                                 
+                                           
+.palm-page-header > .header-text {    
+	text-transform: none !important;
+}           

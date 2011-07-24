@@ -1,0 +1,385 @@
+/*
+   Development Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+/** download pill **/
+
+.download-pill-container {
+  position: relative;
+}
+.download-pill-background {
+  width: 100%;
+  height: 50px;
+  border-width: 0px 25px 0 25px;
+  -webkit-border-image: url(../images/download-pill.png) 0 25 100 25 repeat repeat;
+  -webkit-box-sizing: border-box;
+}
+.button-mode.disabled .download-pill-background {
+  -webkit-border-image: url(../images/download-pill.png) 100 25 0 25 repeat repeat;  
+}
+.button-mode.selected:not(.disabled) .download-pill-background {
+  -webkit-border-image: url(../images/download-pill.png) 50 25 50 25 repeat repeat;
+}
+
+.download-pill-progress {
+  width: 100%;
+  height: 50px;
+  border-width: 0px 25px 0 25px;
+  -webkit-border-image: url(../images/download-progress-pill.png) 0 25 0 25 repeat repeat;
+  -webkit-box-sizing: border-box;
+  margin: -50px 0px 0px 0px;
+  position: absolute;
+  z-index: 0;
+}
+
+.download-pill-content {
+  position: relative;
+  margin: -50px 15px 0px 15px;
+}
+
+.download-pill-content .filetype-icon,
+.download-pill-content .actiontype-icon,
+.download-pill-content .action-icon {
+  margin-top: 1px;
+  width: 48px;
+  height: 48px;
+  float: left;
+}
+
+img.filetype-image {
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+}
+
+.download-pill-content .actiontype-icon {
+  float: right;
+}
+
+.download-pill-content .action-icon,
+.action-icon-red {
+  background: url(../images/cancel-progress-icon.png) center center no-repeat;
+  float: right;
+}
+.download-pill .action-icon.warning {
+  background: url(../images/warning-icon.png) center center no-repeat;
+}
+.download-pill .action-icon.complete {
+  background: url(../images/download-complete-icon.png) center center no-repeat;
+}
+
+.download-pill-content .download-filename,
+.download-pill-content .download-text-right {
+  color: white;
+  font-size: 16px;
+  line-height: 50px;
+}
+
+.download-pill-content .download-text-right {
+  float: right; 
+  max-width: 150px; 
+}
+
+/* Special Case: Erasing Device Screen Progress */
+
+.progress-bar-container {
+  position: relative;
+  height: 11px;
+}
+
+.progress-pill-background {
+  width: 100%;
+  height: 11px;
+  border-width: 0px 6px 0px 6px;
+  -webkit-border-image: url(../images/progress-bar-progress.png) 0 6 0 6 repeat repeat;
+  -webkit-border-image: url(../images/progress-bar-background.png) 0 6 0 6 repeat repeat;
+  -webkit-box-sizing: border-box;
+  margin: 0px;
+  position: absolute;
+}
+
+.progress-pill-progress {
+  width: 100%;
+  height: 11px;
+  border-width: 0px 6px 0 6px;
+  -webkit-border-image: url(../images/progress-bar-progress.png) 0 6 0 6 repeat repeat;
+  -webkit-box-sizing: border-box;
+  position: absolute;
+}
+
+/** progress slider **/
+.stream-buffer-bar {
+  display: table-cell;
+  padding: 0px 7px;
+  vertical-align: middle;
+  width: 60%;
+  height: 50px;
+  padding-left: 20px;
+}
+
+.stream-buffer-bar .stream-background {
+  height: 7px;
+  border-width: 4px 4px 2px 4px;
+  -webkit-border-image: url(../images/streaming-background.png) 4 4 2 4 repeat repeat;
+  -webkit-box-sizing: border-box;
+  z-index: -1;
+}
+
+.stream-buffer-bar .stream-buffered {
+  width: 0px;
+  height: 7px;
+  border-width: 4px 4px 2px 4px;
+  -webkit-border-image: url(../images/streaming-buffered.png) 4 4 2 4 repeat repeat;
+  -webkit-box-sizing: border-box;
+  z-index: 1;
+  margin-top: -7px;
+}
+
+.stream-buffer-bar.disabled .stream-buffered {
+  -webkit-border-image: url(../images/streaming-buffered-disabled.png) 4 4 2 4 repeat repeat;
+}
+
+.stream-buffer-bar .slider {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background: url(../images/streaming-button.png) center center no-repeat;
+  position: absolute;
+  margin-top: -27px;
+}
+
+.stream-buffer-bar.disabled .palm-slider-button {
+  display: none;
+}
+
+/* List view - avatars - none, clipped, and unclipped styles */
+
+.people-picker .list-view-avatar.clipped,
+.people-picker .list-view-avatar.unclipped {
+  background: none;
+}
+
+.people-picker .list-view-avatar .image-well {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  background: url(../images/list-view-avatar-frame.png) center center no-repeat;
+  margin: 5px 0px 0px -1px;
+}
+
+.people-picker .list-view-avatar.clipped .image-well {
+  width: 51px;
+  height: 48px;
+  position: absolute;
+  background: url(../images/list-view-avatar-frame-clipped.png) center center no-repeat;
+  margin: 4px 0px 0px -10px;
+}
+
+.people-picker .list-view-avatar {
+  margin: -1px 10px 0px 0px;
+  background: url(../images/generic-list-view-avatar.png) center center no-repeat;
+}
+
+.people-picker .list-view-avatar .image {
+  position: absolute;
+}
+
+.people-picker .list-view-avatar .image img {
+  width: 34px;
+  height: 34px;
+  margin: 8px 0px 0px 3px;
+}
+
+/* Filter Field */
+#contact_list.shifted {
+  padding-top: 40px;
+}
+
+.empty-list-text {
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #a7a9ac;
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+.lookup-container {
+  padding-top: 10px;
+}
+
+.lookup-container .palm-list .palm-row .icon {
+  width: 32px;
+  height: 32px;
+  float: right;
+  margin: -30px 20px 0px 0px;
+}
+
+.lookup-container .palm-list .palm-row .icon.gal-lookup {
+/*  need to add image*/
+}
+
+.lookup-container .palm-list .palm-row .icon.white-pages {
+/*  need to add image*/
+}
+
+/*Styles for Palm-Rows*/
+
+.people-picker .status {
+  height: 46px;
+  width: 25px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.people-picker .truncating-text.title {
+  padding-left: 0px;
+}
+
+.exclude {
+  display: none;
+}
+
+
+/* Styles for framework Account scenes */
+
+.synergy-accounts-header {
+  vertical-align: middle;
+}
+.synergy-accounts-icon {  
+  float: left;
+  width: 74px;
+  height: 74px;
+  background: url() center center no-repeat;
+}
+.synergy-accounts-title {
+  color: #555;
+  font-size: 18px;
+}
+
+.first-launch-account-list {
+  padding: 6px 0;
+}
+.first-launch-account-row {
+  height: 40px;
+  clear: both;
+  padding: 0 15px;	
+  color: #555;
+  font-size: 18px;
+  line-height: 40px;
+}
+.first-launch-account-row .palm-account-icon {
+	margin: 5px 10px 0px 0px;
+	float: left;
+}
+.accounts-drawer {
+  position: fixed !important; 
+  top: 74px; 
+  bottom: 120px; 
+  width: 100%;
+  background-color: #b5b5b5;
+}
+.accounts-drawer.add-account {
+  bottom: 62px; 
+}
+.accounts-drawer.done-disabled {
+	bottom: 65px;
+}
+.palm-drawer-shadow {
+  border-width: 30px 1px 30px 1px;
+  -webkit-border-image: url(../images/drawer-shadow.png) 30 1 30 1 repeat repeat;
+  -webkit-box-sizing: border-box;
+  position: fixed; 
+  width: 100%; 
+  top: 74px; 
+  bottom: 120px;
+  -webkit-palm-mouse-target: ignore;
+}
+.palm-drawer-shadow.add-account {
+  bottom: 62px; 
+}
+.palm-drawer-shadow.done-disabled {
+  bottom: 65px;
+}
+
+.synergy-accounts-footer {
+  position:fixed; 
+  bottom:0px; 
+  left:0px; 
+  right:0px;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.synergy-accounts-footer-wrapper {
+  margin-top:-10px;
+}
+
+.account-preferences td {
+	height: 50px;
+}
+
+.account-preferences .palm-account-icon {
+	margin: 4px 10px 0 10px;
+}
+.account-preferences .account-name {
+	font-size: 18px;
+	margin-top: 1px;
+}
+
+.account-preferences .account-username {
+  	font-size: 14px;
+	margin-top: -3px;
+	color: #999;
+}
+.selected .account-name,
+.selected .account-username {
+	color: #fff;
+}
+
+
+/* Cross-application Launch, list icons */
+
+.app-support-info-icon {
+	position:absolute;
+	left:10px;
+	top:5px;
+	width:32px; 
+	height:32px;
+	background: url(../icon32x32.png) no-repeat center ;
+	padding: 10px 0px 0px 5px;
+	float:left;	
+}
+.app-support-info-item {
+	position:relative;
+	left:8px;
+	top:10px;
+	width:32px; 
+	height:32px;
+	background: no-repeat bottom;
+	vertical-align:bottom;
+	padding: 0px 0px 0px 5px;
+	float:left;
+}
+.app-support-info-item.calendar			{ background-image: url(../images/appsupport/calendar-32x32.png); }
+.app-support-info-item.camera 			{ background-image: url(../images/appsupport/camera-32x32.png); }
+.app-support-info-item.contacts 		{ background-image: url(../images/appsupport/contacts-32x32.png); }
+.app-support-info-item.email 			{ background-image: url(../images/appsupport/email-32x32.png); }
+.app-support-info-item.googlemaps 		{ background-image: url(../images/appsupport/googlemaps-32x32.png); }
+.app-support-info-item.messaging 		{ background-image: url(../images/appsupport/messaging-32x32.png); }
+.app-support-info-item.phone 			{ background-image: url(../images/appsupport/phone-32x32.png); }
+.app-support-info-item.web 				{ background-image: url(../images/appsupport/web-32x32.png); }
+
+/* Cross-application Launch, command menu icons */
+
+.palm-menu-icon.xapp-calendar 			{ background-image: url(../images/appsupport/menu-icon-xapp-calendar.png); }
+.palm-menu-icon.xapp-camera 			{ background-image: url(../images/appsupport/menu-icon-xapp-camera.png); }
+.palm-menu-icon.xapp-contacts 			{ background-image: url(../images/appsupport/menu-icon-xapp-contacts.png); }
+.palm-menu-icon.xapp-email	 			{ background-image: url(../images/appsupport/menu-icon-xapp-email.png); }
+.palm-menu-icon.xapp-googlemaps			{ background-image: url(../images/appsupport/menu-icon-xapp-googlemaps.png); }
+.palm-menu-icon.xapp-messaging 			{ background-image: url(../images/appsupport/menu-icon-xapp-messaging.png); }
+.palm-menu-icon.xapp-phone	 			{ background-image: url(../images/appsupport/menu-icon-xapp-phone.png); }
+.palm-menu-icon.xapp-web	 			{ background-image: url(../images/appsupport/menu-icon-xapp-web.png); }

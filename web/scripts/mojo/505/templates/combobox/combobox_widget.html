@@ -1,0 +1,38 @@
+<div id="#{divPrefix}-widget" class="palm-combobox">
+	<div class="palm-combobox-wrapper">                    
+		<div id="#{divPrefix}-show_all_button" class="combo-selector-button" x-mojo-tap-highlight="momentary"></div>
+		<div id="#{divPrefix}-commit_button" class="combo-selector-button" x-mojo-tap-highlight="momentary"></div>
+		<div id="#{divPrefix}-input_area_div" x-mojo-element="TextField" class="palm-combobox-textfield">
+			#{labelContent}
+		</div>
+	</div>
+	
+	<div id="#{divPrefix}-popup"  class="palm-popup-container" style="display:none;">		
+		<div class="palm-popup-wrapper">
+			<div x-mojo-scroll-fade='top' class="palm-popup-fade-top">  
+				<div class="fade-background"></div>                     
+				<div class="fade-arrow"></div>          
+			</div>
+			<div x-mojo-scroll-fade='bottom' class="palm-popup-fade-bottom">   
+				<div class="fade-background"></div>                           
+				<div class="fade-arrow"></div>
+			</div>   
+
+			<div class="palm-popup-content" id="#{divPrefix}-scroller" x-mojo-element="Scroller">
+				<div id="#{divPrefix}-results-container" x-mojo-element="List"></div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 
+		div
+			div
+				palm-list
+					palm-row textfield removable first
+						palm-row-wrapper
+							span
+								(text here)
+	-->
+	
+	
+</div>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="animation-tips">
+      Animation Tips
+    </h1>
+    <h2 id="overview">
+      Overview
+    </h2>
+    <p>
+      The HP webOS UI framework supports basic animations in applications, such as for the Photo animation scene in the framework library. This page includes the documentation from the file.
+    </p>
+    <p>
+      <strong>Note:</strong> The trunk framework now has a Mojo.Animation.animateStyle() method instead of requiring you to allocate the StyleAnimator class yourself.
+    </p>
+    <h2 id="style-animation">
+      Style Animation
+    </h2>
+    <p>
+      This is intended to provide support for animating style properties of DOM elements. The implementation animates a given attribute to the given value over the given duration.
+    </p>
+    <p>
+      Any existing animation on the indicated node for the indicated style attribute is canceled when applying the new one. The animator overrides external changes made to the animated attribute while the animation is in progress.
+    </p>
+    <p>
+      Currently, only the integer-valued attributes are supported, so colors and opacity cannot be animated.
+    </p>
+    <p>
+      One difference between this animator and CSS transitions is that you must specify both a <code>fromValue</code> and a <code>toValue</code>. This allows you to keep the animation speed &quot;correct&quot; when an attribute animates back and forth between two values, and to go &quot;back&quot; while the &quot;forth&quot; animation is only partway complete.
+    </p>
+    <h3 id="example">
+      Example
+    </h3>
+    <p>
+      This code animates the spacers to 0-height when doing drag and drop reordering in lists. Note the use of an <code>onComplete</code> method to remove the 0-height spacer from the DOM.
+    </p>
+    <blockquote>
+      <pre>
+<code>Mojo.Animation.animateStyle(this.curDragSpacer,
+  'height', this.dragHeight, 0, .2,
+  {
+      onComplete:function(el){
+          el.remove();
+      }
+  }
+);
+</code>
+</pre>
+    </blockquote>
+    <h3 id="methods">
+      Methods
+    </h3>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>
+            Method
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            cancel()
+          </td>
+          <td>
+            Cancels the animation, and removes the animator from the queue. The element is left at its current location. Called automatically at the completion of an animation.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            complete()
+          </td>
+          <td>
+            Instantly sets the element's style attribute to the target value, calls <code>onComplete</code> if specified, and removes the animator from the queue. Called automatically at the completion of an animation.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="initialization-arguments">
+      Initialization Arguments
+    </h3>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>
+            Argument
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            attr
+          </td>
+          <td>
+            The name of the style attribute to be animated, using HTML DOM naming conventions.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            duration
+          </td>
+          <td>
+            The animation time duration in seconds.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            element
+          </td>
+          <td>
+            The DOM element whose style should be animated.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            fromValue
+          </td>
+          <td>
+            The &quot;starting value&quot; of the attribute. This is only used to establish a current position in the from-to range so that the animation speed remains constant when an element animates to one position, and then animates back when only partway there.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            options
+          </td>
+          <td>
+            Various animation options. This can be undefined when the default behavior is acceptable.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            toValue
+          </td>
+          <td>
+            The destination value for the given attribute.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="options-properties">
+      &quot;options&quot; Properties
+    </h3>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>
+            Property
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            curve
+          </td>
+          <td>
+            The curve type for the animation. Defaults to linear if unspecified. This may be the name of one of the standard curves, or an array of coordinates for the control points of a cubic bezier curve. The standard curves are likely to change, but are currently defined in the <code>bezierCurves</code> property.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            onComplete
+          </td>
+          <td>
+            The method to call after the completed animation. The arguments are the animated element, and a boolean &quot;cancelled&quot; value.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            reverse
+          </td>
+          <td>
+            Boolean. If <code>true</code>, <code>fromValue</code> and <code>toValue</code> are swapped, so the animation &quot;runs in reverse.&quot;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+		</div>
+	</body>
+</html>

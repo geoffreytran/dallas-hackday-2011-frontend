@@ -1,0 +1,10 @@
+{
+	"title": "UIWidgets",
+	"type": "web",
+	"main": "index.html",
+	"icon": "icon.png",
+	"id": "com.palmdts.uiwidgets",
+	"version": "1.5.0",
+	"vendor": "com.palmdts",
+	"removable": true
+}

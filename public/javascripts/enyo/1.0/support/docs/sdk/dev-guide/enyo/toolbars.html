@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="toolbars">
+      Toolbars
+    </h1>
+    <h2 id="toolbar-and-toolbutton">
+      Toolbar and ToolButton
+    </h2>
+    <p>
+      A <code>Toolbar</code> is a container for items presented at the bottom of the screen. The <code>Toolbar</code> kind inherits from <code>enyo.HFlexBox</code>; by default, its items are instances of <code>ToolButton</code>.
+    </p>
+    <p>
+      Here's an example of a toolbar with three buttons, equally spaced apart:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Toolbar&quot;, components: [
+  {caption: &quot;foo&quot;},
+  {kind: &quot;Spacer&quot;},
+  {caption: &quot;bar&quot;},
+  {kind: &quot;Spacer&quot;},
+  {caption: &quot;baz&quot;}
+]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Toolbars1.png" alt="Toolbar with ToolButtons"><br>
+      <br>
+      There may be times when the ToolButton isn't exactly what you need, so Enyo also provides two kinds for grouping controls within a toolbar--<code>ToolButtonGroup</code> and <code>RadioToolButtonGroup</code>.
+    </p>
+    <h2 id="toolbuttongroup">
+      ToolButtonGroup
+    </h2>
+    <p>
+      A <code>ToolButtonGroup</code> is a container for a group of buttons, designed to go inside a Toolbar. The buttons are laid out horizontally.
+    </p>
+    <p>
+      By default, the components in a menu toolbar are instances of <code>GroupedToolButton</code>.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Toolbar&quot;, components: [
+  {kind: &quot;ToolButtonGroup&quot;, components: [
+      {icon: &quot;images/menu-icon-back.png&quot;, onclick: &quot;goBack&quot;},
+      {icon: &quot;images/menu-icon-forward.png&quot;, onclick: &quot;goForward&quot;},
+      {icon: &quot;images/menu-icon-refresh.png&quot;, onclick: &quot;refresh&quot;}
+  ]}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Toolbars2.png" alt="Toolbar with ToolButtonGroup"><br>
+    </p>
+    <h2 id="radiotoolbuttongroup">
+      RadioToolButtonGroup
+    </h2>
+    <p>
+      A <code>RadioToolButtonGroup</code> is a group of <code>RadioToolButton</code> objects, with toolbar styling applied. The <code>RadioToolButtonGroup</code> kind extends <code>RadioGroup</code> and <code>RadioToolButton</code> extends <code>RadioButton</code>.
+    </p>
+    <p>
+      Here's a simple example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Toolbar&quot;, components: [
+  {kind: &quot;RadioToolButtonGroup&quot;, components: [
+      {icon: &quot;images/menu-icon-back.png&quot;, onclick: &quot;goBack&quot;},
+      {caption: &quot;stay&quot;},
+      {icon: &quot;images/menu-icon-forward.png&quot;, onclick: &quot;goForward&quot;},
+  ]}
+]}
+</code>
+</pre>
+    </blockquote><img src="/images/EnyoConceptual-Toolbars3.png" alt="Toolbar with RadioToolButtonGroup"><br>
+    <br>
+		</div>
+	</body>
+</html>

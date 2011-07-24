@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="smart-text-features">
+      Smart Text Features
+    </h1>
+    <h2 id="smart-text-engine-ste">
+      Smart Text Engine (STE)
+    </h2>
+    <p>
+      The Smart Text Engine (STE) refers to the automatic modification of user-entered text to allow faster text input. When typing on a small keyboard, which is typical on a mobile device, a user is likely to make certain spelling mistakes. Furthermore, because text input for things like SMS, notes, and contact info is often done in a hurry, a user is likely to leave out punctuation and instead use capitalization or common slang abbreviations for words (e.g., &quot;r&quot; instead of &quot;are,&quot; &quot;u&quot; instead of &quot;you,&quot; etc.).
+    </p>
+    <p>
+      The STE has two features:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <strong>Auto-Capitalization (STE-Autocap)</strong>
+        </p>
+        <p>
+          The STE-autocap feature automatically enters a SHIFT key state during text entry when it detects a punctuation character followed by a space. The next character typed is then SHIFT-modified without the user's input.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Auto-Replacement (STE-Autoreplace)</strong>
+        </p>
+        <p>
+          The auto-replacement feature checks each typed word (where a <em>word</em> is a string of characters delimited by a space, punctuation, or end-of-field) against a file of replacement candidates. If the auto-replacement file has a match, the STE automatically replaces the word.
+        </p>
+        <p>
+          The format of the replacement file is one word and replacement word per line, with each line <strong>CR+LF</strong> delimited.
+        </p>
+        <p>
+          <strong>Example:</strong>
+        </p>
+        <blockquote>
+          <pre>
+<code>r|are
+u|you
+</code>
+</pre>
+        </blockquote>
+      </li>
+    </ul>
+    <h2 id="controlling-the-ste">
+      Controlling the STE
+    </h2>
+    <p>
+      This section describes how to enable and disable the STE.
+    </p>
+    <h3 id="enabling-the-ste">
+      Enabling the STE
+    </h3>
+    <p>
+      Both STE features are on by default in all of the text fields, except for the password fields.
+    </p>
+    <h3 id="disabling-the-ste">
+      Disabling the STE
+    </h3>
+    <p>
+      There are several attribute tags that you can add to your app's text fields to disable some or all of the STE features:
+    </p>
+    <blockquote>
+      <pre>
+<code>x-palm-disable-ste-all = &quot;true&quot;;        // disables ALL features of STE
+x-palm-disable-auto-replace = &quot;true&quot;;   // disables just STE-autoreplace
+x-palm-disable-auto-cap = &quot;true&quot;;       // disables just STE-autocap
+</code>
+</pre>
+    </blockquote>
+    <p>
+      As an alternative, set the text field's <code>textReplacement</code> attribute property to <code>false</code> before calling <code>setupWidget()</code>.
+    </p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+/* Put Application specific CSS here. */
+.myclass .palm-button {
+   -webkit-border-image: url(../images/button-blue-up.png) 0 16 0 16 stretch stretch; }
+
+.myclass .palm-button.selected {
+   -webkit-border-image: url(../images/button-blue-down.png) 0 16 0 16 stretch stretch; }
+  
+#button-3 .palm-button {
+   -webkit-border-image: url(../images/button-red-up.png) 0 16 0 16 stretch stretch; }
+
+#button-3 .palm-button.selected {
+   -webkit-border-image: url(../images/button-red-down.png) 0 16 0 16 stretch stretch; }
+  
+palm-button .buttonfloat {
+        float:left;
+        width:100px;
+}

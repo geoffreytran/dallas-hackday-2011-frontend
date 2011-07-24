@@ -1,0 +1,531 @@
+/*
+   Textfield Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-list textarea { /* inv */
+  resize: none;
+  overflow: hidden;
+  margin: -15px -10px -15px 0px;
+  padding: 4px 0 0 0;
+  outline: none;
+  width: 300px;
+  border-width: 10px;
+  text-align: left;
+  -webkit-border-image: url(../images/textfield-shadow.png) 10 10 10 10 stretch stretch;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  margin: 0 -10px 25px 0px;
+  padding: 4px 0 0 0;
+  outline: none;
+  width: 300px;
+  border-width: 10px;
+  text-align: left;
+  -webkit-border-image: url(../images/textfield-shadow.png) 10 10 10 10 stretch stretch;
+}
+
+/* change this if you change textarea */
+textarea.invisible {
+  margin: 0 0px 0px 0px;
+  padding: 0px 0 0 0;
+  border-width: 0px;
+  -webkit-border-image: none;
+  background: none;
+}
+
+/*people picker styles */
+
+/* List Common */
+
+.padded-top {
+  padding-top: 18px;
+}
+
+div.hidden {
+  display: none;
+}
+
+div.revealed {
+  display: inherit;
+}
+
+  /* these appear to be duped styles, investigate and remove */
+
+  .palm-list .status {
+  width: 11px;
+  height: 11px;
+  float: left;
+  margin: 6px 10px 6px 10px;
+  }
+
+  .palm-list .status.busy {
+  background: url(../images/status-busy.png) center center no-repeat;
+  }
+
+  .palm-list .status.available {
+  background: url(../images/status-available.png) center center no-repeat;
+  }
+
+  .palm-list .status.idle {
+  background: url(../images/status-idle.png) center center no-repeat;
+  }
+
+  .palm-list .status.offline {
+  background: url(../images/status-offline.png) center center no-repeat;
+  }
+  
+
+.palm-list .avatar {
+  width: 40px;
+  height: 41px;
+  background: url(../images/default-avatar.png) top left no-repeat;
+  float: right;
+  margin: -10px 15px 0 0;
+}
+
+/* Filter Field Specific Styles */
+
+#contact_list.shifted {
+  padding-top: 40px;
+}
+
+.filter-field-container {
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  width: 100%;
+  height: 48px;
+  border-width: 26px 23px 20px 23px;
+  -webkit-border-image: url(../images/filter-search-light-bg.png) 26 23 20 23 repeat repeat;
+  -webkit-box-sizing: border-box;
+  z-index: 11002;
+}
+
+.filter-field-wrapper {
+  margin: -26px -23px -20px -23px;
+}
+
+.filter-field-container .mag-glass-icon {
+  width: 24px;
+  height: 24px;
+  background: url(../images/filter-search-mag.png) center center no-repeat;
+  margin: 9px 0px -5px 12px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.filter-field-container .results-count-container {
+  height: 24px;
+  border-width: 11px;
+  -webkit-border-image: url(../images/filter-field-pill.png) 11 11 11 11 repeat repeat;
+  -webkit-box-sizing: border-box;
+  float: right;
+  text-align: center;
+  margin: 0px -15px -5px 0px;
+  min-width: 23px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.filter-field-container .search-term {
+  line-height: 43px;
+  font-size: 16px;
+  padding-left: 5px;
+  color: #333;
+  position: absolute;
+  bottom: 0;
+  margin: 0px 0px -13px 40px;
+}
+
+.filter-field-container .results-count {
+  color: #fff;
+  font-size: 16px;
+  color: #DDD;
+  text-align: center;
+  margin-top: -10px;
+  bottom: 0px;
+}
+
+.filter-field-container .results-count-wrapper {
+  margin: -7px -4px 0px -4px;
+}
+
+.filter-field-container .filter-hint-text {
+  z-index: 5001;
+  position: absolute;
+  left: 41px;
+  top:14px;
+  color: #AAA;
+  font-size:18px;
+}
+
+.filter-field-container .filter-field-activity-spinner {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  margin: 0px -16px -8px 0px;
+}
+
+.reverselookup {
+  padding-right: 28px;
+  background: url(../images/activity-indicator-one-frame.png) center right no-repeat;
+}
+
+.filter-field-container .previous-search-text {
+  background-color: #FFFF66;
+}
+
+.addressing-contact-header {
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.palm-divider.labeled .remote-contact .remote-icon {
+  height: 14px;
+  width: 14px;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-left: -5px;
+  background: url(../images/network-contact-exchange.png) center center no-repeat;
+}
+
+/** text fields **/
+
+.TextAreaShill {
+  white-space: normal;
+  line-height: 1.2em;
+  top: -500px;
+  position: fixed;
+  word-wrap: break-word;
+}
+
+#mojo-fps-display-box {
+  position: fixed;
+  width: 60px;
+  height: 1em;
+  top: 90px;
+  right: 130px;
+  margin: 0px auto;
+  border: 1px solid #999;
+  text-align: center;
+}
+
+/** ppl picker **/
+.image {
+  position: absolute;
+}
+
+.avatar.clipped img {
+  width: 34px;
+  height: 34px;
+  margin: 4px 0px 0px 3px;
+}
+
+.avatar.unclipped img {
+  width: 34px;
+  height: 34px;
+  margin: 2px 0px 0px 3px;
+}
+
+/* List view - avatars - none, clipped, and unclipped styles*/
+
+.avatar.clipped,
+.avatar.unclipped {
+  background: none;
+}
+
+.avatar.unclipped .image-well {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  background: url(../images/msg-avatar-unclipped-well.png) center center no-repeat;
+  margin: -3px 0px 0px -3px;
+}
+
+.avatar.clipped .image-well {
+  position: absolute;
+  width: 51px;
+  height: 48px;
+  background: url(../images/msg-avatar-clipped-well.png) center center no-repeat;
+  margin: -3px 0px 0px -6px;
+}
+
+.palm-filterfield-spacer {
+  height: 43px;
+}
+
+/** combobox **/
+.palm-combobox {
+  position:relative;
+  -webkit-box-sizing: border-box;
+  border-width: 45px 20px 0px 20px;
+  -webkit-border-image: url(../images/combobox-background.png) 45 20 0 20 repeat repeat;
+  min-height: 45px;
+}
+.palm-combobox .palm-popup-container {
+  margin:-6px -24px -6px -24px;
+  left:0px;
+  right:0px;
+  top: auto;
+}
+.palm-combobox .palm-popup-content .palm-list {
+  max-width: 312px;
+}
+.palm-combobox-wrapper {
+  margin: -45px -20px 0px -20px;
+  padding:0px 0px 0px 10px;
+}
+.palm-combobox-textfield {
+  height:45px;
+}
+.palm-combobox-textfield .truncating-text {
+  height: 45px;
+  line-height: 45px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 20px;
+}
+.palm-combobox-textfield input, .palm-combobox-textfield input:focus {
+  background: none;
+  width: 100%;
+  height: 45px;
+  font-size: 20px;
+  text-overflow: ellipsis;
+  margin: 0px 0px 0px -1px;
+  padding: 0px;
+  border: 0px;
+  border-width: 0px;
+  -webkit-border-image: none;
+  outline: none;
+}
+.combo-selector-button {
+  float:right;
+  background:url(../images/combobox-button.png) center right no-repeat;
+  width:54px;
+  height:44px;
+}
+.combo-selector-button.selected {
+  background-image:url(../images/combobox-button-press.png);
+}
+
+/*  Text Field styling */
+
+.textfield-group {
+  clear: both;
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-noshadow.png) 15 15 15 15 stretch stretch;
+}
+.textfield-group.focused {
+  margin-top: -1px;
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-52.png) 15 15 15 15 stretch stretch;
+}
+.palm-row-wrapper > .textfield-group.focused {
+  padding-top: 1px;
+}
+
+.palm-dialog-content > .textfield-group {
+  margin: -1px -18px 0 -18px;
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-shadow-dialog-blur.png) 15 15 15 15 stretch stretch;
+}
+.palm-dialog-content > .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/textfield-shadow-dialog.png) 15 15 15 15 stretch stretch;
+}
+
+.palm-group .palm-row.first .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-52-first.png) 15 15 15 15 stretch stretch;
+}
+.palm-group .palm-row.last .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-52-last.png) 15 15 15 15 stretch stretch;
+}
+.palm-group .palm-row.single .textfield-group.focused {
+  border-width: 15px;
+  -webkit-border-image: url(../images/group-textfield-shadow-52-single.png) 15 15 15 15 stretch stretch;
+}
+
+.textfield-group .title {
+  padding: 0;
+  margin: 0;
+  height: 52px;
+  line-height: 52px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 20px;
+}
+
+.textfield-group .label {
+  float: right;
+  color: #1f75bf;
+  text-shadow: #ffffff 0px 1px 0px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.textfield-group > .label,
+.textfield-group > .title > .label {
+	margin: 0 5px 0 0;
+}
+
+/* simplify */
+.palm-group .palm-row-wrapper.textfield-group .title,
+.palm-group .palm-row-wrapper .textfield-group .title,
+.palm-dialog-content .textfield-group .title,
+.palm-row-wrapper.textfield-group .title,
+.palm-row-wrapper .textfield-group .title {  
+  margin: -15px;
+  padding: 0 10px;
+  height: auto;
+}
+
+.textfield .truncating-text, /* dep */
+.textfield-group div:not(.smarttextfield) > .truncating-text {
+  /* empty textfields need height and width without which,
+  the TextField and PasswordField widgets break */
+  height: 52px;
+  min-width: 12px;
+  min-height: 50px;
+}
+
+.textfield-group .left {
+  text-align: left;
+}       
+
+.textfield-group .right {
+  text-align: right;
+}
+
+/* dep in 2.0 with textfield */
+.textfield-group input, .textfield-group input:focus {
+  background: none;
+  width: 100%;
+  height: 52px;
+  font-size: 20px;
+  text-overflow: ellipsis;
+  margin: -1px 0 0 -1px;
+  padding: 0px;
+  border: 0px;
+  border-width: 0px;
+  -webkit-border-image: none;
+  outline: none;
+}
+
+.hint-text,
+.textfield-group .hint-text,
+.multiline-hint-text {
+  font-weight: normal;
+  color: #000;
+  position: absolute;
+  margin-left: 2px;
+  margin-top: 1px;
+  padding-right: 2px;
+  z-index: 1000;
+  -webkit-user-select: none;
+}
+
+.focused .hint-text,
+.textfield-group.focused .hint-text,
+.focused .multiline-hint-text {
+  color: #898989;
+}
+
+.multiline-hint-text {
+  margin-top: 0px;
+  margin-left: 1px;
+}
+
+textarea.text-edit {
+  background: none;
+  border: none;
+  border-width: none;
+  -webkit-border-image: none;
+  font-size: 20px;
+  margin: 12px 0px;
+  vertical-align:top;
+  padding: 0;
+  outline: none;
+  border-width: 0;
+  height: 24px;
+  line-height: normal;
+}
+
+.multiline-text {
+  padding: 13px 0px 16px 0px;
+  margin: 0 0 -1px 0;
+  white-space: normal;
+  line-height: normal;
+  overflow: hidden;
+  word-wrap:break-word;
+  min-height: 24px;
+  position:relative;
+  left:3px;
+}
+
+/* smarttextfield to replace textfield */
+
+.title > div > .smarttextfield {
+  margin: 0 0 0 -10px;
+}
+
+.smarttextfield.single {
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 52px;
+}
+
+.smarttextfield.multi {
+  white-space: normal;
+}
+
+.smarttextfield > .editable {
+  -webkit-user-select: text;
+  -webkit-user-modify: read-write;
+  cursor:text;
+  -webkit-line-break: after-white-space;
+}
+.smarttextfield.single > .editable,
+.smarttextfield.single > .palm-textfield-disabled {
+  padding: 0 0 0 10px;
+  margin-top: 16px;
+  line-height: 22px; 
+}
+
+.smarttextfield.multi > .editable,
+.smarttextfield.multi > .palm-textfield-disabled {
+  padding: 13px 10px 15px 10px;
+  line-height: 26px; 
+}
+
+.smarttextfield > .hint-text {
+  margin-top: 13px;
+  margin-left: 10px;
+}
+
+/* Inline form errors */
+.palm-inline-error {
+  padding: 0px 20px;
+}
+.palm-inline-error .error-message {
+  font-size: 16px;
+  color: #d70000;
+  margin: 0px;
+  padding: 3px 0px 5px 40px;
+  background: url(../images/warning-icon.png) left center no-repeat;
+  word-wrap: break-word;
+}
+.palm-dialog-content > .palm-inline-error {
+  margin: 14px -22px 0px;
+}

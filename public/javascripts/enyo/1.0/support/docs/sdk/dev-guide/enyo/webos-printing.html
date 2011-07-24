@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="webos-printing">
+      webOS Printing
+    </h1>
+    <p>
+      In HP/Palm's webOS 3.0, applications have two options for printing:
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>
+        <p>
+          <strong>Print Dialog</strong> -- Enyo apps can launch this type of Popup control. The Print Dialog lets users choose or add a printer, select print options, and print existing image files or <a href="http://en.wikipedia.org/wiki/Webkit">WebKit</a>-rendered content. The Print Dialog calls the Print Manager service -- <code>com.palm.printmgr</code> -- for all printer interaction.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong><a href="/reference/services/print-manager.html">Print Manager APIs</a></strong> -- Through Enyo service wrapper calls, apps can invoke Print Manager APIs directly to customize printing and rendering to meet their specific needs.
+        </p>
+      </li>
+    </ol>
+    <p>
+      <strong>It is strongly recommended that apps use the first option.</strong> The vast majority of apps should be able to rely exclusively on the Print Dialog to meet all their printing needs, including WebKit-rendered content.
+    </p>
+    <h2 id="printing-images-and-webkit-rendered-content">
+      Printing Images and WebKit-Rendered Content
+    </h2>
+    <p>
+      The Print Manager <strong><em>only</em></strong> prints page images in JPEG format. When images are not existing device files, WebKit is used to render the app-specific content (HTML/text) into page images suitable for printing. With the Print Dialog, apps can move content they want rendered into a browser frame (visible or not) and pass the frame's name as a parameter to the Print Dialog. The Print Dialog then, on the app's behalf, renders that frame's content into images suitable for printing. Apps also have the option to specifiy a callback function they want the Print Dialog to invoke for custom rendering. When the user selects &quot;print&quot;, the Print Dialog calls the Print Manager service to initiate a print job with the selected options and files.
+    </p>
+    <h2 id="printer-discovery">
+      Printer Discovery
+    </h2>
+    <p>
+      Printers are either automatically discovered using <a href="http://en.wikipedia.org/wiki/Zeroconf">Zeroconf</a> (Zero configuration networking), or manually added based on IPv4 address. Available printers are determined by a user's SSID (Service Set IDentifier) -- an access point identifying a specific 802.11 wireless LAN. Zeroconf does not detect printers attached to other access points. Apple's Zeroconf version is called <em>Bonjour</em>, so printers may advertise they support that. For most users, this should be sufficient to discover available printers. However, if the access point is configured to block multi-cast (which Zeroconf needs), or the printer has Zeroconf turned off, it may be necessary to add the printer manually.
+    </p>
+    <h2 id="margins-and-insets">
+      Margins and Insets
+    </h2>
+    <p>
+      If not operating in <em>borderless</em> mode, margins determine how close to the paper's edges the printer can print. The printer specifies the page margins which apps cannot change. Margins are denoted in inches for the top, left, right, and bottom.
+    </p>
+    <p>
+      Applications can, however, specify the margins for the printed output; these are referred to as <em>insets</em> (to differentiate them from printer margins). Like margins, insets are specified from the edge of the page. They must be larger than or equal to the printer margins.<br>
+      Also like margins, insets are denoted in inches for the top, left, right, and bottom.
+    </p>
+    <p>
+      If the printer supports borderless mode, and the app specifies it, insets are <strong>not</strong> supported. Specifying both insets and borderless mode results in an error.
+    </p>
+    <p>
+      <strong>Note</strong>: The Print Dialog's <code>margin</code> object can be used to define insets. In the Print Manager API calls, inset properties contain the text &quot;Inset&quot;, i.e., <code>rightInset</code>, <code>leftInset</code>, etc.
+    </p>
+    <h2 id="target-audience">
+      Target Audience
+    </h2>
+    <p>
+      This document assumes the reader has some knowledge, or experience coding, with HP/Palm's new Enyo JavaScript framework. Specifically, you are familiar with how to use an Enyo Popup control (Print Dialog) from within the Enyo framework. See HP/Palm's Enyo documentation for more information.
+    </p>
+    <p>
+      <strong>Note:</strong> Currently, <strong>only</strong> networked HP printers are supported.
+    </p>
+    <h2 id="using-the-print-dialog">
+      Using the Print Dialog
+    </h2>
+    <p>
+      <img src="/images/PrintDialog.jpg" alt="Figure 1: Example Print Dialog for manually added printer"><br>
+      <br>
+      The Print Dialog, in the Enyo JavaScript framework, is a type of pop-up (<code>kind: enyo.Popup</code>), 351px wide by 372px high, that lets the user choose a printer, select print options and print a set of images or rendered documents.
+    </p>
+    <p>
+      <strong>Your Enyo app has three options for printing content with the Print Dialog:</strong>
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>
+        <p>
+          Print existing JPEG images -- Use the Print Dialog's <code>imagesPath</code> and <code>imagesToPrint</code> parameters.
+        </p>
+      </li>
+      <li>
+        <p>
+          Print frame content -- Use the <code>frameToPrint</code> parameter.
+        </p>
+      </li>
+      <li>
+        <p>
+          Print with a custom rendering function -- Use the <code>onRenderDocument</code> parameter.
+        </p>
+      </li>
+    </ol>
+    <p>
+      One of these options <strong>must</strong> be specified, and <strong>only one</strong> can be used.
+    </p>
+    <p>
+      <strong>To include the Print Dialog in your Enyo app:</strong>
+    </p>
+    <p>
+      Since the Print Dialog is a library, your app needs to include a &quot;<code>$enyo-lib/printdialog/</code>&quot; entry in your call to <code>enyo.depends()</code>.
+    </p>
+    <p>
+      For example:
+    </p>
+    <blockquote>
+      <pre>
+<code> enyo.depends(
+    &quot;source/FeedReader.js&quot;,
+    &quot;source/Search.js&quot;,
+    &quot;css/FeedReader.css&quot;,
+   &quot;$enyo-lib/printdialog/&quot; 
+ );
+</code>
+</pre>
+    </blockquote>
+    <h3 id="print-dialog-properties">
+      Print Dialog Properties
+    </h3>
+    <p>
+      You can set the following properties to customize the Print Dialog when it appears in your app:
+    </p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th width="600">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            pageRange
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            The minimum and maximum number of pages that can be printed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            copiesRange
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            The minimum (1 or more) and maximum (20 or less) number of copies that can be printed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            margin
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Default page margins for the print job in inches (i.e., <code>{top: 0.5, left: 0.5, right: 0.5, bottom: 0.5}</code>). These are what was referred to as &quot;insets&quot; at the top. By default, images are printed borderless with no margins while documents default to 0.5 inch for all.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            duplexOption
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            User can select 2-sided printing flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaSizeOption
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            User can select media size flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mediaTypeOption
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            User can select media type flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            colorOption
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            User can select color flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            qualityOption
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            User can select print quality flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            imagesToPrint
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string array
+          </td>
+          <td>
+            <p>
+              JPEG images to print. Besides the image file name (i.e., &quot;image.jpg&quot;), you can also include a full or partial path name. The <code>imagesPath</code> value is prepended to each string in this array.
+            </p>
+            <p>
+              Either this, <code>frameToPrint</code> or <code>onRenderDocument</code> is <strong>required</strong>. Only one can be used.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            imagesPath
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to images. This is prepended to the <code>imagesToPath</code> strings. Note that it could be either a full or partial path. Defaults to the empty string if not included.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            frameToPrint
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Inline object, see two fields below. Either this, <code>imagesToPrint</code> or <code>onRenderDocument</code> is <strong>required</strong>. Only one can be used.
+          </td>
+        </tr>
+        <tr bgcolor="lightGoldenRodYellow">
+          <td>
+            frameToPrint.name
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of frame whose content you want to render and print. If empty string (&quot;&quot;), the main frame is used.
+          </td>
+        </tr>
+        <tr bgcolor="lightGoldenRodYellow">
+          <td>
+            frameToPrint.landscape
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Print frame content in landscape or portrait flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            appName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Calling app's name.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            onRenderDocument
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            <p>
+              Rendering function for WebKit content.
+            </p>
+            <p>
+              Either this, <code>frameToPrint</code>, or <code>imagesToPrint</code> is <strong>required</strong>. Only one can be used.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="examples">
+      Examples
+    </h3>
+    <h4 id="printing-demo-sample-app">
+      Printing Demo Sample App
+    </h4>
+    <p>
+      For a complete app example that uses the Print Dialog, see the <code>com.palm.app.printdemo</code> sample application included with the webOS 3.0 SDK.
+    </p>
+    <h4 id="standard-usage-with-no-rendering">
+      Standard usage with no rendering
+    </h4>
+    <blockquote>
+      <pre>
+<code> {name: &quot;printDialog&quot;, kind: &quot;PrintDialog&quot;,
+         pageRange  : {min: 1, max: 20},
+         copiesRange: {min: 1, max: 10},
+         margin : {top: 0.5, left: 0.5, right: 0.5, bottom: 0.5},
+         mediaSizeOption: true,
+         colorOption: true,
+         imagePath: &quot;/media/internal/&quot;,
+         imagesToPrint: [&quot;image1.jpeg&quot;, &quot;image2.jpeg&quot;, &quot;image3.jpeg&quot;],
+         appName: &quot;Photos&quot;} 
+ 
+ this.$.printDialog.openAtCenter();  // Standard enyo.Popup method
+</code>
+</pre>
+    </blockquote>
+    <h4 id="printing-frame-content">
+      Printing frame content
+    </h4>
+    <blockquote>
+      <pre>
+<code> {name: &quot;printDialog&quot;, kind: &quot;PrintDialog&quot;,
+         duplexOption: true,
+         colorOption: true,
+         frameToPrint: {name:&quot;&quot;, landscape:false},
+         appName: &quot;TestApp&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <strong>To selectively print frame content:</strong>
+    </p>
+    <p>
+      If you are interested in printing some frame elements, but not others, use a CSS stylesheet for printing.
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>Include a reference to the stylesheet (does not have to be named &quot;PrintMedia.css&quot;) with a <code>media=&quot;print&quot;</code> attribute in your depends.js file:
+      </li>
+    </ol>
+    <blockquote>
+      <pre>
+<code> enyo.depends(
+   &quot;$enyo-lib/printdialog/&quot;,
+   &quot;source/PrintDemo.js&quot;
+ );
+ document.write('&lt;link href=&quot;PrintMedia.css&quot; media=&quot;print&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;');
+</code>
+</pre>
+    </blockquote>
+    <ol start="2" style="list-style-type: decimal">
+      <li>In your stylesheet, indicate the elements you do not want printed. For example:
+      </li>
+    </ol>
+    <blockquote>
+      <pre>
+<code> #navigation, #advertising  { display: none; }
+</code>
+</pre>
+    </blockquote>
+    <p>
+      For more information on CSS formatting, see <a href="http://webdesign.about.com/cs/css/a/aa042103a.htm" target="_blank">CSS For Print-Friendly Pages</a>, or numerous other articles on the Internet.
+    </p>
+    <h4 id="printing-with-custom-rendering">
+      Printing with custom rendering
+    </h4>
+    <p>
+      To print a custom rendered document, use the <code>onRenderDocument</code> event to render the document and add the rendered document to the print job.
+    </p>
+    <p>
+      Using PrintDialog to print a web page from the browser:
+    </p>
+    <blockquote>
+      <pre>
+<code> {name: &quot;printDialog&quot;, kind: &quot;PrintDialog&quot;,
+         copiesRange: {min: 1, max: 10},
+         pageRange: {min: 1, max: 20},
+         duplexOption: true,
+         mediaSizeOption : true,
+         mediaTypeOption : true,
+         colorOption: true,
+         qualityOption: true,
+         onRenderDocument: &quot;renderWebPage&quot;,
+         appName: &quot;Browser&quot;}
+
+ this.$.printDialog.openAtCenter();
+
+ renderWebPage: function(inSender, inJobID, inPrintParams) {
+         this.$.view.callBrowserAdapter(&quot;printFrame&quot;,
+         [&quot;&quot;,         // Frame name, uses &quot;_self&quot; if empty.
+         inJobID,
+         inPrintParams.width,
+         inPrintParams.height,
+         inPrintParams.pixelUnits,  // Same as DPI
+         false, // print in portrait
+         inPrintParams.renderInReverseOrder]);
+ }
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The Print Dialog app handles completion of the job after the rendered pages have been added.
+    </p>
+		</div>
+	</body>
+</html>

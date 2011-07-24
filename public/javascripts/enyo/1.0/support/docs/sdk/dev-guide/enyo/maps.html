@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="maps">
+      Maps
+    </h1>
+    <p>
+      <code>enyo.Map</code> is a wrapper around a Bing Maps control. It is found under <code>framework/lib/systemui</code> in the Enyo source tree. To use a <code>Map</code> control in an application, add the following line to the app's <code>depend.js</code> file:
+    </p>
+    <blockquote>
+      <pre>
+<code>&quot;$enyo-lib/systemui/&quot;
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Then add the Bing Maps script to <code>index.html</code>, like so:
+    </p>
+    <blockquote>
+      <pre>
+<code>&lt;head&gt;
+  &lt;title&gt;Maps&lt;/title&gt;
+  &lt;script type=&quot;text/javascript&quot;
+      src=&quot;http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&quot;&gt;&lt;/script&gt;
+  ...
+&lt;/head&gt;
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In your application code, declare a <code>Map</code> control as follows:
+    </p>
+    <blockquote>
+      <pre>
+<code>{name: &quot;map&quot;, kind: &quot;Map&quot;, credentials: &quot;my_bing_app_id&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To get a handle to the actual Bing Maps control, call <code>hasMap</code>:
+    </p>
+    <blockquote>
+      <pre>
+<code>var bingMap = this.$.map.hasMap();
+</code>
+</pre>
+    </blockquote>
+    <p>
+      When a user sets the location of a pin, <code>enyo.Map</code> fires an <code>onPinClick</code> event; if a map fails to load, it triggers an <code>onMapLoadFailure</code>.
+    </p>
+    <h2 id="published-properties">
+      Published Properties
+    </h2>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          latitude
+        </td>
+        <td>
+          37.029043436050415
+        </td>
+        <td>
+          The latitude of the location
+        </td>
+      </tr>
+      <tr>
+        <td>
+          longitude
+        </td>
+        <td nowrap>
+          -101.55550763010979
+        </td>
+        <td>
+          The longitude of the location
+        </td>
+      </tr>
+      <tr>
+        <td>
+          zoom
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          The zoom level of the map view
+        </td>
+      </tr>
+      <tr>
+        <td>
+          showPin
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          If <code>true</code>, shows a pin at the center of the current map view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          mapType
+        </td>
+        <td>
+          &quot;road&quot;
+        </td>
+        <td>
+          The map type of the map view. Valid map types are <code>&quot;aerial&quot;</code>, <code>&quot;auto&quot;</code>, <code>&quot;birdseye&quot;</code>, <code>&quot;collinsBart&quot;</code>, <code>&quot;mercator&quot;</code>, <code>&quot;ordnanceSurvey&quot;</code>, and <code>&quot;road&quot;</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          credentials
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          The Bing Maps Key used to authenticate the application
+        </td>
+      </tr>
+      <tr>
+        <td>
+          options
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          An object representing Bing options to customize the map that is displayed. These options can only be set at create time. For example:
+          <pre>
+{kind: "enyo.Map", options: {showDashboard: false, showCopyright: false}}
+</pre>
+        </td>
+      </tr>
+    </table>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <h3 id="hasmap">
+      hasMap()
+    </h3>
+    <p>
+      Returns the actual Bing Maps control.
+    </p>
+    <h3 id="clearallinexcludes">
+      clearAll(inExcludes)
+    </h3>
+    <p>
+      Removes all entities from the map except the dropped pin and any pins in <code>inExcludes</code>.
+    </p>
+    <h3 id="setcenterinlatitude-inlongitude">
+      setCenter(inLatitude, inLongitude)
+    </h3>
+    <p>
+      Sets the location of the center of the map view. <code>inLatitude</code> is the latitude of the location, and <code>inLongitude</code> is its longitude.
+    </p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,3072 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="download-manager">
+      Download Manager
+    </h1>
+    <p>
+      The Download Manager service (<code>com.palm.downloadmanager</code>) supports the downloading and uploading of files to and from a HP webOS device.
+    </p>
+    <p>
+      The <a href="#download">download</a> and <a href="#upload">upload</a> methods return a <em>ticket</em>, a number which identifies the download or upload. For a download, the ticket is used when making other method calls such as pause, resume, check status, and so on.
+    </p>
+    <hr>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <ul>
+      <li>
+        <a href="#cancel">cancelDownload</a> -- Cancels a download.
+      </li>
+      <li>
+        <a href="#delete">deleteDownloadedFile</a> -- Deletes a downloaded file.
+      </li>
+      <li>
+        <a href="#download">download</a> -- Downloads a file.
+      </li>
+      <li>
+        <a href="#downloadStatus">downloadStatusQuery</a> -- Returns a download's status.
+      </li>
+      <li>
+        <a href="#list">listPending</a> -- Lists the pending downloads.
+      </li>
+      <li>
+        <a href="#pause">pauseDownload</a> -- Pauses downloading a file.
+      </li>
+      <li>
+        <a href="#resume">resumeDownload</a> -- Resumes downloading a paused file.
+      </li>
+      <li>
+        <a href="#upload">upload</a> -- Uploads a device file.
+      </li>
+    </ul><a name="cancel" id="cancel"></a>
+    <hr>
+    <h3 id="canceldownload">
+      cancelDownload
+    </h3>
+    <p>
+      Cancels a download.
+    </p>
+    <h4 id="syntax">
+      Syntax
+    </h4>
+    <pre>
+{
+    "ticket" : number
+}
+</pre>
+    <h4 id="parameters">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download ID returned from <a href="#download">download</a> method.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns">
+      Returns
+    </h4>
+    <pre>
+{
+   "ticket"               : number,
+   "returnValue"          : boolean,
+   "subscribed"           : boolean,
+   "aborted"              : boolean,
+   "completed"            : boolean,
+   "completionStatusCode" : number,
+   "errorCode"            : string
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Passed download ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Was download subscribed flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            aborted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Was download aborted flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Was download completed flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completionStatusCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Completion status code:
+            <ul>
+              <li>-1 -- General error
+              </li>
+              <li>-2 -- Connect timeout
+              </li>
+              <li>-3 -- Corrupt file
+              </li>
+              <li>-4 -- File system error
+              </li>
+              <li>-5 -- HTTP error
+              </li>
+              <li>11 -- Interrupted
+              </li>
+              <li>12 -- Cancelled
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+ ...
+
+ {
+      name : "cancelDownloadFile",
+      kind : "PalmService",
+      service : "palm://com.palm.downloadmanager/",
+      method : "cancelDownload",
+      onSuccess : "cancelFinished",
+      onFailure : "cancelFail",
+      onResponse : "gotResponse"
+ },
+
+ ...
+
+   cancelFinished : function(inSender, inResponse) {
+      enyo.log("Cancel Download success, results=" + enyo.json.stringify(inResponse));
+   },
+   cancelFail : function(inSender, inResponse) {
+      enyo.log("Cancel Download failure, results=" + enyo.json.stringify(inResponse));
+   },   
+   cancelFile : function(inSender, inResponse)
+   {
+      this.$.cancelDownloadFile.call({ ticket: ticket});
+   }
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+        method: 'cancelDownload',
+        parameters: { "ticket": ticket},
+        onSuccess : function (e){ Mojo.Log.info("Cancel Download success, results="+JSON.stringify(e)); },
+        onFailure : function (e){ Mojo.Log.info("Cancel Download failure, results="+JSON.stringify(e)); }
+}); 
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+Cancel Download sucess, results=
+{
+   "ticket":32,
+   "returnValue":true,
+   "subscribed":false,
+   "aborted":true,
+   "completed":false,
+   "completionStatusCode":12
+}
+</pre><strong>Failure</strong>
+    <pre>
+Cancel Download failure, results=
+{
+    "ticket":0,
+    "returnValue":false,
+    "subscribed":false,
+    "errorCode":"missing 'ticket' parameter"
+}
+</pre><a name="delete" id="delete"></a>
+    <hr>
+    <h3 id="deletedownloadedfile">
+      deleteDownloadedFile
+    </h3>
+    <p>
+      Deletes a downloaded file.
+    </p>
+    <h4 id="syntax-1">
+      Syntax
+    </h4>
+    <pre>
+{
+    "ticket" : number
+}
+</pre>
+    <h4 id="parameters-1">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Unique download ID returned from <a href="#download"><code>download</code></a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns-1">
+      Returns
+    </h4>
+    <pre>
+{
+    returnValue : boolean,
+    ticket      : number,
+    errorCode   : string
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Passed download ID.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-1">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "deleteDownloadFile",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "deleteDownloadedFile",
+    onSuccess : "deleteFinished",
+    onFailure : "deleteFail",
+    onResponse : "gotResponse"
+ }, 
+
+ ...
+
+deleteFinished : function(inSender, inResponse) {
+   enyo.log("deleteDownloadedFile success, results=" + enyo.json.stringify(inResponse));
+},
+deleteFail : function(inSender, inResponse) {
+   enyo.log("deleteDownloadedFile failure, results=" + enyo.json.stringify(inResponse));
+},  
+deleteFile : function(inSender, inResponse)
+{
+   this.$.deleteDownloadFile.call({ticket: ticket});
+}  
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+    method: 'deleteDownloadedFile',
+    parameters: {"ticket":ticket},
+    onSuccess : function (e){ Mojo.Log.info("deleteDownloadedFile success, results="+JSON.stringify(e)); },
+    onFailure : function (e){ Mojo.Log.info("deleteDownloadedFile failure, results="+JSON.stringify(e)); }
+}); 
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+ deleteDownloadedFile success, results=
+ {
+     "ticket":43,
+     "returnValue":true
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+ deleteDownloadedFile failure, results=
+ {
+     "ticket":166,
+     "returnValue":false,
+     "errorCode": "requested download record not found"
+}
+</pre><a name="download" id="download"></a>
+    <hr>
+    <h3 id="download">
+      download
+    </h3>
+    <p>
+      Downloads a file located at a target URI, and returns a <em>ticket</em>, a unique download ID you can use in other method calls, i.e., to check status, pause, resume, cancel, and so on.
+    </p>
+    <p>
+      If <code>subscribe</code> = <code>false</code>, the <code>onSuccess</code> handler is called only once, after the initial request. To be notified when the download is complete, set <code>subscribe</code> = <code>true</code> and <code>onSuccess</code> will be called periodically with progress updates.
+    </p>
+    <p>
+      The download is complete when the handler receives a response with <code>completed</code> = <code>true</code>. Alternatively, you can call <a href="#downloadStatus"><code>downloadStatusQuery</code></a> to check this.
+    </p>
+    <p>
+      If the target filename is not explicitly specified in the call and a file with the same name already exists, the Download Manager appends an underscore (&quot;_&quot;) and a number (_1, _2, and so on) to avoid overwriting the existing copy of the file. If you specify the target filename in the call, any existing file with the same name is overwritten.
+    </p>
+    <h4 id="syntax-2">
+      Syntax
+    </h4>
+    <pre>
+{
+    "target"                 : string,
+    "mime"                   : string,
+    "cookieHeader"           : string,
+    "targetDir"              : string,
+    "targetFilename"         : string,
+    "keepFilenameOnRedirect" : boolean,
+    "canHandlePause"         : boolean,
+    "subscribe"              : boolean
+}  
+</pre>
+    <h4 id="parameters-2">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            target
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URL of the form &quot;http://file&quot; or &quot;https://file&quot; where <em>file</em> is a well-formed URI targeting a downloadable file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mime
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File's <a href="http://www.w3schools.com/media/media_mimeref.asp" target="_blank">MIME</a> type.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            cookieHeader
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Sets the cookie header for the request, i.e., &quot;foo=bar&quot;, or, for multiple cookies, &quot;foo=bar;red=blue;night=day&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            targetDir
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The local directory to save the file. This directory <strong>must</strong> be beneath <code>/media/internal</code> and defaults to <code>/media/internal/downloads</code> if not specified.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            targetFilename
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The local file name to use when saving the file. Defaults to file name specified in <code>target</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            keepFilenameOnRedirect
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            When the download URL redirects, setting <code>keepFilenameOnRedirect</code> to <code>true</code> preserves the original target filename. This parameter is ignored if <code>targetFilename</code> is specified.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, the <code>onSuccess</code> handler is called periodically with updates during the file download. Otherwise, the <code>onSuccess</code> handler is only called once when the download request is sent (not when the download completes). Default is <code>false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canHandlePause
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If <code>true</code>, you can use the pause/resume APIs with this download. Default is <code>false</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns-2">
+      Returns
+    </h4>
+    <pre>
+{
+   "returnValue"          : boolean,
+   "ticket"               : number,
+   "url"                  : string,
+   "sourceUrl"            : string,
+   "deviceId"             : string,
+   "authToken"            : string,
+   "destTempPrefix"       : string,
+   "destFile"             : string,
+   "destPath"             : string,
+   "mimetype"             : string,
+   "amountReceived"       : number,
+   "amountTotal"          : number,
+   "canHandlePause"       : boolean,
+   "completionStatusCode" : number,
+   "httpStatus"           : number,   
+   "interrupted"          : boolean,
+   "completed"            : boolean,
+   "aborted"              : boolean,
+   "target"               : string,
+   "errorCode"            : string,
+   "errorText"            : string
+}
+
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download ID number.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            url
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            sourceUrl
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            deviceId
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            authToken
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destTempPrefix
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            A file is downloaded as a temporary file first -- &quot;&lt;destPath&gt; + &lt;destTempPrefix&gt; + &lt;destFile&gt;&quot; -- and when the file completes, it is renamed to &lt;destPath&gt; + &lt;destFile&gt;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destFile
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destPath
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Set to <code>true</code> if subscribed to downloads from that URI.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            amountReceived
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Number of bytes received so far.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            amountTotal
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Total number of bytes downloaded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canHandlePause
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Pause and resume functions can be used during download flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completionStatusCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Completion status code:
+            <ul>
+              <li>-1 -- General error
+              </li>
+              <li>-2 -- Connect timeout
+              </li>
+              <li>-3 -- Corrupt file
+              </li>
+              <li>-4 -- File system error
+              </li>
+              <li>-5 -- HTTP error
+              </li>
+              <li>11 -- Interrupted
+              </li>
+              <li>12 -- Cancelled
+              </li>
+              <li>200 -- Success
+              </li>
+              <li>...Other HTTP return codes (besides 200)...
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            httpStatus
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Returns the request's actual HTTP status code without filtering. For example, if a file was not found on the server, it would be &quot;404&quot; (not found).<br>
+            If that was the case, <code>completionStatusCode</code> would be &quot;-5&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            interrupted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if download was interrupted.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if download is complete.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            aborted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Was download aborted flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            target
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to the local downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mimetype
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File's MIME type.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error code returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-2">
+      Examples
+    </h4>
+    <p>
+      <strong>Note</strong>: Anything short of a missing <code>target</code> parameter will cause &quot;onSuccess&quot; to be called. For example, trying to download a file that does not exist will still result in &quot;onSuccess&quot; getting called. However, the <code>completeStatusCode</code> will indicate an error, in this case, -5 = HTTP Error. A negative number for this field always means an error.
+    </p>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+enyo.kind({
+   name : "ServerDownload",
+   kind : enyo.VFlexBox,
+   components : [ {
+      kind : "PageHeader",
+      components : [ {
+         content : "File Download Test"
+      } ]
+   }, {
+      flex : 1,
+      kind : "Pane",
+      components : [ {
+         flex : 1,
+         kind : "Scroller",
+         components : [ {
+            name : "fileDownload",
+            kind : "PalmService",
+            service : "palm://com.palm.downloadmanager/",
+            method : "download",
+            onSuccess : "downloadFinished",
+            onFailure : "downloadFail",
+            onResponse : "gotResponse",
+            subscribe : true
+         },
+
+         {
+            kind : "Button",
+            name : "DownloadButton",
+            caption : "Call PalmService",
+            onclick : "downloadFile"
+         }]
+      } ]
+   }, {
+      kind : "Toolbar",
+      components : [
+
+      ]
+   } ],
+
+   downloadFinished : function(inSender, inResponse) {
+      enyo.log("Download success, results=" + enyo.json.stringify(inResponse));
+   },
+   downloadFail : function(inSender, inResponse) {
+      enyo.log("Download failure, results=" + enyo.json.stringify(inResponse));
+   },
+
+   downloadFile : function(inSender, inResponse)
+   {
+      this.$.fileDownload.call({
+             target: "http://www.somewebsite.com/welcome.html",
+             mime: "text/html",
+             targetDir : "/media/internal/files/",
+             targetFilename : "welcome.html",
+             keepFilenameOnRedirect: false,
+             canHandlePause: true,
+             subscribe: true });
+   }
+
+});
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+    method: 'download',
+    parameters: {
+        target: "http://www.somewebsite.com/welcome.html",
+        mime: "text/html",
+        targetDir : "/media/internal/files/",
+        targetFilename : "welcome.html",
+        keepFilenameOnRedirect: false,
+        subscribe: true
+    },
+    onSuccess : function (e){ Mojo.Log.info("Download success, results="+JSON.stringify(e)); },
+    onFailure : function (e){ Mojo.Log.info("Download failure, results="+JSON.stringify(e)); }
+});
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+Download success, results=
+{
+   "returnValue":true,
+   "ticket":21,
+   "url":"http://www.somewebsite.com/welcome.html",
+   "target":"/media/internal/files/welcome.html",
+   "subscribed":true
+}
+</pre>
+    <pre>
+Download success, results=
+{
+   "ticket":21,
+   "amountReceived":1959,
+   "amountTotal":2386
+}
+</pre>
+    <pre>
+Download success, results=
+{
+   "ticket":21,
+   "url":"http://www.somewebsite.com/welcome.html",
+   "sourceUrl":"http://www.somewebsite.com/welcome.html",
+   "deviceId":"",
+   "authToken":"",
+   "destTempPrefix":".",
+   "destFile":"welcome.html",
+   "destPath":"/media/internal/files/",
+   "mimetype":"text/html",
+   "amountReceived":2386,
+   "amountTotal":2386,
+   "canHandlePause":false,
+   "completionStatusCode":200,
+   "interrupted":false,
+   "completed":true,
+   "aborted":false,
+   "target":"/media/internal/files/welcome.html"
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+Download failure, results=
+{
+   "returnValue":false,
+   "errorCode":"-1",
+   "errorText":"Failed to find param target in message",
+   "subscribed":false
+}
+
+</pre><a name="downloadStatus" id="downloadStatus"></a>
+    <hr>
+    <h3 id="downloadstatusquery">
+      downloadStatusQuery
+    </h3>
+    <p>
+      Returns a download's status.
+    </p>
+    <h4 id="syntax-3">
+      Syntax
+    </h4>
+    <pre>
+{
+    "ticket" : number
+}
+</pre>
+    <h4 id="parameters-3">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Requred
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download ID returned from <a href="#download"><code>download</code></a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns-3">
+      Returns
+    </h4>
+    <pre>
+ {
+   "returnValue"          : boolean
+   "ticket"               : number,
+   "url"                  : string,
+   "sourceUrl"            : string,
+   "deviceId"             : string,
+   "authToken"            : string,
+   "destTempPrefix"       : string,
+   "destFile"             : string,
+   "destPath"             : string,
+   "mimetype"             : string,
+   "amountReceived"       : number,
+   "amountTotal"          : number,
+   "canHandlePause"       : boolean,
+   "completionStatusCode" : number,
+   "interrupted"          : boolean,
+   "completed"            : boolean,
+   "aborted"              : boolean,
+   "target"               : string,
+   "owner"                : string,
+   "interface"            : string,
+   "state"                : string,
+   "subscribed"           : boolean,
+   "errorCode"            : string
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            A unique download ID you can use in other method calls.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            url
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            sourceUrl
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            deviceId
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            authToken
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destTempPrefix
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            A file is downloaded as a temporary file first -- &quot;&lt;destPath&gt; + &lt;destTempPrefix&gt; + &lt;destFile&gt;&quot; -- and when the file completes, it is renamed to &lt;destPath&gt; + &lt;destFile&gt;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destFile
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            destPath
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            mimetype
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File's MIME type.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            amountReceived
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Number of bytes received so far.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            amountTotal
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Total number of bytes downloaded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            canHandlePause
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Pause and resume functions can be used during download flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completionStatusCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Completion status code:
+            <ul>
+              <li>-1 -- General error
+              </li>
+              <li>-2 -- Connect timeout
+              </li>
+              <li>-3 -- Corrupt file
+              </li>
+              <li>-4 -- File system error
+              </li>
+              <li>-5 -- HTTP error
+              </li>
+              <li>11 -- Interrupted
+              </li>
+              <li>12 -- Cancelled
+              </li>
+              <li>200 -- Success
+              </li>
+              <li>...Other HTTP return codes (besides 200)...
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            interrupted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if download was paused.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> if download is complete.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            aborted
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Was download aborted flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            target
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to the local downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            owner
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            ID and PID of app requesting download.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            interface
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Interface name, i.e., &quot;wifi&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            state
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Download state
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is download subscribed flag. Returned on failure.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-3">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "queryDownloadFile",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "downloadStatusQuery",
+    onSuccess : "queryFinished",
+    onFailure : "queryFail",
+    onResponse : "gotResponse"
+},      
+
+ ...
+
+queryFinished : function(inSender, inResponse) {
+    enyo.log("downloadStatusQuery success, results=" + enyo.json.stringify(inResponse));
+},
+queryFail : function(inSender, inResponse) {
+    enyo.log("downloadStatusQuery failure, results=" + enyo.json.stringify(inResponse));
+},  
+queryFile : function(inSender, inResponse)
+{
+      this.$.queryDownloadFile.call({ticket: ticket});
+} 
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+     method: 'downloadStatusQuery',
+     parameters: {"ticket":ticket},
+     onSuccess : function (e){ Mojo.Log.info("downloadStatusQuery success, results="+JSON.stringify(e)); },
+     onFailure : function (e){ Mojo.Log.info("downloadStatusQuery failure, results="+JSON.stringify(e)); }
+  });
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+ downloadStatusQuery success, results=
+ {
+   "ticket":16,
+   "url":"http://www.somewebsite.com/MekongThumb.jpg",
+   "sourceUrl":"http://www.somewebsite.com/MekongThumb.jpg",
+   "deviceId":"",
+   "authToken":"",
+   "destTempPrefix":".",
+   "destFile":"MekongThumb.jpg",
+   "destPath":"/media/internal/files/",
+   "mimetype":"image/jpeg",
+   "amountReceived":301560,
+   "amountTotal":301560,
+   "canHandlePause":true,
+   "completionStatusCode":200,
+   "interrupted":false,
+   "completed":true,
+   "aborted":false,
+   "target":"/media/internal/files/MekongThumb.jpg",
+   "owner":"com.yourdomain.downloadmanager 1059",
+   "interface":"wifi",
+   "state":"completed",
+   "returnValue":true
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+downloadStatusQuery failure, results=
+{  
+    "ticket": 122,   
+    "returnValue": false,
+    "errorCode": "ticket_not_found",
+    "subscribed": false 
+}
+</pre><a name="list" id="list"></a>
+    <hr>
+    <h3 id="listpending">
+      listPending
+    </h3>
+    <p>
+      Lists pending downloads.
+    </p>
+    <h4 id="syntax-4">
+      Syntax
+    </h4>
+    <pre>
+{ }
+</pre>
+    <h4 id="parameters-4">
+      Parameters
+    </h4>
+    <p>
+      None.
+    </p>
+    <h4 id="returns-4">
+      Returns
+    </h4>
+    <pre>
+{
+   "returnValue" : boolean,
+   "count"       : number,
+   "downloads":[
+      {
+         "ticket"         : number,
+         "url"            : string,
+         "sourceUrl"      : string,
+         "deviceId"       : string,
+         "authToken"      : string,
+         "target"         : string,
+         "destTempPrefix" : string,
+         "destFile"       : string,
+         "destPath"       : string,
+         "mimetype"       : string,
+         "amountReceived" : number,
+         "amountTotal"    : number,
+         "canHandlePause" : boolean,
+         "lastUpdateAt"   : number,
+         "queued"         : boolean,
+         "owner"          : string,
+         "connectionName" : string
+      }
+   ]
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            count
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Number of downloads in progress.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            downloads
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object array
+          </td>
+          <td>
+            One object for each pending download. This object is absent if there are no pending downloads.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            ticket
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download's ID from <code>download</code>.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            url
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            sourceUrl
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            URI of the downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            deviceId
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            authToken
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Used in App Catalog downloads.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            target
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path and filename of the local downloaded file.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            destTempPrefix
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            A file is downloaded as a temporary file first -- &quot;&lt;destPath&gt; + &lt;destTempPrefix&gt; + &lt;destFile&gt;&quot; -- and when the file completes, it is renamed to &lt;destPath&gt; + &lt;destFile&gt;.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            destFile
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Name of downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            destPath
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to downloaded file on device.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            mimetype
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            File's MIME type, i.e., &quot;text/html&quot;
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            amountReceived
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Number of bytes received so far.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            amountTotal
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Total number of bytes downloaded.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            canHandlePause
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Pause and resume functions can be used during download flag.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            lastUpdateAt
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Bytemark at which the last subscription update was sent
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            queued
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is file queued for download flag.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            owner
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            ID and PID of app requesting download.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            connectionName
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Connection name, i.e., &quot;wifi&quot;.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-4">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "getPendingFiles",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "listPending",
+    onSuccess : "getPendingFinished",
+    onFailure : "getPendingFail",
+    onResponse : "gotResponse"
+},      
+
+ ...
+
+getPendingFinished : function(inSender, inResponse) {
+    enyo.log("listPending success, results=" + enyo.json.stringify(inResponse));
+},
+getPendingFail : function(inSender, inResponse) {
+    enyo.log("listPending failure, results=" + enyo.json.stringify(inResponse));
+},  
+getPending : function(inSender, inResponse)
+{
+  this.$.getPendingFiles.call({});
+}     
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+     method: 'listPending',
+     parameters: {},
+     onSuccess : function (e){ Mojo.Log.info("List Pending success, results="+JSON.stringify(e)); },
+     onFailure : function (e){ Mojo.Log.info("List Pending failure, results="+JSON.stringify(e)); }
+});
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+List Pending success, results={
+{
+   "returnValue":true,
+   "count":1,
+   "downloads":[
+      {
+         "ticket":41,
+         "url":"http://www.somewebsite.com/access_110201.log",
+         "sourceUrl":"http://www.somewebsite.com/access_110201.log",
+         "deviceId":"",
+         "authToken":"",
+         "target":"/media/internal/files/.access_110201.log",
+         "destTempPrefix":".",
+         "destFile":"access_110201.log",
+         "destPath":"/media/internal/files/",
+         "mimetype":"application/x-binary",
+         "amountReceived":675,
+         "amountTotal":9876,
+         "canHandlePause":true,
+         "lastUpdateAt":0,
+         "queued":false,
+         "owner":"com.yourdomain.downloadmanager 1012",
+         "connectionName":"wifi"
+      }
+   ]
+}
+</pre><a name="pause" id="pause"></a>
+    <hr>
+    <h3 id="pausedownload">
+      pauseDownload
+    </h3>
+    <p>
+      Pauses downloading a file.
+    </p>
+    <p>
+      <strong>Note</strong>
+    </p>
+    <p>
+      Only downloads started with <code>canHandlePause</code> = <code>true</code> can be paused; otherwise, calling <code>pauseDownload</code> on a downloading file will act like a &quot;cancel&quot;.
+    </p>
+    <h4 id="syntax-5">
+      Syntax
+    </h4>
+    <pre>
+{
+    "ticket" : number
+}
+</pre>
+    <h4 id="parameters-5">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download ID from <a href="#download">download</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns-5">
+      Returns
+    </h4>
+    <pre>
+{
+   "returnValue" : boolean,
+   "subscribed"  : boolean,
+   "errorCode"   : string
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is download subscribed to flag
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-5">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "pauseDownloadFile",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "pauseDownload",
+    onSuccess : "pauseFinished",
+    onFailure : "pauseFail",
+    onResponse : "gotResponse"
+},          
+
+ ...
+
+pauseFinished : function(inSender, inResponse) {
+    enyo.log("pauseDownload success, results=" + enyo.json.stringify(inResponse));
+},
+pauseFail : function(inSender, inResponse) {
+    enyo.log("pauseDownload failure, results=" + enyo.json.stringify(inResponse));
+},   
+pauseFile : function(inSender, inResponse)
+{
+  this.$.pauseDownloadFile.call({ticket: ticket});
+} 
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+     method: 'pauseDownload',
+     parameters: {},
+     onSuccess : function (e){ Mojo.Log.info("pauseDownload success, results="+JSON.stringify(e)); },
+     onFailure : function (e){ Mojo.Log.info("pauseDownload failure, results="+JSON.stringify(e)); }
+}); 
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+pauseDownload success, results=
+{
+    "subscribed":false,
+    "returnValue":true
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+pauseDownload failure, results=
+{
+    "subscribed":false,
+    "returnValue":false,
+    "errorCode":"Ticket provided does not correspond to a downloading transfer"
+}   
+</pre><a name="resume" id="resume"></a>
+    <hr>
+    <h3 id="resumedownload">
+      resumeDownload
+    </h3>
+    <p>
+      Resumes a paused download.
+    </p>
+    <pre>
+{
+    "ticket" : number
+}
+</pre>
+    <h4 id="parameters-6">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Download ID from <a href="#download">download</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="return">
+      Return
+    </h4>
+    <pre>
+{
+   "returnValue" : boolean,
+   "subscribed"  : boolean,
+   "errorCode"   : string
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is download subscribed to flag
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-6">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "resumeDownloadFile",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "resumeDownload",
+    onSuccess : "resumeFinished",
+    onFailure : "resumeFail",
+    onResponse : "gotResponse"
+},          
+
+ ...
+
+resumeFinished : function(inSender, inResponse) {
+    enyo.log("resumeDownload success, results=" + enyo.json.stringify(inResponse));
+},
+resumeFail : function(inSender, inResponse) {
+    enyo.log("resumeDownload failure, results=" + enyo.json.stringify(inResponse));
+},   
+resumeFile : function(inSender, inResponse)
+{
+  this.$.resumeDownloadFile.call({ticket: ticket});
+} 
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+     method: 'resumeDownload',
+     parameters: {},
+     onSuccess : function (e){ Mojo.Log.info("resumeDownload success, results="+JSON.stringify(e)); },
+     onFailure : function (e){ Mojo.Log.info("resumeDownload failure, results="+JSON.stringify(e)); }
+}); 
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+resumeDownload success, results=
+{
+    "subscribed":false,
+    "returnValue":true
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+resumeDownload failure, results=
+{
+    "subscribed":false,
+    "returnValue":false,
+    "errorCode":"Ticket provided does not correspond to an interrupted transfer in history"
+}   
+</pre><a name="upload" id="upload"></a>
+    <hr>
+    <h3 id="upload">
+      upload
+    </h3>
+    <p>
+      Uploads a file to the target URI.
+    </p>
+    <p>
+      If <code>subscribe</code> = <code>false</code>, the <code>onSuccess</code> handler is called only once, after the initial request. To be notified when the upload is complete, set <code>subscribe</code> = <code>true</code> and <code>onSuccess</code> will be called periodically with progress updates.
+    </p>
+    <p>
+      The upload is complete when the handler receives a response with <code>completed</code> = <code>true</code>.
+    </p>
+    <p>
+      On completing the upload, the upload method sends the following object to all subscribed apps for both success and failure cases:
+    </p>
+    <h4 id="syntax-6">
+      Syntax
+    </h4>
+    <pre>
+{
+    "filename"          : string,
+    "url"               : string,
+    "fileLabel"         : string,
+    "contentType"       : string,
+    "postParameters"  
+    {
+       "key"            : string,
+       "data"           : string,
+       "contentType"    : string
+    },
+    "cookies" :
+    {
+      "&lt;key&gt;"     : string,
+      ...
+    },
+    "customHTTPHeaders" : string array
+}                           
+</pre>
+    <h4 id="parameters-7">
+      Parameters
+    </h4>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            fileName
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to the local file to be uploaded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            url
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The URL to which to post the file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            fileLabel
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The label portion of the file name (as opposed to the file extension).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            contentType
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The MIME type of the file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            postParameters
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            An object containing key/data/content triplets to support parameters required by the server to which the file is uploaded. See 3 fields below.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            key
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Header name.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            data
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Header value.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            contentType
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Header value type. Default is <code>text/plain</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            cookies
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Key-value pairs that carry additional optional information with the upload, in the format:<br>
+            cookies: { &quot;key1&quot;: &quot;val1&quot;, &quot;key2&quot;: &quot;val2&quot;, ...}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            customHttpHeaders
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Values to include in the HTTP headers, in the format:<br>
+            customHttpHeaders: [ &quot;val1&quot;, &quot;val2&quot;, ...]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribe
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            If set to true, upload() calls the onSuccess handler periodically with updates during the file upload. If set to false, calls the onSuccess handler only when the upload request is sent.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="returns-6">
+      Returns
+    </h4>
+    <pre>
+{
+   "ticket"         : number,
+   "returnValue"    : boolean,
+   "sourceFile"     : string,
+   "url"            : string,
+   "completionCode" : number,
+   "httpCode"       : number,
+   "responseString" : string,
+   "subscribed"     : boolean,
+   "errorCode"      : string   
+}
+</pre>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ticket
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            A number uniquely identifying the upload.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            sourceFile
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Path to the local file uploaded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            url
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The URL to which to post the file.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completionCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            Completion status code:
+            <ul>
+              <li>0 -- Success
+              </li>
+              <li>-1 -- General error
+              </li>
+              <li>-2 -- Connect timeout
+              </li>
+              <li>-3 -- Corrupt file
+              </li>
+              <li>-4 -- File system error
+              </li>
+              <li>-5 -- HTTP error
+              </li>
+              <li>11 -- Interrupted
+              </li>
+              <li>12 -- Cancelled
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            completed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Is upload complete flag.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            httpCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            number
+          </td>
+          <td>
+            HTTP return code, as described at <a href="http://www.w3.org/Protocols/HTTP/HTRESP.html" target="_blank">http://www.w3.org/Protocols/HTTP/HTRESP.html</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            responseString
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Server response to the POST request.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            location
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Uploaded file location.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            subscribed
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            Set to <code>true</code> if subscribed to updates on the upload request.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorCode
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            One of the following error messages:<br>
+            <ul>
+              <li>url parameter missing
+              </li>
+              <li>fileName parameter missing
+              </li>
+              <li>failed to start upload
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 id="examples-7">
+      Examples
+    </h4>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+...
+
+{
+    name : "uploadFile",
+    kind : "PalmService",
+    service : "palm://com.palm.downloadmanager/",
+    method : "upload",
+    onSuccess : "uploadFinished",
+    onFailure : "uploadFail",
+    onResponse : "gotResponse"
+},      
+
+ ...
+
+uploadFinished : function(inSender, inResponse) {
+   enyo.log("Upload success, results=" + enyo.json.stringify(inResponse));
+},
+uploadFail : function(inSender, inResponse) {
+   enyo.log("Upload failure, results=" + enyo.json.stringify(inResponse));
+},    
+uploadDeviceFile : function(inSender, inResponse)
+{
+    this.$.uploadFile.call({
+    "fileName": "/media/internal/files/MekongThumb.jpg",
+    "fileLabel":"media",
+    "url": "http://twitpic.com/api/uploadAndPost",
+    "contentType": "image/jpg",
+    "postParameters": [
+        {"key":"username" , "data": "helenwheels99"},
+        {"key":"password" , "data": "kd9o$#Pk"},
+     ],
+    "subscribe": true 
+    });
+}  
+</pre>
+    <p>
+      <strong>Mojo</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
+    method: "upload",
+    parameters: {
+        "fileName": "/media/internal/files/MekongThumb.jpg",
+        "fileLabel":"media",
+        "url": "http://twitpic.com/api/uploadAndPost",
+        "contentType": "image/jpg",
+        "postParameters": [
+            {"key":"username" , "data": "helenwheels99"},
+            {"key":"password" , "data": "kd9o$#Pk"},
+             ],
+         "subscribe": true 
+      },
+      onSuccess : function (e){ Mojo.Log.info("Upload success, results="+JSON.stringify(e)); },
+      onFailure : function (e){ Mojo.Log.info("Upload failure, results="+JSON.stringify(e)); }
+});
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+Upload success, results=
+{
+    "returnValue":true,
+    "ticket":5,
+    "subscribed":true
+}
+</pre>
+    <pre>
+Upload success, results=
+ {
+   "ticket":5,
+   "sourceFile":"/media/internal/files/MekongThumb.jpg",
+   "url":"http://twitpic.com/api/uploadAndPost",
+   "completed":true,
+   "completionCode":0,
+   "httpCode":200,
+   "responseString":"&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;
+                     \n&lt;rsp status=\"ok\"&gt;
+                     \n &lt;statusid&gt;&lt;/statusid&gt;
+                     \n &lt;userid&gt;164784775&lt;/userid&gt;
+                     \n &lt;mediaid&gt;4tbbf6&lt;/mediaid&gt;
+                     \n &lt;mediaurl&gt; http://twitpic.com/4tbbf6&lt;/mediaurl&gt;
+                     \n&lt;/rsp&gt;",
+   "location":""
+}
+</pre>
+    <p>
+      <strong>Failure</strong>
+    </p>
+    <pre>
+Upload failure, results=
+{
+   "returnValue":false,
+   "errorCode":"url parameter missing"
+}
+</pre>
+		</div>
+	</body>
+</html>

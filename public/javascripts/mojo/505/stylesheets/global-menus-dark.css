@@ -1,0 +1,48 @@
+/*
+   Menu Styling : Dark
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-dark .palm-row .list-selector-triangle {
+  background: url(../images/list-selector-triangle-dark.png) top no-repeat;
+}
+
+.palm-dark .palm-row.selected .list-selector-triangle {
+  background: url(../images/list-selector-triangle-dark.png) bottom no-repeat;
+}
+
+.palm-dark .palm-popup-container {
+  -webkit-border-image: url(../images/palm-popup-background-dark.png) 24 24 24 24 stretch stretch;
+}
+
+.palm-dark .palm-popup-container .palm-popup-content {
+  margin: 17px 9px 18px 9px;
+  padding: 0px;
+  max-height: 368px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.palm-dark .palm-popup-container .palm-popup-fade-top {
+  top: -16px;
+}
+.palm-dark .palm-popup-container .palm-popup-fade-top > .fade-background {
+  -webkit-border-image: url(../images/palm-popup-fade-top-dark.png) 0 24 0 24 repeat repeat;
+}
+.palm-dark .palm-popup-container .palm-popup-fade-top > .fade-arrow {
+  background: url(../images/palm-popup-fade-arrow-up-dark.png) center center no-repeat;
+}
+
+.palm-dark .palm-popup-container .palm-popup-fade-bottom {
+  bottom: -17px;
+}
+.palm-dark .palm-popup-container .palm-popup-fade-bottom > .fade-background {
+  -webkit-border-image: url(../images/palm-popup-fade-bottom-dark.png) 0 24 0 24 repeat repeat;
+}
+.palm-dark .palm-popup-container .palm-popup-fade-bottom > .fade-arrow {
+  background: url(../images/palm-popup-fade-arrow-down-dark.png) center center no-repeat;
+}
+

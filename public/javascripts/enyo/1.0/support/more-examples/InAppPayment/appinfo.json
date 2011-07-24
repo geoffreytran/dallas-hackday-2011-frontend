@@ -1,0 +1,10 @@
+{
+	"id": "com.palmdts.inapppayment",
+	"version": "1.0.0",
+	"vendor": "Palm DTS",
+	"type": "web",
+	"main": "index.html",
+	"title": "In-App Payment",
+	"icon": "icon.png",
+	"uiRevision":2
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="pdl_purchaseitem">
+      PDL_PurchaseItem
+    </h1>
+    <p>
+      Purchase the item with the sent-in itemID. This launches a system-level confirmation dialog before the purchase goes through. If the user has not yet configured a payment option, a UI for doing that appears first.
+    </p>
+    <p>
+      A successful purchase returns a &quot;Charged&quot; status and a receipt. If a payment takes time, a &quot;Pending&quot; status is returned. In this case, your app can later call &quot;PDL_GetPendingPurchaseInfo&quot; to check if the payment experienced further user action. Note that a pending status can also transit to failure.
+    </p>
+    <p>
+      For perishable items, 3rd-party apps should not charge the user twice. Your UI should diplay the item as &quot;pending&quot; and not allow the user to re-purchase it. Users should be able to check if it is done (via user tap) or, alternatively, your app can poll state periodically.
+    </p>
+    <p>
+      This call is a wrapper for a <a href="/reference/services/in-app-payment.html#purchaseItem">purchaseItem</a> <code>com.palm.service.payment</code> call and returns the same response. Call <a href="/reference/pdk/pdl/pdl-get-item-receipt-json.html">PDL_GetItemReceiptJSON</a> to turn the response into a JSON-formatted string.
+    </p>
+    <h2 id="syntax">
+      Syntax
+    </h2>
+    <pre>
+PDL_ItemReceipt *PDL_PurchaseItem(const char *itemID, int qty, const char *usr);
+</pre>
+    <h2 id="parameters">
+      Parameters
+    </h2>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter<br>
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description<br>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            itemId
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            pointer
+          </td>
+          <td>
+            Pointer to string containing item ID, i.e. &quot;gamelevel101&quot;. 64 characters maximum.<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            qty
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            int
+          </td>
+          <td>
+            Number of items to buy. At present, it must be set to 1. Any other value returns an error. In the future, this restriction will be lifted.<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            usr
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            pointer
+          </td>
+          <td>
+            Pointer to string returned with purchase receipts. 255 bytes maximum. Developers can use this to keep track of purchases. NULL is allowed.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="returns">
+      Returns
+    </h2>
+    <p>
+      Pointer to <code>PDL_ItemReceipt</code> struct.
+    </p>
+		</div>
+	</body>
+</html>

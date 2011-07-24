@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="services-faq">
+      Services FAQ
+    </h1>
+    <ul>
+      <li>
+        <a href="#nativeservices">C/C++ services</a>
+      </li>
+      <li>
+        <a href="#filesysaccess">File system access</a>
+      </li>
+      <li>
+        <a href="#datareturn">Limits on data returned from a service</a>
+      </li>
+      <li>
+        <a href="#nodejs">NodeJS</a>
+      </li>
+      <li>
+        <a href="#servicexit">Service exiting after 30 seconds</a>
+      </li>
+      <li>
+        <a href="#longrunningservice">Long running services</a>
+      </li>
+      <li>
+        <a href="#keepingstate">Keeping state between commands</a>
+      </li>
+      <li>
+        <a href="#newversion">New service version not showing changes</a>
+      </li>
+      <li>
+        <a href="#setup">Ensuring setup is complete</a>
+      </li>
+      <li>
+        <a href="#public">Making commands available on public bus</a>
+      </li>
+      <li>
+        <a href="#calling">Getting calling app ID</a>
+      </li>
+      <li>
+        <a href="#service">Getting calling service ID</a>
+      </li>
+    </ul>
+    <p>
+      <a name="nativeservices" id="nativeservices"></a> <strong>Can services be coded in C/C++?</strong>
+    </p>
+    <p>
+      No, currently, only JavaScript.
+    </p>
+    <p>
+      <strong>What is the naming convention for services?</strong>
+    </p>
+    <p>
+      Currently, a service must be packaged with an app, but it can be a stub app with no functionality and can be hidden from the Launcher. The service ID must start with the app ID.
+    </p>
+    <p>
+      For example:
+    </p>
+    <p>
+      App ID: <code>com.palmdts.testacct</code><br>
+      Service ID: <code>com.palmdts.testacct.contacts.service</code>
+    </p>
+    <p>
+      <a name="filesysaccess" id="filesysaccess"></a> <strong>What kind of file system access is available to a service?</strong>
+    </p>
+    <p>
+      Services are run in a jail with limited file system access. Access is allowed to the service directory, <code>/media/internal</code>, and a number of system directories. You can look in<code>/etc/jail_triton.conf</code> to see what is being mounted.
+    </p>
+    <p>
+      <a name="datareturn" id="datareturn"></a> <strong>Is there a limit on data that can be returned from a a service?</strong>
+    </p>
+    <p>
+      A definitive limit has not been determined yet, but testing has returned up to 2.5M of data. There is a limit on the length of <code>console.log</code> messages, so depending on how you try to see what is being returned...
+    </p>
+    <p>
+      <a name="nodejs" id="nodejs"></a> <strong>What are the node.js modules provided? Can I deliver additional ones in my installer?</strong>
+    </p>
+    <p>
+      Everything listed on the <a href="http://nodejs.org/docs/v0.2.3/" target="_blank">nodejs.org</a> site for v0.2.3 should be available. For additional modules, JavaScript-only modules can be loaded from within the service installation directory. Native code NodeJS extensions are not allowed.
+    </p>
+    <p>
+      To load node modules, you'll need to initalize <code>require</code>:
+    </p>
+    <blockquote>
+      <pre>
+<code> // Node.js require load
+ if (typeof require === &quot;undefined&quot;) {
+    require = IMPORTS.require;
+ }
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Currently, <a href="http://npmjs.org/" target="_blank">NPM</a> (Node Package Manager) and other 3rd party services are not supported, but that is likely to change in the near future.
+    </p>
+    <p>
+      <a name="servicexit" id="servicexit"></a> <strong>Why does my service exit after 30 seconds?</strong>
+    </p>
+    <p>
+      By default, if not actively working on a command, a service exits after 30 seconds. You could extend this using the &quot;<code>activityTimeout</code>&quot; field in the <code>services.json</code> configuration file, however, this is not recommended for long-running services. See the next question for more information.
+    </p>
+    <p>
+      <a name="longrunningservice" id="longrunningservice"></a> <strong>How do I keep my service from being killed after the scene that calls it is closed?</strong>
+    </p>
+    <p>
+      The &quot;wrong&quot; way to do this is to extend the <code>activityTimeout</code> as this makes it much more likely that errors in the service will keep it running for excessively long times. It is also not recommended that you extend the <code>commandTimeout</code> field, which should only be used to fine-tune the time a command takes to return a response.
+    </p>
+    <p>
+      One option is to use a subscribeable or watchable command. The initial response from the command indicates that the command was recieved and processed, and the second/subsequent responses can return the data from the remote server. An open subscription will keep the service running until it's canceled.
+    </p>
+    <p>
+      To do this, you need to configure your command assistant with <code>&quot;subscribe: true&quot;</code> or <code>&quot;watch: true&quot;</code> in your <code>services.json</code> file to mark the command as subscribeable or watchable. If either of these are set, then the command assistant's <code>run</code> function is passed a FutureFactory, which can be used to send multiple responses.
+    </p>
+    <p>
+      For example (services.json):
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+    &quot;name&quot;: &quot;subscribable&quot;,
+    &quot;assistant&quot;: &quot;SomeCommandAssistant&quot;,
+    &quot;subscribe&quot;: true,
+    &quot;public&quot;: true
+},
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Example subscribeable command assistant:
+    </p>
+    <pre>
+   function SomeCommandAssistant() {
+   }
+
+   SomeCommandAssistant.prototype = {
+      run: function(future, subscription) {
+            var assistant = this.controller.service.assistant;
+            var name = this.controller.args.name;
+            future.result = { reply: assistant.getHello() + name + '!'};
+            this.interval = setInterval(function ping() {
+            var f = subscription.get();
+                   f.result = { reply: "ping " + name +"..."};
+             }, 1000);
+       },
+       cancelSubscription: function() {
+            clearInterval(this.interval);
+       }
+   };
+</pre>
+    <p>
+      Note that this just an example of how to do a subscribed command -- i.e. the <code>setInterval</code> is just an example of a periodic callback, not a required part of implementing a subscription. However, it is important that <em><strong>services not stay running when they do not have to.</strong></em> Services can use the Activity Manager to set up triggered activities and callbacks. This is <strong><em>critical</em></strong> to minimizing power usage.
+    </p>
+    <p>
+      In addition to implementing a subscribable command, you also need to make the request from the application with <code>Mojo.Service.Request</code>, rather than using the <code>Mojo.Controller.SceneController's request()</code> method, since the controller cancels any requests when the scene closes.
+    </p>
+    <p>
+      <a name="keepingstate" id="keepingstate"></a> <strong>How do I keep state between invocations of commands?</strong>
+    </p>
+    <p>
+      Since your command assistants are only around when processing a request, you can store more-persistent state up in the service assistant object to have it stick around between requests.
+    </p>
+    <p>
+      From your command assistant code, you can use something like this:
+    </p>
+    <blockquote>
+      <pre>
+<code>var assistant = this.controller.service.assistant;
+assistant.saveState(someState);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Note, however, that any data stored in the service assistant is only going to persist until the service exits, typically 30 seconds after the last active command completes. <em><strong>To truly persist data, you should use the db8 database.</strong></em>
+    </p>
+    <p>
+      <a name="newversion" id="newversion"></a> <strong>How do I make my service pick up changes when I upload a new version?</strong>
+    </p>
+    <p>
+      If you change and re-install a service but it continues to behave as before, make sure the service is not still running during the re-installation. The framework provides every service with a <code>_quit</code> method you can call or you can check if it is still running with <code>ps aux</code> and <code>kill</code> it if it is.
+    </p>
+    <p>
+      <a name="setup" id="setup"></a> <strong>How do I ensure that my setup is complete before a command is executed?</strong>
+    </p>
+    <p>
+      If your assistant's setup() method needs to perform asynchronous operations before any commands can be executed, you can return a future object from setup(), and the framework will ensure that any commands are not dispatched before the future completes.
+    </p>
+    <blockquote>
+      <pre>
+<code>MyAssistant.prototype.setup = function() {
+   var f = DB.find(...);
+   return 
+};
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <a name="public" id="public"></a> <strong>How do I specify which commands are available on the public bus?</strong>
+    </p>
+    <p>
+      By default, all services listen on the private bus, but not on the public bus. Only HP webOS applications and services can send on the private bus. Third party services can only send on the public bus. To make a command available on the public bus, add <code>&quot;public&quot;: true</code> to the command's entry in <code>services.json</code>.
+    </p>
+    <p>
+      <a name="calling" id="calling"></a> <strong>How can my service get the calling application's ID?</strong>
+    </p>
+    <p>
+      In JavaScript, you can get the calling app ID using the following code:
+    </p>
+    <blockquote>
+      <pre>
+<code>var callingAppID = this.controller.message.applicationID().split(&quot; &quot;)[0];
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <a name="service" id="service"></a> <strong>How can my service get the calling service's ID?</strong>
+    </p>
+    <p>
+      In JavaScript, you can get the calling service ID using the following code:
+    </p>
+    <blockquote>
+      <pre>
+<code>var serviceID =  this.controller.message.senderServiceName();
+</code>
+</pre>
+    </blockquote><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+		</div>
+	</body>
+</html>

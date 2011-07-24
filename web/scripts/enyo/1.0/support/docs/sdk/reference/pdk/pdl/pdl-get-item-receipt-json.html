@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="pdl_getitemreceiptjson">
+      PDL_GetItemReceiptJSON
+    </h1>
+    <p>
+      Returns a JSON formatted string for the values contained in a <code>PDL_ItemReceipt</code> struct. This string remains valid until you free the <code>PDL_ItemReceipt</code>.
+    </p>
+    <h2 id="syntax">
+      Syntax
+    </h2>
+    <pre>
+const char *PDL_GetItemReceiptJSON(PDL_ItemReceipt *receipt);
+</pre>
+    <h2 id="parameters">
+      Parameters
+    </h2>
+    <table border="1" cellpadding="5" cellspacing="5">
+      <thead>
+        <tr bgcolor="lightGrey">
+          <th>
+            Parameter<br>
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description<br>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            receipt<br>
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            Pointer
+          </td>
+          <td>
+            Pointer to <code>PDL_ItemReceipt</code> struct.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="returns">
+      Returns
+    </h2>
+    <p>
+      Pointer to JSON-formatted string.
+    </p>
+		</div>
+	</body>
+</html>

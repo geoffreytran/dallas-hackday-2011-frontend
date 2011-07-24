@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="globalization">
+      Globalization
+    </h1>
+    <p>
+      In the Enyo framework, support for globalization is concentrated in the <code>g11n-base</code> package. This article introduces a number of key objects and methods available in that package. Our aim is not to present an exhaustive treatment of globalization in Enyo, but to provide you with enough information to get started in globalizing your apps.
+    </p>
+    <h2 id="locale">
+      Locale
+    </h2>
+    <p>
+      The concept of the locale is central to any globablization process, and so it is in the Enyo framework. With that in mind, let's look first at the Locale constructor.
+    </p>
+    <h3 id="enyo.g11n.localespec">
+      enyo.g11n.Locale(spec)
+    </h3>
+    <p>
+      <code>enyo.g11n.Locale</code> is called to create new Locale instances. Each individual instance is fairly lightweight, having four string-valued properties (<code>locale</code>, <code>language</code>, <code>region</code>, and <code>variant</code>) plus a handful of associated methods.
+    </p>
+    <p>
+      The specifier parameter (<code>spec</code>) is a string in the following format:
+    </p>
+    <blockquote>
+      <pre>
+<code>[language][_region][_variant]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      That is, the language, region, and variant are all optional parts, separated by underscores. The language is a two-letter ISO 639 language code (e.g., &quot;en&quot;, &quot;fr&quot;, &quot;it&quot;) and the region is a two-letter ISO 3166 country code, lower-cased (e.g., &quot;us&quot;, &quot;ca&quot;, &quot;fr&quot;, &quot;it&quot;). The variant may be any string that contains ASCII letter characters and no spaces or underscores.
+    </p>
+    <p>
+      When a new Locale object is instantiated, the constructor method parses the passed-in specifier (<code>spec</code>) for language, region, and variant values; if these exist, they are lower-cased and assigned to the object's corresponding properties. The value of the <code>locale</code> property is set to the full <code>spec</code> string.
+    </p>
+    <p>
+      In webOS, the region is expressed as a lower-case code for historical reasons. While we continue to use lower-case codes for backwards compatibility, the Locale constructor also accepts upper-case ISO-compliant codes in the locale specifier argument (e.g., <code>new enyo.g11n.Locale(&quot;fr_CA&quot;)</code>).
+    </p>
+    <h3 id="prototype-methods">
+      prototype methods
+    </h3>
+    <p>
+      The following table summarizes the methods that may be called on instances of <code>enyo.g11n.Locale</code>.
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Argument
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          getLocale
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the entire locale spec for the current locale.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getLanguage
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the language of this locale.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getRegion
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the region of this locale.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getVariant
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the variant of this locale, if any.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          toString
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the locale spec.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          toISOString
+        </td>
+        <td>
+          none
+        </td>
+        <td>
+          Returns the locale spec with the region and variant upper-cased to conform to ISO standards. The spec returned from this function can then be used with other libraries of international routines, such as ICU.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          isMatch
+        </td>
+        <td>
+          Locale
+        </td>
+        <td>
+          Returns a boolean indicating whether the current locale is compatible with the passed-in locale. To be compatible means that one locale can substitute for the other in translations and localized files.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          equals
+        </td>
+        <td>
+          Locale
+        </td>
+        <td>
+          Returns <code>true</code> if the current locale exactly matches the passed-in locale. Locales that are equal necessarily match (i.e., they are compatible), but locales that are compatible aren't necessarily equal.
+        </td>
+      </tr>
+    </table>
+    <h2 id="g11n">
+      g11n
+    </h2>
+    <p>
+      Contains methods to get and set information regarding the locale(s) in active use.
+    </p>
+    <h3 id="enyo.g11n.currentlocale">
+      enyo.g11n.currentLocale
+    </h3>
+    <p>
+      Returns an instance of <code>enyo.g11n.Locale</code> containing the current device locale for the user interface.
+    </p>
+    <h3 id="enyo.g11n.formatlocale">
+      enyo.g11n.formatLocale
+    </h3>
+    <p>
+      Returns an instance of <code>enyo.g11n.Locale</code> containing the current device locale used to format the following items:
+    </p>
+    <ul>
+      <li>dates and times
+      </li>
+      <li>numbers, percentages, and currency
+      </li>
+      <li>names
+      </li>
+      <li>addresses
+      </li>
+    </ul>
+    <h3 id="enyo.g11n.phonelocale">
+      enyo.g11n.phoneLocale
+    </h3>
+    <p>
+      Returns an instance of <code>enyo.g11n.Locale</code> containing the current device phone locale. The phone locale acts as a &quot;home&quot; locale for parsing and formatting phone numbers that do not contain an explicit country code. The phone number of the device should be issued by a carrier in this locale.
+    </p>
+    <h3 id="enyo.g11n.setlocaleparams">
+      enyo.g11n.setLocale(params)
+    </h3>
+    <p>
+      Sets the framework's understanding of what the various current locales are.
+    </p>
+    <p>
+      The <code>params</code> object may contain one or more of the following properties:
+    </p>
+    <ul>
+      <li>
+        <code>uiLocale</code> - Locale specifier for the UI locale
+      </li>
+      <li>
+        <code>formatLocale</code> - Locale specifier for the format locale
+      </li>
+      <li>
+        <code>phoneLocale</code> - Locale specifier for the phone locale
+      </li>
+    </ul>
+    <p>
+      Each property should be set to a string that is the specifier for that locale.
+    </p>
+    <h2 id="fmts">
+      Fmts
+    </h2>
+    <p>
+      Contains methods that you can use to examine the characteristics of a given locale.
+    </p>
+    <h3 id="enyo.g11n.fmtslocale">
+      enyo.g11n.Fmts(locale)
+    </h3>
+    <p>
+      Creates an instance of a formats information object for the passed-in locale. (If no locale is passed in, the device's current locale is used.) This instance has various pieces of information about the locale, which you can access by calling methods on the instance, as summarized in the following table.
+    </p>
+    <h3 id="prototype-methods-1">
+      prototype methods
+    </h3>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          isAmPm
+        </td>
+        <td>
+          Returns <code>true</code> if the user is currently using a 12-hour clock; <code>false</code> if currently using a 24-hour clock.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          isAmPmDefault
+        </td>
+        <td>
+          Returns <code>true</code> if the locale uses a 12-hour clock to format times; <code>false</code> if it uses a 24-hour clock.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getFirstDayOfWeek
+        </td>
+        <td>
+          Returns an integer between 0 and 6 (inclusive), representing the first day of the week in the given locale. 0 represents Sunday, 1 Monday, and so on.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getDateFieldOrder
+        </td>
+        <td>
+          Returns the order of the fields in a formatted date for the given locale, in the form of an array of three strings (&quot;day&quot;, &quot;month&quot;, and &quot;year&quot;) in the correct order.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getTimeFieldOrder
+        </td>
+        <td>
+          Returns the order of the fields in a formatted time for the given locale, in the form of an array of three strings (&quot;minute&quot;, &quot;hour&quot;, and &quot;ampm&quot;) in the correct order. &quot;ampm&quot; represents where the AM or PM marker should go for 12-hour clocks.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getMonthFields
+        </td>
+        <td>
+          Returns the medium-sized abbreviations for the months names in the locale. In most locales, these will be the three-letter abbreviations of the month names.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getAmCaption
+        </td>
+        <td>
+          Returns the string for AM in the given locale, or the default &quot;AM&quot; if a localized string is not found.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getPmCaption
+        </td>
+        <td>
+          Returns the string for PM in the given locale, or the default &quot;PM&quot; if a localized string is not found.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getMeasurementSystem
+        </td>
+        <td>
+          Returns the measurement system used in the locale. Possible values are &quot;uscustomary&quot;, &quot;imperial&quot;, and &quot;metric&quot;. The default value is &quot;metric&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getDefaultPaperSize
+        </td>
+        <td>
+          Returns the default paper size for the locale. Possible values are &quot;letter&quot; (8.5&quot; x 11&quot;) and &quot;A4&quot; (210mm x 297mm). The default value is &quot;A4&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getDefaultPhotoSize
+        </td>
+        <td>
+          Returns the default photo size for printers in the locale. Possible values are &quot;10X15CM&quot; (10cm x 15cm), &quot;4x6&quot; (4&quot; x 6&quot;), and &quot;L&quot; (roughly 9cm x 13cm). The default value is &quot;10X15CM&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          getDefaultTimeZone
+        </td>
+        <td>
+          Returns the zone ID of the default time zone for the locale. For many locales, there are multiple time zones. This function returns the one that is either the most important or the most populous. If the current formats object is for an unknown locale, the default time zone is GMT (Europe/London).
+        </td>
+      </tr>
+    </table>
+    <h2 id="resources">
+      Resources
+    </h2>
+    <p>
+      <code>resources.js</code> houses the methods used to retrieve localized strings based on locale. The actual localized strings live in JSON-formatted files that are named after the given locale. For example, a simple application might have a French resource file named <code>fr_fr.json</code>, with the following contents:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  &quot;Hello&quot;: &quot;Bonjour&quot;,
+  &quot;Goodbye&quot;: &quot;Au revoir&quot;
+}
+</code>
+</pre>
+    </blockquote>
+    <h3 id="enyo.g11n.resourcesparams">
+      enyo.g11n.Resources(params)
+    </h3>
+    <p>
+      Creates a new bundle of resource strings. The <code>params</code> object may contain the following:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <code>root</code> - the path to the root of the current component. For libraries and packages, this should be the absolute path to the directory containing the resources directory that contains the translations for the component.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>locale</code> - a <code>Locale</code> instance, or a locale spec string, specifying the locale of the resources to load. If this parameter is left out, the resources for the current UI locale are loaded.
+        </p>
+      </li>
+    </ul>
+    <p>
+      Continuing with our example, to access the French resources, we would first create a Resources object by calling <code>enyo.g11n.Resources()</code>, passing in an object whose <code>locale</code> property is set to the string &quot;fr_fr&quot;:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.resources = new enyo.g11n.Resources({locale: &quot;fr_fr&quot;});
+</code>
+</pre>
+    </blockquote>
+    <h3 id="ltexttotranslate">
+      $L(textToTranslate)
+    </h3>
+    <p>
+      <code>$L</code> is a global translation function, for convenience. This is only useful to apps that want to translate strings to the current UI language. If you want to translate to a different language, or if you want to translate strings for a library or package, you need to create a Resources object instead, and call its <code>$L</code> method. (See the section on <code>enyo.g11n.Resources</code> below.)
+    </p>
+    <p>
+      If the string does not have a translation in the current language, the argument is returned as-is.
+    </p>
+    <p>
+      In our example, a call to <code>$L(&quot;Hello&quot;)</code> would return &quot;Hello&quot;, since English is the current UI language. (English is the default, and we haven't done anything to change that.)
+    </p>
+    <h3 id="prototype-methods-2">
+      prototype methods
+    </h3>
+    <p>
+      The following methods may be called on instances of <code>enyo.g11n.Resources</code>.
+    </p>
+    <h4 id="enyo.g11n.resources.prototype.getresourcepath">
+      enyo.g11n.Resources.prototype.getResource(path)
+    </h4>
+    <p>
+      Gets a localized file. The <code>path</code> argument is a string containing the path, relative to a locale directory, of the file to load.
+    </p>
+    <p>
+      This will search the <code>resources</code> directory for the localized version of the file. The sequence of locations where it looks for the file is as follows:
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>The variant directory, if there is one (e.g., <code>resources/fr/fr/sfr/&lt;path&gt;</code>).
+      </li>
+      <li>The region directory, if there is one (e.g., <code>resources/fr/fr/&lt;path&gt;</code>).
+      </li>
+      <li>The language directory, if there is one (e.g., <code>resources/fr/&lt;path&gt;</code>).
+      </li>
+      <li>The English directory (e.g., <code>resources/en/&lt;path&gt;</code>).
+      </li>
+      <li>The unlocalized files under the root (e.g., <code>&lt;path&gt;</code>).
+      </li>
+    </ol>
+    <p>
+      If the file cannot be found, the function returns <code>undefined</code>.
+    </p>
+    <h4 id="enyo.g11n.resources.prototype.lstringtolocalize">
+      enyo.g11n.Resources.prototype.$L(stringToLocalize)
+    </h4>
+    <p>
+      Retrieves a translated string. If the string to localize is not found in the resources, the original argument is returned unmodified. This means that it is always safe to call <code>$L</code>, because this method will always return something useful.
+    </p>
+    <p>
+      Returning one last time to our example, our application can access the French translation of &quot;Hello&quot; by calling the <code>$L</code> function on our Resources object (whose locale, you'll recall, is <code>fr_fr</code>):
+    </p>
+    <blockquote>
+      <pre>
+<code>helloString = this.resources.$L(&quot;Hello&quot;);
+</code>
+</pre>
+    </blockquote>
+    <h2 id="datefmt">
+      DateFmt
+    </h2>
+    <p>
+      <code>datetime.js</code> contains methods for creating and utilizing date formatting (<code>DateFmt</code>) objects. Once a formatter object is created, it is intended to be immutable, so you can create different formatters for different purposes and they will not conflict with each other.
+    </p>
+    <h3 id="enyo.g11n.datefmtparams">
+      enyo.g11n.DateFmt(params)
+    </h3>
+    <p>
+      Creates a new date formatter object. The <code>params</code> are parameters that control the output format, and may be passed in as a string or an object. If <code>params</code> is passed as a string, the string should specify the custom date format to use. If the params are specified as an object, they may contain the following properties:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Property
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          locale
+        </td>
+        <td>
+          Locale to use to format the date. If not specified, the locale used will be the device's current locale.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          date
+        </td>
+        <td>
+          Format a date using the locale's standard format, and specify the length of the format to use. Valid values are 'short', 'medium', 'long', and 'full', or you may specify a custom date format string directly. If this property is not specified, the default is 'long'.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          time
+        </td>
+        <td>
+          Format a time using the locale's standard format, and specify the length of the format to use. Valid values are 'short', 'medium', 'long', and 'full', or you may specify a custom time format string directly. If this property is not specified, the default is 'long'.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          format
+        </td>
+        <td>
+          Format as a date and time string together, specifying the length of the format. Valid values are 'short', 'medium', 'long', and 'full', or you may specify a custom date/time format string directly.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          dateComponents
+        </td>
+        <td>
+          Format a date with only certain components in it using the locale's standard format for those components. Valid values are 'DM', 'MY', and 'DMY', which mean &quot;date and month&quot;, &quot;month and year&quot;, and &quot;date, month, and year&quot;, respectively. This can be combined with the <code>date</code> or <code>format</code> properties to specify the length of those components. If this property is not specified, the default is 'DMY'.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          timeComponents
+        </td>
+        <td>
+          Format a time with certain additional components in it using the locale's standard format for those components. Valid values are 'A', 'Z', and 'AZ', which mean &quot;am/pm&quot;, &quot;time zone&quot;, and &quot;am/pm and time zone&quot;, respectively. The additional components will appear before or after the time, as required by the locale. This can be combined with the time or format properties to specify the length of those components. If this property is not specified, the default is no additional components.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          twelveHourFormat
+        </td>
+        <td>
+          If passed as <code>true</code>, use a 12-hour clock when formatting times. Otherwise, if <code>false</code>, use a 24-hour clock.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          weekday
+        </td>
+        <td>
+          If passed as <code>true</code>, return the date formatted with the day of the week included in the date format as well.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          TZ
+        </td>
+        <td>
+          Use the given time zone. If not specified, the current device time zone is used.
+        </td>
+      </tr>
+    </table>
+    <p>
+      The following codes may be used to specify custom date or time formats:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Code
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          yy
+        </td>
+        <td>
+          Two-digit year
+        </td>
+      </tr>
+      <tr>
+        <td>
+          yyyy
+        </td>
+        <td>
+          Four-digit year
+        </td>
+      </tr>
+      <tr>
+        <td>
+          MMMM
+        </td>
+        <td>
+          Name of the month spelled out in long format (e.g., &quot;July&quot; or &quot;August&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          MMM
+        </td>
+        <td>
+          Name of the month in abbreviated form (e.g., &quot;Jul&quot; or &quot;Aug&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          MM
+        </td>
+        <td>
+          Zero-padded two-digit month
+        </td>
+      </tr>
+      <tr>
+        <td>
+          M
+        </td>
+        <td>
+          One- or two-digit month, not padded
+        </td>
+      </tr>
+      <tr>
+        <td>
+          dd
+        </td>
+        <td>
+          Zero-padded two-digit day of the month
+        </td>
+      </tr>
+      <tr>
+        <td>
+          d
+        </td>
+        <td>
+          One- or two-digit day of the month, not padded
+        </td>
+      </tr>
+      <tr>
+        <td>
+          zzz
+        </td>
+        <td>
+          Time zone name
+        </td>
+      </tr>
+      <tr>
+        <td>
+          a
+        </td>
+        <td>
+          am/pm notation for 12-hour formats
+        </td>
+      </tr>
+      <tr>
+        <td>
+          KK
+        </td>
+        <td>
+          Zero-padded hour of the day in the 12-hour clock, in the range of 00 to 11
+        </td>
+      </tr>
+      <tr>
+        <td>
+          K
+        </td>
+        <td>
+          Hour of the day in the 12-hour clock, not padded, in the range of 0 to 11
+        </td>
+      </tr>
+      <tr>
+        <td>
+          hh
+        </td>
+        <td>
+          Zero-padded hour of the day in the 12-hour clock, in the range of 01 to 12
+        </td>
+      </tr>
+      <tr>
+        <td>
+          h
+        </td>
+        <td>
+          Hour of the day in the 12-hour clock, not padded, in the range of 1 to 12
+        </td>
+      </tr>
+      <tr>
+        <td>
+          HH
+        </td>
+        <td>
+          Zero-padded hour of the day in the 24-hour clock, in the range of 00 to 23
+        </td>
+      </tr>
+      <tr>
+        <td>
+          H
+        </td>
+        <td>
+          Hour of the day in the 24-hour clock, not padded, in the range of 0 to 23
+        </td>
+      </tr>
+      <tr>
+        <td>
+          kk
+        </td>
+        <td>
+          Zero-padded hour of the day in the 24-hour clock, in the range of 01 to 24
+        </td>
+      </tr>
+      <tr>
+        <td>
+          k
+        </td>
+        <td>
+          Hour of the day in the 24-hour clock, not padded, in the range of 1 to 24
+        </td>
+      </tr>
+      <tr>
+        <td>
+          EEEE
+        </td>
+        <td>
+          Day of the week, spelled out fully (e.g., &quot;Wednesday&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          EEE
+        </td>
+        <td>
+          Day of the week, in three-letter abbreviations (e.g., &quot;Wed&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          EE
+        </td>
+        <td>
+          Day of the week, in two-letter abbreviations (e.g., &quot;We&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          E
+        </td>
+        <td>
+          Day of the week, in one-letter abbreviations (e.g., &quot;W&quot;)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          mm
+        </td>
+        <td>
+          Zero-padded minute of the hour
+        </td>
+      </tr>
+      <tr>
+        <td>
+          ss
+        </td>
+        <td>
+          Zero-padded second of the minute
+        </td>
+      </tr>
+    </table>
+    <p>
+      Please note that the current formatter only supports formatting dates in the Gregorian calendar.
+    </p>
+    <h3 id="prototype-methods-3">
+      prototype methods
+    </h3>
+    <p>
+      The following methods may be called on instances of <code>enyo.g11n.DateFmt</code>.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.tostring">
+      enyo.g11n.DateFmt.prototype.toString
+    </h4>
+    <p>
+      Returns the format string that this formatter instance uses to format dates.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.isampm">
+      enyo.g11n.DateFmt.prototype.isAmPm
+    </h4>
+    <p>
+      Returns <code>true</code> if the current formatter uses a 12-hour clock to format times.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.isampmdefault">
+      enyo.g11n.DateFmt.prototype.isAmPmDefault
+    </h4>
+    <p>
+      Returns <code>true</code> if the locale of this formatter uses a 12-hour clock to format times.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.getfirstdayofweek">
+      enyo.g11n.DateFmt.prototype.getFirstDayOfWeek
+    </h4>
+    <p>
+      Returns an integer between 0 and 6 (inclusive), representing the first day of the week in the locale of the formatter. 0 represents Sunday, 1 Monday, and so on.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.formatdate">
+      enyo.g11n.DateFmt.prototype.format(date)
+    </h4>
+    <p>
+      Returns a string with the date formatted according to the format specified in the constructor for this formatter instance.
+    </p>
+    <p>
+      The passed-in <code>date</code> is a standard JavaScript <code>Date</code> object.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.formatrelativedatedate-options">
+      enyo.g11n.DateFmt.prototype.formatRelativeDate(date, options)
+    </h4>
+    <p>
+      Formats a date as relative to another date. If the two dates are close in time, the time distance between them is returned rather than a formatted date. If the two dates are not close, then the date is formatted according to the format specified for this formatter instance.
+    </p>
+    <p>
+      The passed-in <code>date</code> is the date/time object to be formatted, while <code>options</code> is an object specifying formatting options.
+    </p>
+    <p>
+      The <code>options</code> object may have the following properties:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <code>referenceDate</code> - The date to which the date to be formatted is compared
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>verbosity</code> - If <code>true</code>, then dates between a week old and a year old are formatted as relative; otherwise, these dates are formatted normally according to the settings of the formatter instance.
+        </p>
+      </li>
+    </ul>
+    <p>
+      These are the relative dates/times that may be returned:
+    </p>
+    <ul>
+      <li>
+        <p>
+          today
+        </p>
+      </li>
+      <li>
+        <p>
+          yesterday
+        </p>
+      </li>
+      <li>
+        <p>
+          tomorrow
+        </p>
+      </li>
+      <li>
+        <p>
+          For dates within the last week, the day name is returned.
+        </p>
+      </li>
+      <li>
+        <p>
+          For dates within the last month, the number of weeks ago is returned when <code>verbosity</code> is <code>true</code>; otherwise, the formatted date is returned.
+        </p>
+      </li>
+      <li>
+        <p>
+          For dates within the last year, the number of months ago is returned when <code>verbosity</code> is <code>true</code>, otherwise, the formatted date is returned.
+        </p>
+      </li>
+      <li>
+        <p>
+          For all other dates, the formatted date is returned.
+        </p>
+      </li>
+    </ul>
+    <p>
+      When relative date strings are returned, the text in them is already localized to the current locale.
+    </p>
+    <h4 id="enyo.g11n.datefmt.prototype.formatrangedatestart-dateend">
+      enyo.g11n.DateFmt.prototype.formatRange(dateStart, dateEnd)
+    </h4>
+    <p>
+      Formats a pair of passed-in dates (<code>dateStart</code> and <code>dateEnd</code>) as a date range, using the settings of the current formatter instance as a guide.
+    </p>
+    <p>
+      The following rules govern the format of the output string:
+    </p>
+    <ul>
+      <li>
+        <p>
+          If the dates are on the same calendar day, the format is a time range of the form <code>(&lt;starttime&gt; to &lt;endtime&gt;, month+date)</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          If the dates are on different calendar days, but are in the same calendar month, the format is a date range of the form <code>(month &lt;date1&gt; to &lt;date2&gt;, year)</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          If the dates are on different calendar days and different calendar months, but the same calendar year, the format is to a date range of <code>(&lt;month+date&gt; to &lt;month+date&gt;, year)</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          If the dates are in different, consecutive calendar years, the format is a date range of the form <code>(&lt;month+date+year&gt; to &lt;month+date+year&gt;)</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          If the dates are more than two years apart, the format is a date range of the form <code>(&lt;year&gt; to &lt;year&gt;)</code>.
+        </p>
+      </li>
+    </ul>
+    <p>
+      The order of the month, date, and year components in the above formats, as well as the text of the separators, will be locale-dependent. For example, if the start date is September 2, 2011, and the end date is September 5, 2011, the ranges would be:
+    </p>
+    <blockquote>
+      <pre>
+<code>US English: &quot;Sept 2-5, 2011&quot;
+British English: &quot;2-5 Sept, 2011&quot;
+German: &quot;2.-5. Sept, 2011&quot;
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The length of the month abbreviations is determined by the date length setting of the current formatter object. If the end date preceeds the start date, the dates will be switched so that the earlier date becomes the start date.
+    </p>
+    <p>
+      In addition, the text in the returned string will be localized to the locale of the formatter instance.
+    </p>
+    <h2 id="numberfmt">
+      NumberFmt
+    </h2>
+    <p>
+      Contains methods for creating and utilizing number formatting objects.
+    </p>
+    <h3 id="enyo.g11n.numberfmtoptions">
+      enyo.g11n.NumberFmt(options)
+    </h3>
+    <p>
+      Creates a formatter object that formats numbers according to the given options. Once a formatter object is created, it is intended to be immutable, so you can create different formatters for different purposes and they will not conflict with each other.
+    </p>
+    <p>
+      The <code>options</code> object may have any of the following properties:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Property
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          locale
+        </td>
+        <td>
+          The locale of the formatter. If this is not specified, the current <code>formatLocale</code> is used as a default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          style
+        </td>
+        <td>
+          One of &quot;number&quot;, &quot;percent&quot;, or &quot;currency&quot;. If this is not specified, the default is &quot;number&quot;. This formats numbers according to the locale's conventions for formatting floating point numbers, percentages, or monetary amounts, respectively.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          currency
+        </td>
+        <td>
+          The ISO 4217 three-letter code for the currency to format. The currency property affects the currency sign used to identify the currency in the output string. It can interact with the locale in that the currency sign may be placed before or after the amount and with or without space, depending on the locale. For example, both Germany and Ireland use the same currency (the Euro), but in Ireland, amounts are written as &quot;€5.34&quot;, whereas in Germany, the same amount would be written as &quot;5,34 €&quot;. If a locale spec is given as the the currency property and the legal currency for the named locale can be determined, then that currency will be used. If the currency property is not specified, then the legal currency for the locale is used as the default. This property only has an effect if the style property is specified as &quot;currency&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          currencyStyle
+        </td>
+        <td>
+          The value of this property may have one of the following values: &quot;iso&quot; or &quot;common&quot;. The &quot;iso&quot; style causes the currency to be formatted using the ISO 4217 code as the currency sign. The &quot;common&quot; style causes the currency to be formatted using the common currency sign for the locale. For example, the &quot;iso&quot; style in the German locale would be &quot;5,34 EUR&quot; whereas the &quot;common&quot; style would be &quot;5,34 €&quot;. In Ireland, the &quot;iso&quot; style would be &quot;EUR 5.34&quot;, and the &quot;common&quot; style would be &quot;€5.34&quot;. For some locales, the symbol for the common style is not available in the webOS fonts, so the string is always formatted as style &quot;iso&quot;, even when &quot;common&quot; is requested. Otherwise, the default value of this property is &quot;common&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          fractionDigits
+        </td>
+        <td>
+          The number of digits to show after the decimal. If this is not specified, all digits are shown in the &quot;number&quot; and &quot;percent&quot; styles. With the &quot;currency&quot; style, the default number of fractional digits shown is the number that is commonly used for the currency being formatted, which is usually 0, 2, or 3. When a number being formatted has more digits than the <code>fractionDigits</code> property allows, the number is rounded to fit within that number of fractional digits.
+        </td>
+      </tr>
+    </table>
+    <h3 id="enyo.g11n.numberfmt.prototype.formatnumber">
+      enyo.g11n.NumberFmt.prototype.format(number)
+    </h3>
+    <p>
+      Converts a passed-in number into a string, using the proper locale-based format for numbers. If the parameter is passed in as a string containing a number, it will be parsed into a number first before being formatted back into a string. If the parameter is not a number or not a string containing a valid number, the value <code>undefined</code> is returned.
+    </p>
+		</div>
+	</body>
+</html>

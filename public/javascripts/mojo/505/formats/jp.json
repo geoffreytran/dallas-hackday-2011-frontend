@@ -1,0 +1,29 @@
+{
+	"numberTripleDivider": ",",
+	"numberDecimal": ".",
+	"currencyPrepend": "¥",
+	"currencyAppend": "",
+	"percentageSpace": false,
+
+	"fullDate": "yyyy年M月d日EEEE",
+	"longDate": "yyyy年M月d日",
+	"mediumDate": "yyyy/MM/dd",
+	"defaultDate": "yyyy/MM/dd",
+	"shortDate": "yy/MM/dd",
+	"dateFieldOrder": "ymd",
+
+	"fullTime24": "H時mm分ss秒",
+	"fullTime12": "H時mm分ss秒",
+	"longTime24": "HH:mm:sszzz",
+	"longTime12": "hh:mm:ss azzz",
+	"mediumTime24": "H:mm:ss",
+	"mediumTime12": "h:mm:ss a",
+	"defaultTime24": "H:mm:ss",
+	"defaultTime12": "h:mm:ss a",
+	"shortTime24": "H:mm",
+	"shortTime12": "h:mm a",
+	"dateTimeFormat" : "DATE TIME",
+
+	"is12HourDefault": true,
+	"firstDayOfWeek": 0
+}

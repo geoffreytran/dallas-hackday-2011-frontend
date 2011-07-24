@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="buttons">
+      Buttons
+    </h1>
+    <h2 id="custombutton">
+      CustomButton
+    </h2>
+    <p>
+      While there are many button-like kinds in the Enyo framework, nearly all of them (including <code>Button</code> itself) are descended from <code>CustomButton</code>.
+    </p>
+    <p>
+      A CustomButton is a button without any visual treatment. It should be used when a button primitive with unique appearance is desired. Typically, a CSS class is specified via the <code>className</code> property.
+    </p>
+    <p>
+      Initialize a CustomButton as follows:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;CustomButton&quot;, caption: &quot;OK&quot;, className: &quot;myButton&quot;, onclick: &quot;buttonClick&quot;}
+</code>
+</pre>
+    </blockquote>
+    <h3 id="published-properties">
+      Published Properties
+    </h3>
+    <p>
+      CustomButton implements mouse handling for a well-defined set of states, as evidenced by the following table of published properties.
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          caption
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Determines what text (if any) is displayed inside the button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          disabled
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Set to <code>true</code> to disable the button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          isDefault
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Set to <code>true</code> to make this button the default choice.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          down
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Is automatically set to <code>true</code> when the button is in a &quot;mouse down&quot; state. Resets to <code>false</code> on &quot;mouse up&quot; or &quot;mouse out&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          depressed
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Is automatically set to <code>true</code> if toggling is enabled AND the button is toggled into the down state. Resets to <code>false</code> when button is toggled again.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          hot
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Is automatically set to <code>true</code> when the button is in a &quot;hot&quot; state--i.e., the user is &quot;mousing over&quot; it. Resets to <code>false</code> on &quot;mouse out&quot;.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          toggling
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Set to <code>true</code> to create a button with toggling behavior (down when clicked and up when clicked again).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          allowDrag
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          Set to <code>true</code> to allow dragging behavior on the button.
+        </td>
+      </tr>
+    </table>
+    <h2 id="button">
+      Button
+    </h2>
+    <p>
+      The <code>Button</code> kind extends <code>CustomButton</code>, adding default Enyo visual styling.
+    </p>
+    <p>
+      The following kind illustrates the difference between an unstyled CustomButton and a standard Button:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.kind({
+  name: &quot;MyApps.Sample&quot;,
+  kind: &quot;enyo.VFlexBox&quot;,
+  style: &quot;width: 400px; padding: 5px&quot;,
+  components: [
+      {kind: &quot;CustomButton&quot;, caption: &quot;unstyled (CustomButton)&quot;,
+          onclick: &quot;buttonClick&quot;},
+      {kind: &quot;Button&quot;, caption: &quot;styled (Button)&quot;, onclick: &quot;buttonClick&quot;}
+  ],
+  buttonClick: function() {
+      // respond to click
+  }
+});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Buttons1.png" alt="CustomButton and Button"><br>
+      <br>
+      Both buttons call <code>buttonClick</code> successfully, but with no CSS classes applied, the CustomButton provides no visual feedback when clicked.
+    </p>
+    <p>
+      Enyo has numerous kinds that derive from <code>Button</code>. Let's look at one example, the popular <code>IconButton</code>.
+    </p>
+    <h2 id="iconbutton">
+      IconButton
+    </h2>
+    <p>
+      An <code>IconButton</code> is a button with Enyo styling, an optional image inside the button, and an optional text caption below it.
+    </p>
+    <p>
+      Here's a simple example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;IconButton&quot;, caption: &quot;right on&quot;, icon: &quot;images/menu-icon-forward.png&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Buttons2.png" alt="IconButton Example"><br>
+      <br>
+      The <code>icon</code> property specifies either the path to the image file or, if the <code>iconIsClassName</code> property is set to <code>true</code>, the name of a CSS class to be applied to the button. (<code>iconIsClassName</code> is <code>false</code> by default.)
+    </p>
+    <p>
+      Several widely-used button kinds derive directly from <code>IconButton</code>, including <code>ToolButton</code>, which is used inside of Toolbars, and <code>RadioButton</code>, which we will discuss in more detail.
+    </p>
+    <h2 id="radiobutton">
+      RadioButton
+    </h2>
+    <p>
+      In Enyo, a <code>RadioButton</code> is an <code>IconButton</code> designed to go inside a <code>RadioGroup</code> (a horizontally-oriented group of buttons in which tapping on one button will release any previously-tapped button). The radio button's <code>value</code> property identifies it within in the group. If <code>value</code> is not set, the index of the button is used.
+    </p>
+    <p>
+      Here's an example of a <code>components</code> block that includes a RadioGroup:
+    </p>
+    <blockquote>
+      <pre>
+<code>components: [
+  {kind: &quot;RadioGroup&quot;, name: &quot;myGroup&quot;, onclick: &quot;myGroupClick&quot;,
+      components: [
+          {caption: &quot;Facebook&quot;, icon: &quot;images/facebook-32x32.png&quot;,
+              value: &quot;facebook&quot;},
+          {caption: &quot;Gmail&quot;, icon: &quot;images/gmail-32x32.png&quot;,
+              value: &quot;gmail&quot;},
+          {caption: &quot;Yahoo!&quot;, icon: &quot;images/yahoo-32x32.png&quot;,
+              value: &quot;yahoo&quot;}
+      ]
+  },
+  {name: &quot;statusText&quot;, content: &quot;Select one&quot;}
+]
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Buttons3.png" alt="RadioButton Example 1"><br>
+      <br>
+      Note that there is one handler method (<code>myGroupClick</code>) for the entire RadioGroup. When a button is clicked, that button is passed as the first argument to the handler, so we can identify the button by checking its <code>value</code> property:
+    </p>
+    <blockquote>
+      <pre>
+<code>myGroupClick: function(inSender, e) {
+  this.$.statusText.setContent(&quot;Current selection: &quot; + inSender.getValue());
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <img src="/images/EnyoConceptual-Buttons4.png" alt="RadioButton Example 2"><br>
+      <br>
+      If we had not set the <code>value</code> property for the originating button, <code>inSender.getValue()</code> would have returned &quot;2&quot; instead of &quot;yahoo&quot;.
+    </p>
+		</div>
+	</body>
+</html>

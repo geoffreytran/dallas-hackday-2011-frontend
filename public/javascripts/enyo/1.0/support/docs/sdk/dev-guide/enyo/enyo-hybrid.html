@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="enyo.hybrid">
+      enyo.Hybrid
+    </h1>
+    <p>
+      The <code>Hybrid</code> control is used to instantiate a PDK hybrid object within an Enyo application.
+    </p>
+    <p>
+      In order to have mouse events passed to the hybrid plugin, you need to add your own <code>requiresDomMousedown</code> property to the control, with the value <code>true</code>.
+    </p>
+    <p>
+      Non-visible plugins are supported with width and height of 0. They are still in the DOM of the page, and re-rendering them will cause the plugin executable to be shut down and restarted. The <code>enyo.Hybrid</code> code will automatically apply a <code>&quot;float: left&quot;</code> style to 0-size plugins so they don't interfere with page layout.
+    </p>
+    <p>
+      If you use a hybrid in a non-webOS context, only the width and height properties are used, creating an inert object with no methods or behavior. This is mainly useful for testing how the control interacts with your application layout.
+    </p>
+    <h2 id="published-properties">
+      Published Properties
+    </h2>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          executable
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          (Required) Name of plugin executable to run
+        </td>
+      </tr>
+      <tr>
+        <td>
+          params
+        </td>
+        <td>
+          []
+        </td>
+        <td>
+          (Optional) Array of strings; if provided, the strings are used as command line parameters to the plugin.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          alphaBlend
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          (Optional) Set to <code>true</code> to enable premultiplied alpha-blending for plugins. Enable if you want to blend the plugin display contents with the HTML elements below it on the page. Set to <code>false</code> for faster drawing.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          killTransparency
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          (Optional) Set to <code>true</code> to stop plugin layer from clearing transparency information from display surface. Should always be used with <code>alphaBlend: false</code>. Used to allow showing video layer from video tag playback through a hybrid object.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          cachePlugin
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          (Optional) If <code>true</code>, plugin will remain alive when hidden. This is useful if you're hosting the plugin in a pane or other part of the page where you don't want the plugin process to be killed and restarted later.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          allowKeyboardFocus
+        </td>
+        <td>
+          false
+        </td>
+        <td>
+          (Optional) If <code>true</code>, allows plugin to get focus when tapped by setting its <code>tabIndex</code> property.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          bgcolor
+        </td>
+        <td>
+          null
+        </td>
+        <td>
+          (Optional) Background color to use for displaying plugin before initial draw or during resize. It's a string of the form <code>&quot;rrggbb&quot;</code> using hex digits, with <code>&quot;000000&quot;</code> being black and <code>&quot;FFFFFF&quot;</code> being white. If <code>null</code>, uses default gray color. This value can only be set at creation time.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          height
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          Height of the plugin object
+        </td>
+      </tr>
+      <tr>
+        <td>
+          width
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          Width of the plugin object
+        </td>
+      </tr>
+    </table>
+    <h2 id="published-events">
+      Published Events
+    </h2>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          onPluginReady
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Sent when the plugin is ready to allow method calls. This is either signaled directly by <code>remoteadapter</code> on newer webOS builds, or signaled by the plugin code using <code>PDL_CallJS()</code> to call the <code>&quot;ready&quot;</code> method.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onPluginConnected
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Sent when the plugin executable has been started and has a made a connection back to the plugin
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onPluginDisconnected
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Sent when the plugin executable has disconnected, usually because the process has ended
+        </td>
+      </tr>
+    </table>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <h3 id="addcallbackname-callback-defer">
+      addCallback(name, callback, defer)
+    </h3>
+    <p>
+      Adds a callback function to the plugin object that can be called via <code>PDL_CallJS()</code> from the plugin.
+    </p>
+    <p>
+      <code>name</code> is a string, the name to use for the callback method on the plugin.
+    </p>
+    <p>
+      <code>callback</code> is a function that will be called with <code>this</code> pointing to the actual DOM node of the plugin, so use <code>enyo.bind</code> to redirect it to the appropriate context.
+    </p>
+    <p>
+      <code>defer</code> is an optional boolean. If <code>true</code>, the callback will be called asynchronously, so it can make calls back into the plugin.
+    </p>
+    <h3 id="callpluginmethodmethodname">
+      callPluginMethod(methodName)
+    </h3>
+    <p>
+      Calls a method on the plugin, with the result returned immediately to the caller. The arguments to the method are supplied as arguments to this function after the method name as a string.
+    </p>
+    <p>
+      If the hybrid plugin is not ready for calls, this will throw an exception.
+    </p>
+    <h3 id="callpluginmethoddeferredcallback-methodname">
+      callPluginMethodDeferred(callback, methodName)
+    </h3>
+    <p>
+      Calls a method on the plugin with the result returned through a callback function.
+    </p>
+    <p>
+      If the hybrid plugin is not ready for calls, this will defer the call to be done after the plugin is ready.
+    </p>
+    <p>
+      You can pass <code>null</code> as the callback if you don't care about the result.
+    </p>
+    <h3 id="focus">
+      focus()
+    </h3>
+    <p>
+      Tells the system to put focus on the hybrid window and show the onscreen keyboard, if available.
+    </p>
+		</div>
+	</body>
+</html>

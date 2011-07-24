@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="application-manager">
+      Application Manager
+    </h1>
+    <p>
+      The Application Manager (AM) service -- <code>com.palm.applicationManager</code> -- lets you bring up an application in one of two ways:
+    </p>
+    <ol style="list-style-type: decimal">
+      <li>
+        <p>
+          <strong>Implicitly</strong> - Using the <code>open</code> method, the framework determines the appropriate handler based on the <code>target</code> parameter's URI, <a href="#resources">file extension</a> and <a href="#commands">command</a>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Explicitly</strong> - Using the <code>launch</code> method, you can specify the application in the <code>id</code> property and provide any app arguments in the <code>params</code> object.
+        </p>
+      </li>
+    </ol>
+    <p>
+      <strong>Methods</strong>
+    </p>
+    <ul>
+      <li>
+        <a href="#open">open</a> -- Implicitly bring up an application.
+      </li>
+      <li>
+        <a href="#launch">launch</a> -- Explicitly bring up an application.
+      </li>
+    </ul>
+    <p>
+      Also in this document: <a href="#resources">Command and Resource Types</a>
+    </p>
+    <p>
+      (<strong>Note:</strong> For additional examples of how the Application Manager may be used in conjunction with different applications, see <a href="/reference/application-apis.html">webOS Application APIs</a>.
+    </p><a name="open" id="open"></a>
+    <hr>
+    <h2 id="open">
+      open
+    </h2>
+    <p>
+      Implicitly opens an application based on the <code>target</code> parameter's URI, <a href="#resources">file extension</a> and/or <a href="#commands">command</a>.
+    </p>
+    <p>
+      The Application Manager takes the following action based on what's passed:
+    </p>
+    <ul>
+      <li>
+        <p>
+          If <code>target</code> is a local file reference, the AM uses its file extension to launch the associated application if there is one.
+        </p>
+      </li>
+      <li>
+        <p>
+          If <code>target</code> is a &quot;http&quot; or &quot;https&quot; URI, the AM retrieves the http header and attempts to extract the resource type. If it is a file, it tries to match its type to the <a href="#resources">resource</a> list as follows:
+        </p>
+        <ul>
+          <li>
+            <p>
+              If there is a match, it downloads the file and launches the associated application with the file reference as a launch parameter. Files are downloaded to <code>\media\internal\downloads</code>. If you download a file again, the AM will automatically append a &quot;_#&quot; to it (i.e., &quot;_1&quot;, &quot;_2&quot;. etc.) just before the dot file extension.
+            </p>
+          </li>
+          <li>
+            <p>
+              If there is no header, it still downloads the file and attempts to match the file extension based on the <a href="#resources">resource</a> list.
+            </p>
+            <ul>
+              <li>
+                <p>
+                  If there is a match, it launches the the associated application with the file reference as a parameter.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If there is no match, the AM exits and returns an error code if an <code>onFailure</code> function is supplied.
+                </p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="syntax">
+      Syntax
+    </h3>
+    <pre>
+{
+    "target" : string
+}
+</pre>
+    <h3 id="parameters">
+      Parameters
+    </h3>
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            target
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            A filename or one of the supported <a href="#commands">commands</a> (i.e., &quot;mailto: email@company.com&quot;). The app to launch is inferred.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue" : boolean,
+    "processId"   : string,
+    "errorText"   : string
+}
+</pre>
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            Attribute
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            processId
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The launched app's PID or &quot;success&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="examples">
+      Examples
+    </h3>
+    <p>
+      <strong>Mojo - Open the email app to compose view</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method:"open",
+      parameters:{
+          "target": "mailto: address@email.com"
+      },
+      onSuccess : function (e){ Mojo.Log.info("Open success, results="+JSON.stringify(e)); },
+      onFailure : function (e){ Mojo.Log.info("Open failure, results="+JSON.stringify(e)); }    
+});
+</pre>
+    <p>
+      <strong>Mojo - Download a file and open QuickOffice</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method:"open",
+      parameters:{
+             "target":"http://www.somewebsite.com/MyResume.doc"
+      },
+      onSuccess : function (e){ Mojo.Log.info("Open success, results="+JSON.stringify(e)); },
+      onFailure : function (e){ Mojo.Log.info("Open failure, results="+JSON.stringify(e)); }    
+});
+</pre>
+    <p>
+      <strong>Success</strong>
+    </p>
+    <pre>
+{ "returnValue": true, "processId": "success" }
+</pre><strong>Failure</strong>
+    <pre>
+{ "returnValue": false, "errorText": "No handler for RingOfFire.flac" }
+</pre><a name="launch" id="launch"></a>
+    <hr>
+    <h2 id="launch">
+      launch
+    </h2>
+    <p>
+      Launches an application with specified parameters.
+    </p>
+    <h3 id="syntax-1">
+      Syntax
+    </h3>
+    <pre>
+{
+    "id"     : string,
+    "params" : any object
+}
+</pre>
+    <h3 id="parameters-1">
+      Parameters
+    </h3>
+    <table border="0" class="confluenceTable">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            id
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The application ID specified in the Services API for the intended application.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            params
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Contains the parameters for the target application as specified in the Services API.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="returns-1">
+      Returns
+    </h3>
+    <pre>
+{
+    "returnValue" : boolean,
+    "processId"   : string,
+    "errorText"   : string
+}
+</pre>
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            Attribute
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            returnValue
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            boolean
+          </td>
+          <td>
+            <code>true</code> (success) or <code>false</code> (failure)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            processId
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Launched application's process ID or &quot;success&quot;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            errorText
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Error message returned on failure.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="examples-1">
+      Examples
+    </h3>
+    <p>
+      <strong>Mojo - Launch the app catalog to the Pandora page</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.applicationManager', {
+  method: 'launch',
+  parameters: {
+      id: 'com.palm.app.findapps',
+      params: {
+          scene : 'page',
+          target: 'http://developer.palm.com/appredirect/?packageid=com.palm.pandora'
+      }
+  }
+});
+</pre>
+    <p>
+      <strong>Mojo - Launch the email app with recepient, attachment, subject, and body</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest('palm://com.palm.applicationManager', {
+    method: 'launch',
+    parameters: {
+        id: 'com.palm.app.email',
+        params: {
+                   "summary":"Attention mateys!",
+                   "text":"Yo ho ho and a bottle of rum",
+                   "recipients":[
+                    {
+                        "type":"email",
+                        "contactDisplay":"Sir Lunchalot",
+                        "role":1,
+                        "value":"hansolo@dancingwithmyself.com"
+                     }],
+                   "attachments":[
+                    {
+                        "fullPath":"/media/internal/tconfig.txt",
+                        "displayName":"tconfig",
+                        "mimeType":"text/plain"
+                    }]
+             }
+    }
+});
+</pre><a name="resources" id="resources"></a>
+    <hr>
+    <h2 id="command-and-resource-types">
+      Command and Resource Types
+    </h2>
+    <pre>
+"resources":
+ [
+    { "extn":"htm", "mime":"text/html", "appId":"com.palm.app.browser", "streamable":true },
+    {"extn":"html", "mime":"text/html", "appId":"com.palm.app.browser", "streamable":true },
+    {"extn":"vcf", "mime":"text/x-vcard", "appId":"com.palm.app.contacts", "streamable":false },
+
+    {"extn":"pem", "mime":"application/pem", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"p12", "mime":"application/p12", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"pfx", "mime":"application/pfx", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"der", "mime":"application/der", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"crt", "mime":"application/crt", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"cer", "mime":"application/cer", "appId":"com.palm.app.certificate", "streamable":false },
+    {"extn":"crl", "mime":"application/crl", "appId":"com.palm.app.certificate", "streamable":false },
+
+    {"extn":"mp4", "mime":"video/mp4-generic", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"mp4", "mime":"video/quicktime", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"mp4", "mime":"video/mp4", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"mp4", "mime":"video/mpeg4", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"m4v", "mime":"video/mp4-generic", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"m4v", "mime":"video/quicktime", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"m4v", "mime":"video/mp4", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"m4v", "mime":"video/mpeg4", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"3gp", "mime":"video/3gp", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"3gp", "mime":"video/3gpp", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"3gpp", "mime":"video/3gp", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"3g2", "mime":"video/3gpp2", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"3gp2", "mime":"video/3gpp2", "appId":"com.palm.app.videoplayer", "streamable":true },
+    {"extn":"sdp", "mime":"application/sdp", "appId":"com.palm.app.videoplayer", "streamable":true },
+
+    {"extn":"3gp", "mime":"audio/3gpp", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3gpp", "mime":"audio/3gpp", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3ga", "mime":"audio/3gpp", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3gp", "mime":"audio/3ga", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3gpp", "mime":"audio/3ga", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3ga", "mime":"audio/3ga", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3g2", "mime":"audio/3gpp2", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"3gpp2", "mime":"audio/3gpp2", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"amr", "mime":"audio/amr", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"amr", "mime":"audio/x-amr", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mpa", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mp3", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/x-mp3", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/x-mpg", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mpeg", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mpeg3", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mpg3", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"mp3", "mime":"audio/mpg", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+
+    {"extn":"mp4", "mime":"audio/mp4", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"m4a", "mime":"audio/mp4", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"m4a", "mime":"audio/m4a", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"aac", "mime":"audio/aac", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"aac", "mime":"audio/aacp", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"aac", "mime":"audio/x-aac", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"aac", "mime":"audio/mpeg", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"aac", "mime":"audio/mp4a-latm", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"wav", "mime":"audio/wav", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"wav", "mime":"audio/x-wav", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+
+    {"extn":"pls", "mime":"audio/x-scpls", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"m3u", "mime":"audio/mpegurl", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+    {"extn":"m3u", "mime":"audio/x-mpegurl", "appId":"com.palm.app.streamingmusicplayer", "streamable":true },
+
+    {"extn":"dm", "mime":"application/vnd.oma.drm.message", "appId":"com.palm.app.drm", "streamable":true },
+    {"extn":"dd", "mime":"application/vnd.oma.dd+xml", "appId":"com.palm.app.drm", "streamable":true },
+    {"extn":"dr", "mime":"application/vnd.oma.drm.rights+xml", "appId":"com.palm.app.drm", "streamable":true },
+    {"extn":"drc", "mime":"application/vnd.oma.drm.rights+wbxml", "appId":"com.palm.app.drm", "streamable":true },
+    {"extn":"dcf", "mime":"application/vnd.oma.drm.content", "appId":"com.palm.app.drm", "streamable":true },
+
+    {"extn":"mcd", "mime":"application/x-pcs-mcd+xml", "appId":"com.palm.mobitv.app.sprinttv", "streamable":true }
+],
+
+<a name="commands" id="commands"> </a>
+
+"commands":[
+    {"url":"^mailto:", "appId":"com.palm.app.email" },
+    {"url":"^im:", "appId":"com.palm.app.messaging" },
+    {"url":"^sms:", "appId":"com.palm.app.messaging" },
+    {"url":"^contact:", "appId":"com.palm.app.contacts" },
+    {"url":"^chatWith:", "appId":"com.palm.app.messaging" },
+    {"url":"^opencontact:", "appId":"com.palm.app.contacts" },
+    {"url":"^mojave:", "appId":"com.palm.app.mojave" },
+    {"url":"^https?:", "appId":"com.palm.app.browser"},
+    {"url":"^data:", "appId":"com.palm.app.browser"},
+    {"url":"^tel:", "appId":"com.palm.app.phone"},
+    {"url":"^mobi:", "appId":"com.palm.app.videoplayer"},
+    {"url":"^mapto:", "appId":"com.palm.app.maps"},
+    {"url":"^maploc:", "appId":"com.palm.app.maps"},
+    {"url":"^rtsp[tu]?:", "appId":"com.palm.app.videoplayer"},
+    {"url":"^sprinttv:", "appId":"com.palm.mobitv.app.sprinttv" },
+    {"url":"^sprint-music:", "appId":"com.palm.sprintmusicplus" },
+    {"url":"^ypc:", "appId":"com.palm.app.ypmobile" }
+]}
+</pre>
+		</div>
+	</body>
+</html>

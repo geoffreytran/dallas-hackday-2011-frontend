@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="maps">
+      Maps
+    </h1>
+    <p>
+      Apps can use the <a href="/reference/services/application-manager.html">Application Manager's</a> <code>launch</code> or <code>open</code> methods to bring up the Map application (<code>com.palm.app.maps</code>) with a display showing the results of a query, the map view type, route, and zoom level. Use this for mapping to a specific location, the results of a local or business search, and even driving directions.
+    </p>
+    <p>
+      The <code>open</code> method takes a <code>target</code> parameter, and <code>launch</code> takes an <code>id</code> field and a <code>params</code> object.
+    </p>
+    <p>
+      The <code>open</code> method brings up the Maps application with an encoded URI that maps a location or directions to a location when supplied with the appropriate <code>target</code> string.
+    </p>
+    <p>
+      The <code>launch</code> method brings up the Maps application with a <code>params</code> object that includes queries and options for latitude, longitude, route, zoom, and map view type.
+    </p>
+    <h2 id="parameters">
+      Parameters
+    </h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Required
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            target
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            A &quot;mapto:location&quot; or &quot;maploc:location&quot;, where <em>location</em> is a well-formed location.<br>
+            <strong>Required for &quot;open&quot; method</strong>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            id
+          </td>
+          <td>
+            Yes
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Set to &quot;com.palm.app.maps&quot;. <strong>Required for &quot;launch&quot; method</strong>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            params
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            See fields below. <strong>Optional for &quot;launch&quot; method</strong>.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            location
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            If specified, Map searches for &quot;query&quot; around this object's location.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            lat
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Location's latitude in degrees. Valid range: -90.0, 90.0.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            lng
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            float
+          </td>
+          <td>
+            Location's longitude in degrees. Valid range: -180.0, 180.0.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            query
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Contains information about a location, such as an address or landmark name, i.e., &quot;1600 Pennsylvania Ave NW Washington, DC&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            mapType
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The map view type.
+            <ul>
+              <li>aerial -- Aerial map style.
+              </li>
+              <li>auto -- The best imagery for the current view is chosen.
+              </li>
+              <li>birdseye -- Bird's eye map type.
+              </li>
+              <li>collinsBart -- Collin's Bart (England/Great Britian) map type.
+              </li>
+              <li>mercator -- Mercator style map.
+              </li>
+              <li>ordnanceSurvey -- Ordnance Survey (England/Great Britian) map type.
+              </li>
+              <li>road -- Road map style.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            address
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Address location used to center the map view, i.e., &quot;950 West Maude Avenue, Sunnyvale&quot;.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            route
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            object
+          </td>
+          <td>
+            Starting and ending route addresses.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            startAddress
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Starting route address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:60px">
+            endAddress
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            Ending route address.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left:30px">
+            zoom
+          </td>
+          <td>
+            No
+          </td>
+          <td>
+            string
+          </td>
+          <td>
+            The zoom level value is 1-18, with 18 being the maximum zoom in.<br>
+            <strong>Note:</strong> The maximum zoom level depends on the region. For some regions, zoom level 18 may not be available.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="examples">
+      Examples
+    </h2>
+    <p>
+      <strong>luna-send</strong>
+    </p>
+    <pre>
+luna-send -n 1   luna://com.palm.applicationManager/open '{"target": "mapto: 950 Maude Ave., 94085"}'
+{ "processId": "success", "returnValue": true }
+</pre>
+    <pre>
+luna-send -n 1   luna://com.palm.applicationManager/launch '{"id":"com.palm.app.maps", "params":{"query":"Sunnyvale, CA"}}'
+{ "processId": "success", "returnValue": true }
+</pre>
+    <pre>
+luna-send -n 1   luna://com.palm.applicationManager/launch '{"id":"com.palm.app.maps", "params": {"query":"1600 Pennsylvania Ave NW Washington, DC", "mapType": "aerial", "zoom": "16"}}'
+{ "processId": "success", "returnValue": true }
+</pre>
+    <pre>
+luna-send -n 1 luna://com.palm.applicationManager/launch '{"id":"com.palm.app.maps", "params": { "route":{"startAddress":"1665 Sacramento St San Francisco CA", "endAddress": "950 Maude Avenue, Sunnyvale, CA"}, "mapType": "road", "zoom": "10"}}'
+{ "processId": "success", "returnValue": true }
+</pre>
+    <p>
+      <strong>Enyo</strong>
+    </p>
+    <pre>
+. . . 
+{
+    name: "openMapCall",
+    kind: "PalmService",
+    service: "palm://com.palm.applicationManager/",
+    method: "open",
+    onSuccess: "openMapSuccess",
+    onFailure: "openMapFailure",
+    onResponse: "gotResponse",
+    subscribe: true
+},  
+. . . 
+
+openMapSuccess: function(inSender, inResponse) {
+    enyo.log("Open map success, results=" + enyo.json.stringify(inResponse));
+},
+openMapFailure: function(inSender, inResponse) {
+    enyo.log("Open map failure, results=" + enyo.json.stringify(inResponse));
+},
+openMap: function(inSender, inResponse)
+{
+    this.$.openMapCall.call({"target": "mapto: 950 Maude Ave., 94085"});
+}   
+</pre>
+    <p>
+      <strong>Mojo open</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest("palm://com.palm.applicationManager", {
+    method: "open",
+    parameters: {target: "mapto: 950 Maude Ave., 94085"}
+});
+</pre>
+    <p>
+      <strong>Mojo launch</strong>
+    </p>
+    <pre>
+this.controller.serviceRequest("palm://com.palm.applicationManager", {
+    method:"launch",
+    parameters: {
+        id: "com.palm.app.maps",
+        params: {
+            query: "White House, DC"
+        }
+    }
+});
+</pre>
+    <pre>
+// Search for pizza around a specified location (lat, lng)
+this.controller.serviceRequest("palm://com.palm.applicationManager", {
+     method: "launch",
+    parameters: {
+            id: "com.palm.app.maps",
+            params: {
+                location: {lat: 37.759568992305134, lng: -122.39842414855957},
+                query: "Pizza"
+            }
+    }
+}); 
+</pre>
+    <h2 id="sample-code">
+      Sample Code
+    </h2>
+    <p>
+      See Services Sample.
+    </p>
+		</div>
+	</body>
+</html>

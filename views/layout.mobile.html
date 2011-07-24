@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+    <head>
+        <!-- Start: Meta -->
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0" />
+        <!-- End: Meta -->
+
+        <title>Dallas Hack Day 2011</title>
+
+        <!-- Start: Links -->
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+        <!-- For iPhone 4 with high-resolution Retina display: -->
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png" />
+
+        <!-- For first-generation iPad: -->
+        <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/images/apple-touch-icon-72x72-precomposed.png"   />
+
+        <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+        <link rel="apple-touch-icon-precomposed"                 href="/images/apple-touch-icon-precomposed.png"         />
+
+        <!-- About humans.txt http://humanstxt.org/ -->
+        <link rel="author" href="{{ asset('humans.txt') }}" />
+        <!-- End: Links -->
+
+        <!-- Start: Styles -->
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+		<style>
+	
+		</style>
+        <!-- End: Styles -->
+
+        <!-- Start: Scripts -->
+		<!--[if lt IE 9]>
+        <script type="test/javascript" src="/javascripts/html5.js"></script>
+		<![endif]-->
+
+	    <script type="text/javascript" src="/javascripts/jquery-1.6.2.min.js"></script>
+	    <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
+	
+		<script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script>
+	
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io-sessions.js?${timestamp}"></script>
+		
+		<script type="text/javascript" src="/javascripts/mobile.js"></script>
+        <!-- End: Scripts -->
+    </head>
+
+    <body>
+        <!-- Start: Page Join -->
+        <div id="page-join" data-role="page">
+            <!-- Start: Header -->
+            <div class="hd" data-role="header">
+            	<h1>Join the Game</h1>
+            </div>
+            <!-- End: Header -->
+
+            <!-- Start: Body -->
+            <div class="bd" data-role="content">
+				<form id="entry" method="post" data-ajax="false">
+					<div data-role="fieldcontain">
+						<label for="name">Name:</label>
+						<input type="text" id="name" name="name" required="true" />
+					</div>
+					
+					<div data-role="fieldcontain">
+						<label for="email">Email:</label>
+						<input type="email" id="email" name="email" required="true" />
+					</div>
+					
+					<input type="submit" value="Enter" />
+				</form>
+            </div>
+            <!-- End: Body -->
+
+            <!-- Start: Footer -->
+            <div class="ft" data-role-"footer"></div>
+            <!-- End: Footer -->
+        </div>
+        <!-- End: Page Join -->
+
+        <!-- Start: Page Game -->
+        <div id="page-game" data-role="page">
+            <!-- Start: Header -->
+            <div class="hd" data-role="header">
+            	<h1>Pick an Answer</h1>
+            </div>
+            <!-- End: Header -->
+
+            <!-- Start: Body -->
+            <div class="bd" data-role="content">
+				<div data-role="fieldcontain">
+				    <fieldset data-role="controlgroup">
+				    	<legend>Choose an answer:</legend>
+						<div class="answers">
+							
+						</div>
+				    </fieldset>
+				</div>
+            </div>
+            <!-- End: Body -->
+
+            <!-- Start: Footer -->
+            <div class="ft" data-role="footer"></div>
+            <!-- End: Footer -->
+        </div>
+        <!-- End: Page Game -->
+
+        <!-- Start: Inline Scripts -->
+        <!-- End: Inline Scripts -->
+    </body>
+</html>

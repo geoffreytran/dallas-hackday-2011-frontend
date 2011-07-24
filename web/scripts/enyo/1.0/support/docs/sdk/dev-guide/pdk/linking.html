@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="linking-for-the-device">
+      Linking for the Device
+    </h1>
+    <p>
+      Using the <code>-l</code> command option, apps should not link to, or call functions from, libraries that are not on the following <em>whitelist</em> of libraries that came with the PDK:
+    </p>
+    <ul>
+      <li>libSDL-1.2.so.0
+      </li>
+      <li>libSDL_image-1.2.so.0
+      </li>
+      <li>libSDL_cinema.so (SDL_cinema (HP))
+      </li>
+      <li>libSDL_mixer-1.2.so.0
+      </li>
+      <li>libSDL_net-1.2.so.0
+      </li>
+      <li>libSDL_ttf-2.0.so.0
+      </li>
+      <li>libpdl.so (Palm Development Library)
+      </li>
+      <li>libGLES_CM.so (OpenGL ES 1.1)
+      </li>
+      <li>libGLESv2_CM.so (OpenGL ES 2.0)
+      </li>
+      <li>libgcc_s.so.1
+      </li>
+      <li>libc.so.6
+      </li>
+      <li>libm.so.6 (math functions)
+      </li>
+      <li>libstdc++.so.6
+      </li>
+      <li>libpthread.so.0 (POSIX threads)
+      </li>
+      <li>libz.so
+      </li>
+      <li>libz.so.1
+      </li>
+    </ul>
+    <p>
+      This guarantees your apps will run on the device and be forward-compatible with future versions of device run-time libraries. Note that this is enforced through the app submission checker.
+    </p>
+		</div>
+	</body>
+</html>

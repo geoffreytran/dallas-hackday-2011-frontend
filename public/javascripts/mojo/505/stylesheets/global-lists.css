@@ -1,0 +1,582 @@
+/*
+ * List Styling
+ * Mojo Application Framework
+ * Copyright (c) 2007-2009, Palm Inc.
+ * All rights reserved.
+ */
+
+/*
+ * List Headers
+ */
+
+.palm-header {
+  line-height: 48px;
+  height: 50px;
+  text-align: center;
+  z-index: 20000;
+  font-size: 16px;
+  text-transform: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  border-width: 0 25px 0 25px;
+  -webkit-border-image: url(../images/palm-menu-button.png) 0 25 200 25 repeat repeat;
+  -webkit-box-sizing: border-box;
+  padding: 0px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.palm-header.selected {
+  -webkit-border-image: url(../images/palm-menu-button.png) 50 25 150 25 repeat repeat;
+}
+
+.palm-header,
+.palm-header a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+.palm-header.left {
+  text-align: left;
+  padding-left: 0px;
+}
+
+.palm-header.right {
+  text-align: right;
+  padding-right: 0px;
+}
+
+.palm-header-spacer {
+  height: 58px;
+}
+
+#main.palm-hasheader {
+  margin-top: 58px;
+}
+
+/*
+ * Page Headers
+ */
+
+.palm-page-header {
+  background: none;
+  padding: 0;
+  border-width: 35px 24px 13px 24px;
+  -webkit-border-image: url(../images/palm-page-header.png) 35 24 13 24 repeat stretch;
+  -webkit-box-sizing: border-box;
+  min-height: 50px;
+}
+
+.palm-page-header.multi-line {
+  background: none;
+  padding: 0;
+  border-width: 35px 24px 13px 24px;
+  -webkit-border-image: url(../images/palm-page-header.png) 35 24 13 24 repeat stretch;
+  -webkit-box-sizing: border-box;
+  min-height: 50px;
+  overflow: visible;
+  white-space: normal;
+}
+
+.palm-filter-open .palm-page-header {
+  -webkit-border-image: url(../images/palm-page-header-square.png) 35 24 13 24 repeat stretch;
+}
+
+.palm-page-header-wrapper {
+  position: relative;
+  min-height: 52px;
+  margin: -35px -24px -13px -24px;
+}
+.palm-page-header .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56px;
+  min-height: 52px;
+  background: url(../images/header-icon-prefs.png) center center no-repeat;
+}
+
+.palm-page-header .title {
+  min-width: 240px;
+  left: 0px;
+  right: 0px;
+  padding: 13px 16px 13px 56px;
+  font-size: 20px;
+  color: #444;
+  text-transform: capitalize;
+  text-shadow: #f2f2f2 0px 1px 0px;
+  -webkit-palm-mouse-target: ignore;
+}
+
+.palm-page-header:not(.multi-line) .title,
+.palm-page-header.multi-line .title.truncating-text {
+  position: absolute;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.palm-page-header.multi-line .title {
+  position: relative;
+}
+
+.palm-page-header .title.left {
+  padding-left: 16px;
+}
+
+.palm-page-header .title.right {
+  text-align: right;
+}
+
+.palm-page-header.multi-line .subtitle {
+  margin-top: -8px;
+  padding: 0 16px 16px 16px;
+  font-size: 14px;
+  color: #555;
+  text-shadow: none;
+}
+
+/*
+ * Lists
+ */
+
+/* single-line list */
+
+.palm-list {
+  width: 100%;
+  margin: 0;
+  -webkit-user-select: none;
+}
+
+.palm-list .title, /* dep */
+.palm-row .title {
+  margin: 0px;
+  padding: 0px 14px;
+  font-size: 20px;
+  font-weight: normal;
+  word-wrap: break-word;
+}
+
+.palm-list .subtitle, /* dep */
+.palm-row .subtitle {
+  margin: 0px;
+  padding: 0px 14px;
+  font-size: 16px;
+}
+
+.palm-list .preview, /* dep */
+.palm-row .preview {
+  font-size: 14px;
+  padding: 0px 15px 10px 15px;
+  color: #333;
+}
+
+.palm-group .palm-list .title,
+.palm-group .palm-list .subtitle,
+.palm-group .palm-list .preview {
+  padding: 0px 14px;
+}
+
+span.list-highlight {
+  height: 3px;
+  background: url(../images/filter-search-highlight.png) bottom left repeat-x;
+}
+  
+.list-item-remove-button,  /* dep */
+.palm-row .list-item-remove-button {
+  height: 44px;
+  width: 44px;
+  background: url(../images/list-icon-remove-item.png) center center no-repeat;
+  float: left;
+}
+
+.palm-row .list-item-remove-button {
+  height: 52px;
+}
+
+.list-item-add-button {
+  margin-top: -13px;
+  height: 50px;
+  width: 44px;
+  background: url(../images/list-icon-add-item.png) center center no-repeat;
+  float: left;
+}
+
+.palm-row .list-item-add-button {
+  margin-top: -1px;
+}
+
+.add-item .title {
+  color:#555552;
+}
+
+/*
+ * Collapsible List Headers
+ */
+
+.palm-collapsible-header {
+  display: block;
+  background: url(../images/backdrop-inset.png) bottom left repeat-x;
+}
+
+.palm-collapsible-header.selected {
+  display: block;
+}
+
+/*
+ * Grouped Lists
+ */
+
+.palm-group {
+  margin: 7px;                                          
+  border-width: 40px 18px 18px 18px;                              
+  -webkit-border-image: url(../images/palm-group.png) 40 18 18 18 repeat repeat;
+}
+
+.palm-dialog-box .palm-dialog-wrapper .palm-group {
+  margin: 15px 0 0 0;
+}
+
+.palm-group-title {
+  margin: -40px -18px 0 -18px;
+  padding: 0px 0 14px 12px;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #ffffff;
+  text-shadow: #646454 0px 1px 0px;
+  font-weight: bold;
+  height: 26px;
+  vertical-align: middle;
+  line-height: 26px;
+  -webkit-user-select: none;
+}
+
+.palm-group .palm-list label {
+  right: 30px;
+}
+
+.palm-group > .palm-list {
+  width: auto;
+  margin: -14px -16px -17px -16px;
+  padding-bottom: 3px;
+}
+
+.palm-group.unlabeled > .palm-list {
+  margin-top: -16px;
+}
+
+/*
+ * Unlabeled Group Box
+ */
+
+.palm-group.unlabeled {
+  border-width: 18px 18px 18px 18px;
+  -webkit-border-image: url(../images/palm-group-unlabeled.png) 18 18 18 18 repeat repeat;
+}
+
+.palm-group.unlabeled .palm-group-title {
+  display: none;
+}
+
+/*
+ * Drawers
+ */
+
+.palm-drawer-container {
+  border-width: 20px 1px 20px 1px;
+  -webkit-border-image: url(../images/palm-drawer-background.png) 20 1 20 1 repeat repeat;
+  -webkit-box-sizing: border-box;
+  overflow: visible;
+}
+
+.palm-drawer-contents {
+  margin: -20px -1px;
+  position: relative;
+}
+
+.palm-drawer-contents label,
+.palm-drawer-contents .label {
+  color: #3c3c36;
+  float: right;
+  clear: none;
+  z-index: 1;
+  margin-right: 15px;
+}
+
+/* when drawers are nested inside rows, prevent inner text from displaying selected state */
+.palm-row.selected .palm-drawer-contents .title,
+.palm-row.selected .palm-drawer-contents .subtitle,
+.palm-row.selected .palm-drawer-contents .preview,
+.palm-row.selected .palm-drawer-contents .label {
+  color: #000;
+}
+
+/*
+ * Rows
+ */
+
+.palm-row {                              
+  /* preload images */
+  background-image: url(../images/row-divider-first.png);
+  background-image: url(../images/row-divider-single.png);
+  background-image: url(../images/row-divider-last.png);
+  background-image: url(../images/selection-gradient-default.png);
+  background-image: url(../images/selection-gradient-first.png);
+  background-image: url(../images/selection-gradient-single.png);
+  background-image: url(../images/selection-gradient-last.png);
+  /* set defaults images */
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-width: 0px;
+  -webkit-box-sizing: border-box;
+  -webkit-border-image: none;
+  min-height: 51px; /* 50px when negative margin-bottom factored in */
+  width: auto;
+  clear: both;
+  background: url(../images/list-separator-light.png) bottom left repeat-x; /* bevel shadow and highlight at bottom */
+  margin-bottom: -1px; /* negative margin to compensate for bevel highlight */
+}
+
+.palm-row.no-divider,
+.palm-row.no-separator,
+.palm-row.single,
+.palm-row.last {
+  background: none;
+  -webkit-border-image: none;
+}
+
+.palm-row.selected {
+  border: none;
+  background: none;
+  border-width: 24px 20px;
+  -webkit-border-image: url(../images/selection-gradient-default.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .palm-row.selected.first {
+  -webkit-border-image: url(../images/selection-gradient-first.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .palm-row.selected.single {
+  -webkit-border-image: url(../images/selection-gradient-single.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .palm-row.selected.last {
+  -webkit-border-image: url(../images/selection-gradient-last.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-row .palm-row-wrapper {
+  margin: 0;
+}
+
+.palm-row.selected > .palm-row-wrapper,
+.palm-row.palm-delete-element > .palm-row-wrapper,
+.palm-row.palm-reorder-element > .palm-row-wrapper,
+.palm-row.palm-swipe-delete > .palm-row-wrapper {
+  /* negative margin is applied to negate the offset created by the
+  -webkit-border-image used to style the row and its highlight */
+  margin: -24px -20px;
+}
+
+.palm-group .palm-list .palm-row .title, /* dep */
+.palm-list .palm-row .title, /* dep */
+.palm-row .title {
+  /* for non-truncating text */
+  padding: 13px 14px 15px 14px;
+  margin: 0; /* inv */
+}
+
+.palm-row.multi-line .title {
+  padding: 8px 14px;
+}
+
+.palm-list-selector .title,
+.palm-row .title.truncating-text {
+  line-height: 24px;
+}
+
+.palm-row.removable .title {
+  padding-left: 0;
+}
+
+.palm-row.disabled,
+.palm-list-selector.disabled .title,
+.palm-row .title.disabled {
+  color: #898989;
+}
+
+.palm-textfield-disabled {
+  color: #888;
+}
+
+.label.mv-picker-label,
+.palm-row .label {
+  float: right;
+  color: #1f75bf;
+  text-shadow: #ffffff 0px 1px 0px;
+  font-size: 14px;
+  margin: 18px 12px 0 0;
+  text-transform: uppercase;
+}
+
+.palm-row .label {
+  margin-left: 6px;
+}
+
+.palm-row .label.right {
+  float: right;
+}
+
+.palm-row .label.left {
+  float: left;
+  margin-left: 12px;
+  margin-right: 0;
+}
+
+.palm-row .title.right {
+  text-align: right;
+}
+
+.palm-row .title.left {
+  text-align: left;
+}
+
+.palm-row .title.center {
+  text-align: center;
+}
+
+/* adjust label styling when placed inside title div */
+.palm-row .title .label,
+.palm-row .title .label.right {
+  margin: 1px 0 0 4px;
+}
+
+.palm-row .title .label.left {
+  margin: 1px 4px 0 0;
+}
+
+.palm-list-selector .label,
+.palm-row .truncating-text .label,
+.palm-row .truncating-text.label {
+  max-width: 40%;
+}
+
+.palm-row .truncating-text .label,
+.palm-row .truncating-text.label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.palm-row.selected .title,
+.palm-row.selected .subtitle,
+.palm-row.selected .preview,
+.palm-row.selected .label {
+  color: #FFF;
+  text-shadow: none;
+}
+
+.palm-group .palm-list .palm-row,
+.palm-group .palm-list .palm-row.selected {
+  /* inv */
+  margin-right: 1px;
+}
+
+.palm-row .icon {
+  /* specify background-image and
+  background-position in use-specific class */
+  background-repeat: no-repeat;
+  width: 40px; /* default */
+  height: 50px; /* default */
+}
+
+.palm-row .icon.left {
+  float: left;
+}
+     
+.palm-row .icon.right {
+  float: right;
+}
+
+.palm-row .checkbox,
+.palm-row .left .checkbox {
+  float: left;
+  margin: 12px 4px 0 12px;
+}
+
+.palm-row .right .checkbox {
+  float: right;
+  margin: 12px 8px 0 8px;
+}
+
+/*
+ * Drag and Drop
+ */
+
+.palm-row.palm-reorder-element {   
+  background: none;
+  border-width: 24px 20px;
+  -webkit-border-image: url(../images/palm-row-dragging.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-row.palm-delete-element {
+  background: none;
+  border-width: 24px 20px;
+  -webkit-border-image: url(../images/palm-row-deleting.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-drag-container.original {
+  /* placeholder */
+}
+
+.palm-drag-container.target {
+  /* placeholder */
+}
+
+.palm-swipe-container {
+  overflow: hidden;
+  margin-bottom: -1px;
+}
+
+.palm-swipe-delete-shill {
+  width: 0px;
+  height: inherit;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.palm-row.palm-swipe-delete {
+  background: none;
+  border-width: 24px 20px;                 
+  -webkit-box-sizing: border-box;
+  -webkit-border-image: url(../images/palm-delete.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .palm-swipe-delete {
+  -webkit-border-image: url(../images/palm-delete-group.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .first .palm-swipe-delete {
+  -webkit-border-image: url(../images/palm-delete-group-first.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .last .palm-swipe-delete {
+  -webkit-border-image: url(../images/palm-delete-group-last.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-group .single .palm-swipe-delete {
+  -webkit-border-image: url(../images/palm-delete-group-single.png) 24 20 24 20 repeat repeat;
+}
+
+.palm-drag-spacer {
+  background-color: transparent;
+  border-width: 0px; /* width is set via javascript */
+  -webkit-box-sizing: border-box;
+  -webkit-border-image: url(../images/palm-drag-spacer.png) 15 15 15 15 repeat repeat;
+}
+
+.notify-message {
+  padding: 0px 20px;
+}

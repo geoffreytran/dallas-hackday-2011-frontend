@@ -1,0 +1,55 @@
+/*
+   List Dividers Styling
+   Mojo Application Framework
+   Copyright (c) 2007-2009, Palm Inc.
+   All rights reserved.
+
+*/
+
+.palm-dark .palm-divider .label {
+  color: #AAA;
+  text-shadow: #222 0px -1px 0px;
+}
+
+.palm-dark .palm-divider.solid {
+  height: 12px;
+  background: url(../images/palm-divider-label-solid-dark.png) left center repeat-x;
+}
+
+.palm-dark .palm-divider.labeled .left {
+  background: url(../images/palm-divider-line-dark.png) right no-repeat;
+}
+
+.palm-dark .palm-divider.labeled .right {
+  background-image: url(../images/palm-divider-line-dark.png);
+}
+
+.palm-dark .palm-divider.labeled.alt .right {
+  background-image: url(../images/palm-divider-separator-alt-dark.png);
+}
+
+.palm-dark .palm-divider.collapsible .right {
+  background-image: url(../images/palm-divider-collapse-middle-dark.png);
+}
+
+.palm-dark .palm-divider.collapsible .left-line {
+  background-image: url(../images/palm-divider-collapse-left-dark.png);
+}
+
+.palm-dark .palm-divider.collapsible .middle-line {
+  background-image: url(../images/palm-divider-collapse-middle-dark.png);
+}
+
+.palm-dark .palm-arrow-expanded,
+.palm-dark .palm-arrow-closed {
+  background-image: url(../images/palm-divider-arrow-dark.png);
+}
+
+.palm-dark .palm-divider.collapsible .line {
+  background: url(../images/palm-divider-collapse-left-dark.png) left -1px no-repeat;
+}
+
+.palm-dark .palm-divider.alpha {
+  background: url(../images/alpha-divider-dark.png) center left no-repeat;
+}
+

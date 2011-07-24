@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="drawers">
+      Drawers
+    </h1>
+    <h2 id="drawer">
+      Drawer
+    </h2>
+    <p>
+      A <code>Drawer</code> is a control with a label (<code>caption</code>), which animates vertically to open and close. The drawer may be opened by calling <code>setOpen(true)</code> or just <code>open</code>; it may be closed by calling <code>setOpen(false)</code> or just <code>close</code>. You may also toggle the open/closed state by calling <code>toggleOpen</code>.
+    </p>
+    <p>
+      Here's a kind that implements a simple drawer with a button that toggles the state:
+    </p>
+    <blockquote>
+      <pre>
+<code>enyo.kind({
+  name: &quot;MyApps.Sample&quot;,
+  kind: &quot;enyo.VFlexBox&quot;,
+  style: &quot;width: 400px; padding: 5px&quot;,
+  components: [
+      {kind: &quot;Drawer&quot;, caption: &quot;I'm the Drawer's Caption&quot;, components: [
+          {content: &quot;I'm the Drawer's Content&quot;},
+      ]},
+      {kind: &quot;Button&quot;, caption: &quot;Close&quot;, onclick: &quot;toggleDrawer&quot;}
+  ],
+  toggleDrawer: function() {
+      this.$.drawer.toggleOpen(); 
+      if (this.$.drawer.open) {
+          this.$.button.setCaption(&quot;Close&quot;);
+      } else {
+          this.$.button.setCaption(&quot;Open&quot;);
+      }
+  }
+});
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Initial (open) state:
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Drawers1.png" alt="Open Drawer"><br>
+      <br>
+      Closed state:
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Drawers2.png" alt="Closed Drawer"><br>
+    </p>
+    <h3 id="published-properties">
+      Published Properties
+    </h3>
+    <p>
+      Each Drawer object has the following published properties:
+    </p>
+    <table border="1">
+      <tr>
+        <th>
+          Property
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          open
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          Specifies whether the drawer should be open.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          canChangeOpen
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          Controls whether or not the value of the <code>open</code> property may be changed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          animate
+        </td>
+        <td>
+          true
+        </td>
+        <td>
+          Set to <code>false</code> to avoid animations when the open state of the drawer changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          captionClassName
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          CSS class to apply to the drawer caption
+        </td>
+      </tr>
+      <tr>
+        <td>
+          caption
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          Caption to display above drawer content
+        </td>
+      </tr>
+    </table>
+    <h3 id="published-events">
+      Published Events
+    </h3>
+    <p>
+      The <code>Drawer</code> kind has two published events--<code>onOpenChanged</code>, which fires when a drawer opens or closes, and <code>onOpenAnimationComplete</code>, which fires when a drawer animation completes.
+    </p>
+    <h2 id="dividerdrawer">
+      DividerDrawer
+    </h2>
+    <p>
+      The <code>DividerDrawer</code> kind, which derives directly from <code>enyo.Drawer</code>, defines a drawer whose caption is styled to look like a divider. The open state is indicated by an arrow button.
+    </p>
+    <p>
+      Here's the caption from a divider drawer in the open state...
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Drawers3.png" alt="Caption from Open DividerDrawer"><br>
+      <br>
+      ...and in the closed state:
+    </p>
+    <p>
+      <img src="/images/EnyoConceptual-Drawers4.png" alt="Caption from Closed DividerDrawer"><br>
+      <br>
+    </p>
+		</div>
+	</body>
+</html>

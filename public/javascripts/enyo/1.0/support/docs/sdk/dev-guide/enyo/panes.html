@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="panes">
+      Panes
+    </h1>
+    <p>
+      A <code>Pane</code> is a control designed to host a set of views and show one view at a time. Any view may be selected and shown as needed. When a view is selected, it animates into display based on the type of transition specified in the <code>transitionKind</code> property. By default, views fade in. To specify a pane with views that fly in, do this:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Pane&quot;, transitionKind: &quot;enyo.transitions.LeftRightFlyin&quot;, components: [
+  {kind: &quot;mainView&quot;},
+  {kind: &quot;otherView&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      While a view may be any kind of control, views are typically complex collections of controls. Therefore it's often convenient to create a kind for each view, as in the example above. Also note that each view will be sized to fit the dimensions of the pane.
+    </p>
+    <p>
+      By default, the first view is selected (displayed). There are several ways to select views; use whichever method is most convenient for the application. You may select a view by reference...
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.pane.selectView(this.$.otherView);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      by name...
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.pane.selectViewByName(&quot;otherView&quot;);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      or by index.
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.pane.selectViewByIndex(1);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <code>Pane</code> also maintains a history list of views that have been selected. This list may be navigated using the <code>back</code> and <code>next</code> methods.
+    </p>
+    <p>
+      Frequently, an application will need to retrieve information about the currently selected view. A pane's <code>view</code> property is a reference to the currently selected view. The <code>getViewName</code> and <code>getViewIndex</code> methods return the name and index of the selected view, respectively.
+    </p>
+    <p>
+      The <code>onSelectView</code> event fires whenever the selected view changes. For example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Pane&quot;, onSelectView: &quot;viewSelected&quot;, components: [
+  {kind: &quot;mainView&quot;},
+  {kind: &quot;searchView&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      In the following example, we stop search processing when the search view is hidden:
+    </p>
+    <blockquote>
+      <pre>
+<code>viewSelected: function(inSender, inView, inPreviousView) {
+  if (inPreviousView.name == &quot;searchView&quot;) {
+      this.cancelSearch();
+  }
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      <code>Pane</code> also supports a performance-enhancing optimization that can defer the creation of views until they are selected. To enable this optimization for a given view, set its <code>lazy</code> property to <code>true</code>:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Pane&quot;, components: [
+  {kind: &quot;mainView&quot;},
+  {kind: &quot;otherView&quot;, lazy: true}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      You must use <code>selectViewByName</code> to select a view that has not yet been created:
+    </p>
+    <blockquote>
+      <pre>
+<code>this.$.pane.selectViewByName(&quot;otherView&quot;);
+</code>
+</pre>
+    </blockquote>
+    <p>
+      It's also possible to verify that a lazy-marked view has been created without selecting it, by calling <code>validateView(inName)</code>.
+    </p>
+    <h2 id="published-events">
+      Published Events
+    </h2>
+    <table border="1">
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+          onSelectView
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          <p>
+            Event that fires whenever a view is selected. The event contains the current view and previous view. For example:
+          </p>
+          <pre>
+viewSelected: function(inSender, inView, inPreviousView) {
+    inView.startProcessing();
+    inPreviousView.endProcessing();
+}
+</pre>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          onCreateView
+        </td>
+        <td>
+          &quot;&quot;
+        </td>
+        <td>
+          <p>
+            Event that fires when a view is selected by name but does not exist in either the view list or the set of lazy marked views. Handle this event to dynamically create the view. The event contains the requested view name. For example:
+          </p>
+          <pre>
+paneCreateView: function(inSender, inName) {
+    if (inName == "searchView") {
+        this.$.pane.createComponent({kind: "searchView", owner: this});
+    }
+}
+</pre>
+        </td>
+      </tr>
+    </table>
+    <h2 id="methods">
+      Methods
+    </h2>
+    <h3 id="backe">
+      back(e)
+    </h3>
+    <p>
+      <code>Pane</code> maintains a history of selected views in the <code>history</code> property. The <code>back</code> method selects the previous view in the history.
+    </p>
+    <h3 id="getview">
+      getView()
+    </h3>
+    <p>
+      Returns the currently selected view.
+    </p>
+    <h3 id="getviewindex">
+      getViewIndex()
+    </h3>
+    <p>
+      Returns the index of the currently selected view.
+    </p>
+    <h3 id="getviewname">
+      getViewName()
+    </h3>
+    <p>
+      Returns the name of the currently selected view.
+    </p>
+    <h3 id="next">
+      next()
+    </h3>
+    <p>
+      <code>Pane</code> maintains a history of selected views in the <code>history</code> property. The <code>next</code> method selects the next view in the history. This method is typically called in conjunction with <code>back</code>.
+    </p>
+    <h3 id="selectviewinview-insync">
+      selectView(inView, inSync)
+    </h3>
+    <p>
+      Selects the view specified by the <code>inView</code> reference and fires the <code>onSelectView</code> event. Set <code>inSync</code> to <code>true</code> to ensure that the view is selected synchronously.
+    </p>
+    <h3 id="selectviewbyindexinindex-insync">
+      selectViewByIndex(inIndex, inSync)
+    </h3>
+    <p>
+      Selects the view with the index <code>inIndex</code> and fires the <code>onSelectView</code> event. Set <code>inSync</code> to true to ensure that the view is selected synchronously.
+    </p>
+    <h3 id="selectviewbyname-functioninname-insync">
+      selectViewByName: function(inName, inSync)
+    </h3>
+    <p>
+      Selects the view with the name <code>inName</code> and fires the <code>onSelectView</code> event. Set <code>inSync</code> to <code>true</code> to ensure that the view is selected synchronously.
+    </p>
+    <h3 id="validateviewinname">
+      validateView(inName)
+    </h3>
+    <p>
+      Checks whether the view specified by <code>inName</code> exists. If it does not exist, attempts to create the view by name from the list of lazy-marked views. If the view is not found, fires the <code>onCreateView</code> event, which can be implemented to dynamically create a view by name.
+    </p>
+		</div>
+	</body>
+</html>

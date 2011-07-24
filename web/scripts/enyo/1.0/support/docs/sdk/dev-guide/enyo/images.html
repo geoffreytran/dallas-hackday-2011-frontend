@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>$if(pagetitle)$$pagetitle$$endif$</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="_css/chrome.css" />
+		<link rel="stylesheet" href="../_css/chrome.css" />
+		<link rel="stylesheet" href="../../_css/chrome.css" />
+		<link rel="stylesheet" href="../../../_css/chrome.css" />
+		<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="../../../_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="_js/doc.js" type="text/javascript"></script>
+		<script src="../_js/doc.js" type="text/javascript"></script>
+		<script src="../../_js/doc.js" type="text/javascript"></script>
+		<script src="../../../_js/doc.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="content">
+    
+    <h1 id="images">
+      Images
+    </h1>
+    <p>
+      In this article we look at <code>Image</code> and <code>AnimatedImage</code>, as well as a number of other kinds designed to house and display image objects.
+    </p>
+    <h2 id="image">
+      Image
+    </h2>
+    <p>
+      An <code>Image</code> object is a control that displays an image specified via the <code>src</code> property. The <code>src</code> can be an absolute or relative url. It can also be a path relative to any loaded enyo package.
+    </p>
+    <p>
+      For example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Image&quot;, src: &quot;http://www.example.com/image.jpg&quot;},
+{kind: &quot;Image&quot;, src: &quot;images/image.jpg&quot;},
+{kind: &quot;Image&quot;, src: &quot;$enyo-Heritage/images/popup-heritage.png&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To change the image, call the <code>setSrc</code> method:
+    </p>
+    <blockquote>
+      <pre>
+<code>buttonClick: function() {
+  this.$.image.setSrc(&quot;images/image2.jpg&quot;);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The default value of <code>src</code> is <code>&quot;$base-themes-default-theme/images/blank.gif&quot;</code>.
+    </p>
+    <h2 id="animatedimage">
+      AnimatedImage
+    </h2>
+    <p>
+      An <code>AnimatedImage</code> is a control that animates based on its CSS background image. The <code>className</code> property should refer to a valid CSS class that defines a background image.
+    </p>
+    <p>
+      The background image should be constructed so that it contains a series of animation frames stacked vertically. The <code>imageHeight</code> property should be set to the height of an animation frame, and <code>imageCount</code> should be set to the number of frames. The default value of <code>imageHeight</code> is 32.
+    </p>
+    <p>
+      The <code>tick</code> property changes animation speed by controlling the number of milliseconds between frames. Use the <code>repeat</code> property to set the number of times the animation should repeat. A value of 0 indicates that the animation should repeat indefinitely.
+    </p>
+    <p>
+      Here's an example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;AnimatedImage&quot;, className: &quot;snoopyAnimation&quot;, imageHeight: 200,
+  imageCount: 10; repeat: 0}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Call the <code>start</code> method to start the animation and the <code>stop</code> method to stop it:
+    </p>
+    <blockquote>
+      <pre>
+<code>startButtonClick: function() {
+  this.$.animatedImage.start();
+},
+stopButtonClick: function() {
+  this.$.animatedImage.stop();
+}
+</code>
+</pre>
+    </blockquote>
+    <h2 id="sizeableimage">
+      SizeableImage
+    </h2>
+    <p>
+      <code>SizeableImage</code>, which extends <code>enyo.VFlexBox</code>, is a control designed to view an image, with support for zooming. It is meant to be placed inside a <code>Scroller</code>.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Scroller&quot;, components: [
+  {kind: &quot;SizeableImage&quot;, src: &quot;images/tree.jpg&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      The zoom level, whose default value is 1, can be changed by calling the <code>setZoom</code> method.
+    </p>
+    <p>
+      <code>SizeableImage</code> has one published event, <code>onImageLoaded</code>.
+    </p>
+    <h2 id="scrollingimage">
+      ScrollingImage
+    </h2>
+    <p>
+      <code>ScrollingImage</code> extends <code>SizeableImage</code>, adding support for panning in addition to zooming. There are no additional public methods, published properties, or published events.
+    </p>
+    <h2 id="croppableimage">
+      CroppableImage
+    </h2>
+    <p>
+      <code>CroppableImage</code>, which extends <code>ScrollingImage</code>, is a control designed to crop a zoomable, pannable image.
+    </p>
+    <p>
+      The <code>onCrop</code> event returns the parameters necessary to crop the image:
+    </p>
+    <blockquote>
+      <pre>
+<code>{
+  suggestedXtop: left pixel start of the cropped image
+  suggestedYtop: top pixel start of the cropped image
+  suggestedScale: zoom percentage
+  suggestedXsize: rounded X size of the cropped image
+  suggestedYsize: rounded Y size of the cropped image
+  sourceWidth: original image width
+  sourceHeight: original image height
+  sourceImage: absolute path to the image
+  focusX: center of the cropped image in relation to width
+  focusY: center of the cropped image in relation to height
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Use a <code>CroppableImage</code> like so:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;VFlexBox&quot;, components: [
+  {kind: &quot;CroppableImage&quot; src: &quot;image.jpg&quot;, flex: 1, onCrop: &quot;cropHandler&quot;},
+  {kind: &quot;Button&quot;, onclick: &quot;crop&quot;}
+]}
+
+crop: function() { this.$.croppableImage.getCropParams() }
+</code>
+</pre>
+    </blockquote>
+    <h2 id="viewimage">
+      ViewImage
+    </h2>
+    <p>
+      <code>ViewImage</code>, another kind that extends <code>ScrollingImage</code> is a scrolling image designed to work in a <code>Carousel</code>.
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Carousel&quot;, flex: 1, components: [
+  {kind: &quot;ViewImage&quot;, src: &quot;images/01.png&quot;},
+  {kind: &quot;ViewImage&quot;, src: &quot;images/02.png&quot;},
+  {kind: &quot;ViewImage&quot;, src: &quot;images/03.png&quot;}
+]}
+</code>
+</pre>
+    </blockquote>
+    <h2 id="carousel">
+      Carousel
+    </h2>
+    <p>
+      A <code>Carousel</code> is a control that provides the ability to slide back and forth between different views without having to load all the views initially. It is descended (through several intermediate kinds) from <code>SnapScroller</code>, a scroller control that snaps to the positions of the controls it contains.
+    </p>
+    <p>
+      A single carousel may contain thousands of views/images. Loading all of them into memory at once is not be feasible. <code>Carousel</code> solves this problem by only holding onto the center view (C), the previous view (P), and the next view (N). Additional views are loaded as the user flips through the items in the carousel.
+    </p>
+    <blockquote>
+      <pre>
+<code>| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+              P   C   N
+</code>
+</pre>
+    </blockquote>
+    <p>
+      To initialize a carousel:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;Carousel&quot;, flex: 1, onGetLeft: &quot;getLeft&quot;, onGetRight: &quot;getRight&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Use the <code>setCenterView</code> method to set the center view, and the <code>onGetLeft</code> and <code>onGetRight</code> events to build a scrolling list of views.
+    </p>
+    <blockquote>
+      <pre>
+<code>create: function() {
+  this.inherited(arguments);
+  this.$.carousel.setCenterView(this.getView(this.index));
+},
+getView: function(inIndex) {
+  return {kind: &quot;HFlexBox&quot;, align: &quot;center&quot;, pack: &quot;center&quot;, content: inIndex};
+},
+getLeft: function(inSender, inSnap) {
+  inSnap &amp;&amp; this.index--;
+  return this.getView(this.index-1);
+},
+getRight: function(inSender, inSnap) {
+  inSnap &amp;&amp; this.index++;
+  return this.getView(this.index+1);
+}
+</code>
+</pre>
+    </blockquote>
+    <h2 id="imageview">
+      ImageView
+    </h2>
+    <p>
+      An <code>ImageView</code> is a <code>Carousel</code> designed to view an image full-screen, with support for zooming and panning, while optionally moving between additional images. It can be used to display a single image, or a set of images that may be flipped through.
+    </p>
+    <p>
+      Here's a simple example:
+    </p>
+    <blockquote>
+      <pre>
+<code>{kind: &quot;ImageView&quot;, flex: 1, onGetLeft: &quot;getLeft&quot;, onGetRight: &quot;getRight&quot;}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Use the <code>centerSrc</code> property to specify the center image, and the <code>onGetLeft</code> and <code>onGetRight</code> events to build a scrolling list of images.
+    </p>
+    <blockquote>
+      <pre>
+<code>create: function() {
+  this.inherited(arguments);
+  this.$.imageView.setCenterSrc(this.getImageUrl(this.index));
+},
+getImageUrl: function(inIndex) {
+  var n = this.images[inIndex];
+  if (n) {
+      return &quot;images/&quot; + n;
+  }
+},
+getLeft: function(inSender, inSnap) {
+  inSnap &amp;&amp; this.index--;
+  return this.getImageUrl(this.index-1);
+},
+getRight: function(inSender, inSnap) {
+  inSnap &amp;&amp; this.index++;
+  return this.getImageUrl(this.index+1);
+}
+</code>
+</pre>
+    </blockquote>
+    <p>
+      Add images to an <code>ImageView</code> by calling the <code>addImages</code> method.
+    </p>
+		</div>
+	</body>
+</html>
