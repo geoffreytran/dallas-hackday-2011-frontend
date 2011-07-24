@@ -1,4 +1,4 @@
-var gameLocation = 'http://game:3000';
+var gameLocation = 'http://hackday.geoffreytran.com:3000';
 var questionSeconds = 10;
 
 /**
