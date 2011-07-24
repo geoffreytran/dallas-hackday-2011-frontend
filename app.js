@@ -6,10 +6,11 @@ var questionSeconds = 10;
  */
 
 var express     = require('express');
-var jqtpl       = require("jqtpl");
+var jqtpl       = require('jqtpl');
 var io          = require('socket.io');
 var sio         = require('socket.io-sessions');
-
+// var sys         = require('sys');
+// var rest        = require('restler');
 
 // Create the app
 var app = module.exports = express.createServer();
@@ -76,24 +77,52 @@ var users = [];
 var questions = [
 	{ 
 		question: 'Who is the best agency in the world?',
-		answers: ['RAPP', 'JWT', 'IMC2'],
-		correctAnswer: 0,
+		answers: [ 'JWT', 'IMC2', 'RAPP', 'Slingshot' ],
+		correctAnswer: 2,
 		users: []
 	},
 	
 	{
 		question: 'Who is more awesome?',
-		answers: ['Geoffrey Tran', 'Jake Smith', 'Sean Scogin'],
+		answers: [ 'Geoffrey Tran', 'Jake Smith', 'Sean Scogin', 'Ben Gatzke' ],
 		correctAnswer: 0,
 		users: []
 	},
 	
 	{
 		question: 'Why is the sky blue?',
-		answers: ['Because I like it that way', 'Meh'],
-		correctAnswer: 0,
+		answers: ['Because I like it that way', 'Atmospheric refractoring of light', 'Magic', 'Because the viking said so' ],
+		correctAnswer: 3,
 		users: []
-	}
+	},
+	
+	{
+		question: 'Who wrote Hamlet?',
+		answers: [ 'Geoffrey Tran', 'Shakespeare', 'Jake Smith', 'The Viking' ],
+		correctAnswer: 1,
+		users: []
+	},
+	
+	{
+		question: 'Which one is the intern?',
+		answers: [ 'Blake', 'Sam', 'Jake', 'The Viking' ],
+		correctAnswer: 1,
+		users: []
+	},
+	
+	{
+		question: 'Which is the smallest ocean?',
+		answers: [ 'Atlantic', 'Indian', 'Pacific', 'Artic' ],
+		correctAnswer: 3,
+		users: []
+	},
+	
+	{
+		question: 'Who was iced?',
+		answers: [ 'Jake Smith', 'Sean Scogin', 'The Viking', 'Ben Gatzke' ],
+		correctAnswer: 1,
+		users: []
+	},
 ];
 
 var currentQuestion;
