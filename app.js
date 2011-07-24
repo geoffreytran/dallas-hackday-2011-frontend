@@ -127,7 +127,7 @@ socket.on('sconnection', function (client, session) {
 					currentQuestionTimeLeft = questionSeconds;
 					
 					users.sort(function(a, b) {
-						return a.score - b.score;
+						return b.score - a.score;
 					});
 					client.emit('leaderboard', users);
 					client.broadcast.emit('leaderboard', users);
