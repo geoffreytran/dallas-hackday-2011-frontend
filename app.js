@@ -138,6 +138,7 @@ socket.on('sconnection', function (client, session) {
 					currentQuestion = 0;
 				} else {
 					client.emit('question.answered', questions[currentQuestion]);
+					client.broadcast.emit('question.answered', questions[currentQuestion]);
 				}
 			}
 
@@ -191,7 +192,7 @@ socket.on('sconnection', function (client, session) {
 		for (var i in questions[currentQuestion].users) {
 			if (users[i].name.replace(/ /g,'').toLowerCase() == session.user.name.replace(/ /g,'').toLowerCase()) {
 				existingUser = true;
-				questions[currentQuestion].users[i]({ user: session.user, answer: data.answer });
+				questions[currentQuestion].users[i].answer = data.answer;
 				break;
 			}
 	  }

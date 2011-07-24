@@ -6,7 +6,7 @@ socket.on('session.regenerate', function(data) {
 
 socket.on('game.invalid', function(){ alert('game is not currently running') });
 
-$(function(){	
+$(function(){	  
   $('#entry').submit(function(e){
   	e.preventDefault();
 
@@ -20,7 +20,8 @@ $(function(){
 
 	  socket.emit('user.connect', data);
 		socket.on('question', function(data) {
-			  $.mobile.changePage($('#page-game'), {reloadPage: true});
+			  $.mobile.hidePageLoadingMsg();	
+			  $.mobile.changePage($('#page-game'), { changeHash: false, reloadPage: true});
 
 			  // Populate answers
 				$('div.answers').empty();
@@ -34,6 +35,10 @@ $(function(){
 				$('div.answers input[type="radio"]').change(function(e){
 					socket.emit('user.answered', { answer: $(this).val() });
 				});		
+		});
+		
+		socket.on('question.answered', function(data) {
+			$.mobile.showPageLoadingMsg();	
 		});
   });
 

@@ -44,13 +44,13 @@ socket.on('question.time-left', function(data) {
 });
 
 socket.on('user.connected', function(data) {
-	$('.messages').append('User connected: ' + data.name +'<br />');
+	$('.messages').append(data.name +' is now playing...<br />');
 });
 
 socket.on('user.disconnected', function(data) {
-	$('.messages').append('User disconnected: ' + data.name +'<br />');
+	$('.messages').append(data.name +' has left the game...<br />');
 });
 
 socket.on('display.user-answered', function(data) {
-	$('.messages').append(data.name + ' answered...' + '<br />')
+	$('.messages').append(data.name + ' picked an answer...' + '<br />')
 });
