@@ -111,36 +111,40 @@ socket.on('sconnection', function (client, session) {
 		var updateTime = function(){						
 			if (currentQuestionTimeLeft <= 0) {
 				if (currentQuestionTimeLeft <= -10 && questions[currentQuestion + 1]) {
-					// Calculate scores
-					for (var index in questions[currentQuestion].users) {
-						console.log(questions[currentQuestion].users[index]);
-						for (var i in users) {
-							if (users[i].name.replace(/ /g,'').toLowerCase() == questions[currentQuestion].users[index].user.name.replace(/ /g,'').toLowerCase()) {
-								users[i].score++;
-							}
-						}
-					}
-					
-					questions[currentQuestion].users = [];
-					
+					questions[currentQuestion + 1].users = [];
 					currentQuestion++;
 					currentQuestionTimeLeft = questionSeconds;
-					
-					users.sort(function(a, b) {
-						return b.score - a.score;
-					});
-					client.emit('leaderboard', users);
-					client.broadcast.emit('leaderboard', users);
 					
 					client.emit('question', questions[currentQuestion]);
 					client.broadcast.emit('question', questions[currentQuestion]);
 				} else if (currentQuestionTimeLeft <= -10) {
 					currentQuestion = 0;
 				} else {
+					// Calculate scores
+					for (var index in questions[currentQuestion].users) {
+						for (var i in users) {
+							if (users[i].name.replace(/ /g,'').toLowerCase() == questions[currentQuestion].users[index].user.name.replace(/ /g,'').toLowerCase()) {
+								if (questions[currentQuestion].users[index].scored) {
+									continue;
+								}
+								
+								users[i].score++;
+								questions[currentQuestion].users[index].scored = true;
+							}
+						}
+					}
+										
 					client.emit('question.answered', questions[currentQuestion]);
 					client.broadcast.emit('question.answered', questions[currentQuestion]);
 				}
 			}
+			
+			users.sort(function(a, b) {
+				return b.score - a.score;
+			});
+			
+			client.emit('leaderboard', users);
+			client.broadcast.emit('leaderboard', users);
 
 			client.emit('question.time-left', { time: currentQuestionTimeLeft });
 			currentQuestionTimeLeft--;			

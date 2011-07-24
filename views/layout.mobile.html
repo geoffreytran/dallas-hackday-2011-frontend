@@ -75,17 +75,22 @@
             <!-- Start: Body -->
             <div class="bd" data-role="content">
 				<form id="entry" method="post" data-ajax="false">
-					<div data-role="fieldcontain">
-						<label for="name">Name:</label>
-						<input type="text" id="name" name="name" required="true" />
-					</div>
+					<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+						
+						<li data-role="fieldcontain">
+							<label for="name">Name:</label>
+							<input type="text" id="name" name="name" required="true" />
+						</li>
 					
-					<div data-role="fieldcontain">
-						<label for="email">Email:</label>
-						<input type="email" id="email" name="email" required="true" />
-					</div>
+						<li data-role="fieldcontain">
+							<label for="email">Email:</label>
+							<input type="email" id="email" name="email" required="true" />
+						</li>
 					
-					<input type="submit" value="Enter" />
+						<li data-role="fieldcontain">
+							<input type="submit" value="Join" data-theme="b" />
+						</li>
+					</ul>
 				</form>
             </div>
             <!-- End: Body -->

@@ -54,6 +54,10 @@
 			padding: 0 50px 20px 50px;
 		}
 		
+		.ft ol li {
+			font-size: 19px;
+		}
+		
 		.leader-board {
 			min-height: 300px;
 		}
@@ -112,6 +116,18 @@
 		
 		.result {
 			font-size: 45px;
+		}
+		
+		.time {
+			font-size: 50px;
+			font-weight: bolder;
+			border: 5px solid #FF5600;
+			padding: 5px;
+			width: 55px;
+			height: 60px;
+			display: block;
+			text-align: center;
+			-webkit-border-radius: 55px;
 		}
 		
 		.name {
@@ -175,8 +191,9 @@
 					<span class="time"></span>
 				</div>
 				
-				<div class="messages">
-				</div>
+				<ul class="messages" data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+					<li data-role="list-divider">Actions</li>
+				</ul>
             </div>
             <!-- End: Body -->
 
@@ -190,7 +207,7 @@
 				<div class="ui-block-b">
 					<h2>Instructions:</h2>
 					<ol>
-						<li>Use your mobile device to browse to ${gameLocation} or the QR code</li>
+						<li>Use your mobile device to browse to <span class="name">${gameLocation}</span> or the QR code</li>
 						<li>Look at the question being shown</li>
 						<li>Select your answer on your device</li>
 					</ol>
@@ -238,7 +255,7 @@
 				<div class="ui-block-b">
 					<h2>Instructions:</h2>
 					<ol>
-						<li>Use your mobile device to browse to ${gameLocation} or the QR code</li>
+						<li>Use your mobile device to browse to <span class="name">${gameLocation}</span> or the QR code</li>
 						<li>Look at the question being shown</li>
 						<li>Select your answer on your device</li>
 					</ol>

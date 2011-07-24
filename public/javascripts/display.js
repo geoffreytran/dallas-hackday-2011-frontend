@@ -24,7 +24,7 @@ socket.on('question', function(data) {
 
 socket.on('question.answered', function(data) {
 	$.mobile.changePage($('#page-question-result'), { transition: 'flip' });
-	$('.messages').empty();
+	$('.messages').empty().append('<li data-role="list-divider">Actions</li>').listview('refresh');
 	$('.result').empty();
 	
 	// Populate question
@@ -53,17 +53,17 @@ socket.on('leaderboard', function(data) {
 });
 
 socket.on('question.time-left', function(data) {
-	$('.time').empty().append(data.time);
+	$('.time').empty().append(Math.abs(parseInt(data.time)));
 });
 
 socket.on('user.connected', function(data) {
-	$('.messages').append(data.name +' is now playing...<br />');
+	$('.messages').append('<li>' + data.name +' is now playing...</li>').listview('refresh');
 });
 
 socket.on('user.disconnected', function(data) {
-	$('.messages').append(data.name +' has left the game...<br />');
+	$('.messages').append('<li>' + data.name +' has left the game...</li>').listview('refresh');
 });
 
 socket.on('display.user-answered', function(data) {
-	$('.messages').append(data.name + ' picked an answer...' + '<br />')
+	$('.messages').append('<li>' + data.name + ' picked an answer...</li>').listview('refresh');
 });
