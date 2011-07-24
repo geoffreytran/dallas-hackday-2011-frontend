@@ -6,10 +6,12 @@ var socket = io.connectWithSession(window.location.protocol + '//' + window.loca
 setTimeout(function(){ socket.emit('display'); }, 1000);
 
 socket.on('session.regenerate', function(data) {
-	//window.location.reload();
+	window.location.href = window.location.href;
 });
 
 socket.on('question', function(data) {
+	$.mobile.changePage($('#page-game'));
+	
 	// Populate question
 	$('h2.question').empty().append(data.question);
 	
@@ -21,7 +23,20 @@ socket.on('question', function(data) {
 });
 
 socket.on('question.answered', function(data) {
-	$('.result').empty().append(data.result);
+	$.mobile.changePage($('#page-question-result'));
+	$('.result').empty();
+	
+	for (var index in data.users) {
+	  $('.result').append(data.users[index].user.name + ' got it ' + ( parseInt(data.users[index].answer) == data.correctAnswer ? 'right' : 'wrong') + '<br />');
+  }	
+});
+
+socket.on('leaderboard', function(data) {
+	$('.scores').empty();
+	
+	for (var index in data) {
+		$('.scores').append('<dl><dt>' + data[index].score + '</dt><dd>' + data[index].name + '</dd></dl>');
+	}
 });
 
 socket.on('question.time-left', function(data) {
@@ -34,4 +49,8 @@ socket.on('user.connected', function(data) {
 
 socket.on('user.disconnected', function(data) {
 	$('.messages').append('User disconnected: ' + data.name +'<br />');
+});
+
+socket.on('display.user-answered', function(data) {
+	$('.messages').append(data.name + ' answered...' + '<br />')
 });

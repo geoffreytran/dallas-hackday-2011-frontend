@@ -1,3 +1,5 @@
+var gameLocation = 'http://game:3000';
+var questionSeconds = 10;
 
 /**
  * Module dependencies.
@@ -42,7 +44,8 @@ app.configure('production', function(){
 app.get('/', function(req, res){
   res.render('index', {
     title: 'Express',
-		timestamp: (new Date()).getTime()
+		timestamp: (new Date()).getTime(),
+		gameLocation: gameLocation
   });
 });
 
@@ -73,24 +76,28 @@ var questions = [
 	{ 
 		question: 'Who is the best agency in the world?',
 		answers: ['RAPP', 'JWT', 'IMC2'],
-		correctAnswer: 0
+		correctAnswer: 0,
+		users: []
 	},
 	
 	{
 		question: 'Who is more awesome?',
 		answers: ['Geoffrey Tran', 'Jake Smith', 'Sean Scogin'],
-		correctAnswer: 0
+		correctAnswer: 0,
+		users: []
 	},
 	
 	{
 		question: 'Why is the sky blue?',
 		answers: ['Because I like it that way', 'Meh'],
-		correctAnswer: 0
+		correctAnswer: 0,
+		users: []
 	}
 ];
 
 var currentQuestion;
-var currentQuestionTimeLeft = 10;
+var currentQuestionTimeLeft = questionSeconds;
+var displaying = 0;
 
 socket.on('sconnection', function (client, session) {
 	client.on('display', function (data) {
@@ -100,37 +107,72 @@ socket.on('sconnection', function (client, session) {
 		
 		client.emit('question', questions[currentQuestion]);
 		
-		var updateTime = function(){
-			console.log(currentQuestion);
-			
+		var updateTime = function(){						
 			if (currentQuestionTimeLeft <= 0) {
-				if (questions[currentQuestion + 1]) {
+				if (currentQuestionTimeLeft <= -10 && questions[currentQuestion + 1]) {
+					// Calculate scores
+					for (var index in questions[currentQuestion].users) {
+						console.log(questions[currentQuestion].users[index]);
+						for (var i in users) {
+							if (users[i].name.replace(/ /g,'').toLowerCase() == questions[currentQuestion].users[index].user.name.replace(/ /g,'').toLowerCase()) {
+								users[i].score++;
+							}
+						}
+					}
+					
+					questions[currentQuestion].users = [];
+					
 					currentQuestion++;
-					currentQuestionTimeLeft = 10;
-				} else {
-					currentQuestionTimeLeft = 10;
+					currentQuestionTimeLeft = questionSeconds;
+					
+					users.sort(function(a, b) {
+						return a.score - b.score;
+					});
+					client.emit('leaderboard', users);
+					client.broadcast.emit('leaderboard', users);
+					
+					client.emit('question', questions[currentQuestion]);
+					client.broadcast.emit('question', questions[currentQuestion]);
+				} else if (currentQuestionTimeLeft <= -10) {
 					currentQuestion = 0;
+				} else {
+					client.emit('question.answered', questions[currentQuestion]);
 				}
-				
-				client.emit('question', questions[currentQuestion]);
-				client.broadcast.emit('question', questions[currentQuestion]);
 			}
-			
+
 			client.emit('question.time-left', { time: currentQuestionTimeLeft });
-			currentQuestionTimeLeft--;
-			
-			setTimeout(updateTime, 1000);
+			currentQuestionTimeLeft--;			
 		};
 		
-		setTimeout(updateTime, 1000);
+		if (displaying++ <= 0) {
+		  var interval = setInterval(updateTime, 1000);
+	  }
+	
+		client.on('disconnect',function(){
+			if (--displaying <= 0) {
+			  clearInterval(interval);
+		  }
+			console.log('Display has disconnected');
+		});
 		
 		client.emit('leaders', {});
 	});
 	
 	client.on('user.connect', function(data) {		
-		users.push(data);
 		session.user = data;
-		console.log(questions[currentQuestion]);
+		session.user.score = 0;
+		
+		var existingUser = false;
+		for (var i in users) {
+			if (users[i].name.replace(/ /g,'').toLowerCase() == data.name.replace(/ /g,'').toLowerCase()) {
+				existingUser = true;
+				break;
+			}
+	  }
+	
+	  if (!existingUser) {
+		  users.push(session.user);
+	  }
 
 		if (!questions[currentQuestion]) {
 			client.emit('game.invalid');
@@ -144,8 +186,18 @@ socket.on('sconnection', function (client, session) {
 	client.on('user.answered', function(data) {
 		client.broadcast.emit('display.user-answered', session.user);
 		
-		if (questions[currentQuestion].correctAnswer == data.answer) {
-		}
+ 		var existingUser = false;
+		for (var i in questions[currentQuestion].users) {
+			if (users[i].name.replace(/ /g,'').toLowerCase() == session.user.name.replace(/ /g,'').toLowerCase()) {
+				existingUser = true;
+				questions[currentQuestion].users[i]({ user: session.user, answer: data.answer });
+				break;
+			}
+	  }
+	
+	  if (!existingUser) {
+			questions[currentQuestion].users.push({ user: session.user, answer: data.answer });
+	  }
 	});	
 });
 

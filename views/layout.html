@@ -81,6 +81,15 @@
 			list-style: upper-alpha;
 			margin-left: 20px;
 		}
+		
+		.leader-board dl dt {
+			float: left;
+			clear:left;
+		}
+		
+		.leader-board dl dd {
+			float: left;
+		}
 		</style>
         <!-- End: Styles -->
 
@@ -117,10 +126,8 @@
 				<div class="side-column">
 					<div class="leader-board">
 						<h2>Leader Board</h2>
-						<dl>
-							<dt style="float: left;clear: left">1000</dt>
-							<dd style="float: left">Geoffrey Tran</dd>
-						</dl>
+						<div class="scores">
+						</div>
 					</div>
 				</div>
 				<div class="messages">
@@ -137,7 +144,7 @@
             <div class="ft ui-grid-a" data-role="footer" data-position="fixed">
 				<div class="ui-block-a">
             		<h2>Join the game!</h2>
-					<img src="http://203.148.253.29/mblog/files/2011/04/qrcode.jpg" align="left" width="175" />
+					<img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=${gameLocation}" align="left" width="175" />
 				</div>
 				
 				<div class="ui-block-b">
@@ -170,15 +177,7 @@
             <!-- End: Body -->
 
             <!-- Start: Footer -->
-            <div class="ft" data-role="footer">
-            	<h2>Join the game!</h2>
-				
-				<h3>Instructions:</h3>
-				<ol>
-					<li>Use your mobile device to browse to http://example.com/ or the QR code</li>
-					<li>Look at the question being shown</li>
-					<li>Select your answer on your device</li>
-				</ol>
+            <div class="ft" data-role="footer" data-position="fixed">
             </div>
             <!-- End: Footer -->
         </div>
