@@ -82,12 +82,18 @@
 			margin-left: 20px;
 		}
 		
+		.leader-board {
+			margin: 0 30px 0 30px;
+		}
+		
 		.leader-board dl dt {
+			color: #FF5600;
 			float: left;
 			clear:left;
 		}
 		
 		.leader-board dl dd {
+			color: #FF5600;
 			float: left;
 		}
 		
@@ -96,6 +102,31 @@
 			font-size: 20px;
 			height: 500px;
 			overflow: auto;
+		}
+		
+		.result-container {
+			float: right;
+			margin: 0 50px 0 50px;
+			padding: 0 50px 0 50px;
+		}
+		
+		.result {
+			font-size: 45px;
+		}
+		
+		.name {
+			color: #FF5600;
+			font-weight: bold;
+		}
+		
+		.correct {
+			color: green;
+			font-weight: bold;
+		}
+		
+		.wrong {
+			color: red;
+			font-weight: bold;
 		}
 		</style>
         <!-- End: Styles -->
@@ -175,18 +206,45 @@
         <div id="page-question-result" data-role="page">
             <!-- Start: Header -->
             <div class="hd" data-role="header">
-            	<h1>Result</h1>
+				<div class="logo">
+					<img src="/images/rapp-logo.png" width="200" align="left" />
+				</div>
+				
+            	<h1>Dallas Hack Day 2011 Game</h1>
             </div>
             <!-- End: Header -->
 
             <!-- Start: Body -->
             <div class="bd" data-role="content">
-				<div class="result"></div>
+				<div class="question">
+					<h2 class="question"></h2>
+					<ul class="answers"></ul>
+					<span class="time"></span>
+				</div>
+				<div class="result-container">
+					<h2>How you did...</h2>
+					<div class="result"></div>
+				</div>
             </div>
             <!-- End: Body -->
 
             <!-- Start: Footer -->
-            <div class="ft" data-role="footer" data-position="fixed">
+            <div class="ft ui-grid-a" data-role="footer" data-position="fixed">
+				<div class="ui-block-a">
+            		<h2>Join the game!</h2>
+					<img src="http://chart.apis.google.com/chart?cht=qr&chs=175x175&chld=L|2&chl=${gameLocation}" align="left" width="175" />
+				</div>
+				
+				<div class="ui-block-b">
+					<h2>Instructions:</h2>
+					<ol>
+						<li>Use your mobile device to browse to ${gameLocation} or the QR code</li>
+						<li>Look at the question being shown</li>
+						<li>Select your answer on your device</li>
+					</ol>
+					
+					<img class="logo hackday-logo" src="/images/hackday-logo.png" width="350" align="right" />
+				</div>
             </div>
             <!-- End: Footer -->
         </div>

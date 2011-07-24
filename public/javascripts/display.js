@@ -10,7 +10,7 @@ socket.on('session.regenerate', function(data) {
 });
 
 socket.on('question', function(data) {
-	$.mobile.changePage($('#page-game'));
+	$.mobile.changePage($('#page-game'), { transition: 'flip' });
 	
 	// Populate question
 	$('h2.question').empty().append(data.question);
@@ -23,11 +23,24 @@ socket.on('question', function(data) {
 });
 
 socket.on('question.answered', function(data) {
-	$.mobile.changePage($('#page-question-result'));
+	$.mobile.changePage($('#page-question-result'), { transition: 'flip' });
+	$('.messages').empty();
 	$('.result').empty();
 	
+	// Populate question
+	$('h2.question').empty().append(data.question);
+	
+	// Populate answers
+	$('ul.answers').empty();
+	for (var index in data.answers) {
+		$('ul.answers').append('<li class="' + (data.correctAnswer == index ? 'correct' : '') + '">' + data.answers[index] + '</li>');
+	}
+	
+	if (data.users.length <= 0) {
+		$('.result').append('Join in and play the game...');
+	} 
 	for (var index in data.users) {
-	  $('.result').append(data.users[index].user.name + ' got it ' + ( parseInt(data.users[index].answer) == data.correctAnswer ? 'right' : 'wrong') + '<br />');
+	  $('.result').append('<span class="name">' + data.users[index].user.name + '</span> got it ' + ( parseInt(data.users[index].answer) == data.correctAnswer ? '<span class="correct">right!</span> <b class="name">+1</b>' : '<span class="wrong">wrong...</span>') + '<br />');
   }	
 });
 
