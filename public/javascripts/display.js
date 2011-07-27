@@ -20,6 +20,11 @@ socket.on('question', function(data) {
 	for (var index in data.answers) {
 		$('ul.answers').append('<li>' + data.answers[index] + '</li>');
 	}
+	if (data.photo) {
+	    $('.question-photo').html('<img src="' + data.photo + '" alt="" border="0">');
+	} else {
+	    $('.question-photo').html('');
+	}
 });
 
 socket.on('question.answered', function(data) {

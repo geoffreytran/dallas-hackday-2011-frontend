@@ -1,4 +1,4 @@
-var gameLocation = 'http://hackday.geoffreytran.com:3000';
+var gameLocation = 'http://hackday.local:3000';
 var questionSeconds = 10;
 
 /**
@@ -9,8 +9,8 @@ var express     = require('express');
 var jqtpl       = require('jqtpl');
 var io          = require('socket.io');
 var sio         = require('socket.io-sessions');
-// var sys         = require('sys');
-// var rest        = require('restler');
+var sys         = require('sys');
+var rest        = require('restler');
 
 // Create the app
 var app = module.exports = express.createServer();
@@ -75,6 +75,7 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 var users = [];
 
 var questions = [
+/*
 	{ 
 		question: 'Who is the best agency in the world?',
 		answers: [ 'JWT', 'IMC2', 'RAPP', 'Slingshot' ],
@@ -123,18 +124,25 @@ var questions = [
 		correctAnswer: 1,
 		users: []
 	},
+*/
 ];
 
 var currentQuestion;
 var currentQuestionTimeLeft = questionSeconds;
 var displaying = 0;
 
+if (questions.length <= 0) {
+    // Get Initial Question
+	rest.get('http://hackday.local/question').on('complete', function(data) {
+        questions.push(JSON.parse(data));
+    });
+}
+
 socket.on('sconnection', function (client, session) {
 	client.on('display', function (data) {
 		if (currentQuestion == null) {
 			currentQuestion = 0;
 		}
-		
 		client.emit('question', questions[currentQuestion]);
 		
 		var updateTime = function(){						
@@ -147,6 +155,10 @@ socket.on('sconnection', function (client, session) {
 					client.emit('question', questions[currentQuestion]);
 					client.broadcast.emit('question', questions[currentQuestion]);
 				} else if (currentQuestionTimeLeft <= -10) {
+				    // Get Next Question
+        			 rest.get('http://hackday.local/question').on('complete', function(data) {
+                         questions.push(JSON.parse(data));
+                     });
 					currentQuestion = 0;
 				} else {
 					// Calculate scores
@@ -168,6 +180,8 @@ socket.on('sconnection', function (client, session) {
 				}
 			}
 			
+			sys.puts('Current Number of Questions: ' + questions.length);
+			sys.puts('Current Question Index: ' + currentQuestion);
 			users.sort(function(a, b) {
 				return b.score - a.score;
 			});
