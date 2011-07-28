@@ -1,5 +1,6 @@
 var gameLocation = 'http://hackday.local:3000';
-var questionSeconds = 10;
+var questionSeconds = 20;
+var resultsSeconds = 10;
 
 /**
  * Module dependencies.
@@ -147,19 +148,19 @@ socket.on('sconnection', function (client, session) {
 		
 		var updateTime = function(){						
 			if (currentQuestionTimeLeft <= 0) {
-				if (currentQuestionTimeLeft <= -10 && questions[currentQuestion + 1]) {
+				if (currentQuestionTimeLeft <= -resultsSeconds && questions[currentQuestion + 1]) {
 					questions[currentQuestion + 1].users = [];
 					currentQuestion++;
 					currentQuestionTimeLeft = questionSeconds;
 					
 					client.emit('question', questions[currentQuestion]);
 					client.broadcast.emit('question', questions[currentQuestion]);
-				} else if (currentQuestionTimeLeft <= -10) {
+				} else if (currentQuestionTimeLeft <= -resultsSeconds) {
 				    // Get Next Question
         			 rest.get('http://hackday.local/question').on('complete', function(data) {
-                         questions.push(JSON.parse(data));
+                        sys.puts('NEW REQUEST: ' + data);
+                        questions.push(JSON.parse(data));
                      });
-					currentQuestion = 0;
 				} else {
 					// Calculate scores
 					for (var index in questions[currentQuestion].users) {
