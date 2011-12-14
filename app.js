@@ -1,5 +1,6 @@
-var gameLocation = 'http://hackday.local:3000';
-var questionSeconds = 20;
+var gameLocation = 'http://hackday.geoffreytran.com:3000';
+var questionsURL = 'http://hackday.geoffreytran.com'
+var questionSeconds = 30;
 var resultsSeconds = 10;
 
 /**
@@ -29,7 +30,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: "DallasHackDay2011", store: sessionStore }));
+  app.use(express.session({ secret: "AMCTrivia", store: sessionStore }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -134,7 +135,7 @@ var displaying = 0;
 
 if (questions.length <= 0) {
     // Get Initial Question
-	rest.get('http://hackday.local/question').on('complete', function(data) {
+	rest.get(questionsURL + '/question').on('complete', function(data) {
         questions.push(JSON.parse(data));
     });
 }
@@ -144,9 +145,13 @@ socket.on('sconnection', function (client, session) {
 		if (currentQuestion == null) {
 			currentQuestion = 0;
 		}
+		questions[currentQuestion].users = [];
+		console.log(questions[currentQuestion]);
 		client.emit('question', questions[currentQuestion]);
 		
-		var updateTime = function(){						
+		var updateTime = function(){	
+		  console.log(questions);
+		  console.log(users);					
 			if (currentQuestionTimeLeft <= 0) {
 				if (currentQuestionTimeLeft <= -resultsSeconds && questions[currentQuestion + 1]) {
 					questions[currentQuestion + 1].users = [];
@@ -157,7 +162,7 @@ socket.on('sconnection', function (client, session) {
 					client.broadcast.emit('question', questions[currentQuestion]);
 				} else if (currentQuestionTimeLeft <= -resultsSeconds) {
 				    // Get Next Question
-        			 rest.get('http://hackday.local/question').on('complete', function(data) {
+        			 rest.get(questionsURL + '/question').on('complete', function(data) {
                         sys.puts('NEW REQUEST: ' + data);
                         questions.push(JSON.parse(data));
                      });
@@ -166,11 +171,21 @@ socket.on('sconnection', function (client, session) {
 					for (var index in questions[currentQuestion].users) {
 						for (var i in users) {
 							if (users[i].name.replace(/ /g,'').toLowerCase() == questions[currentQuestion].users[index].user.name.replace(/ /g,'').toLowerCase()) {
+								console.log("Correct: " + questions[currentQuestion].correctAnswer + " | Answered: " + questions[currentQuestion].users[index].answer);
 								if (questions[currentQuestion].users[index].scored) {
 									continue;
 								}
-								
 								users[i].score++;
+
+								if (questions[currentQuestion].users[index].answer == questions[currentQuestion].correctAnswer) {
+    								users[i].score++;
+								} else {
+    								if (users[i].score) {
+        								users[i].score--;
+    								}
+								}
+
+								
 								questions[currentQuestion].users[index].scored = true;
 							}
 						}
@@ -245,6 +260,8 @@ socket.on('sconnection', function (client, session) {
 	
 	  if (!existingUser) {
 		  client.broadcast.emit('display.user-answered', session.user);
+		  console.log(questions[currentQuestion]);
+		  console.log(questions);
 			questions[currentQuestion].users.push({ user: session.user, answer: data.answer });
 	  }
 	});	

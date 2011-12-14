@@ -13,7 +13,7 @@
         <meta name="viewport"              content="width=device-width, initial-scale=1.0" />
         <!-- End: Meta -->
 
-        <title>Dallas Hack Day 2011</title>
+        <title>AMC Movie Trivia</title>
 
         <!-- Start: Links -->
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
@@ -33,132 +33,7 @@
 
         <!-- Start: Styles -->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
-		<style>
-		.hd h1.ui-title {
-			font-size: 80px;
-		}
-		
-		.logo {
-			margin: 0 50px;
-		}
-		
-		.hackday-logo {
-			padding: 0 50px;
-		}
-		
-		.bd h2 {
-			font-size: 60px;
-		}
-		
-		.bd h2 span {
-			background: rgba(50,50,50,.2);
-			display: block;
-			font-size: 40px;
-			color: #666;
-			padding: 10px;
-		}
-		
-		.ft {
-			padding: 0 50px 20px 50px;
-		}
-		
-		.ft ol li {
-			font-size: 19px;
-		}
-		
-		.leader-board {
-			min-height: 300px;
-		}
-		
-		.leader-board dl {
-			font-size: 30px;
-		}
-		
-		.side-column {
-			border-right: 2px solid #222; 
-			margin-right: 50px; 
-			padding-right: 50px;
-			width: 25%;
-			float: left;
-		}
-		
-		div.question {
-			padding: 0 10px 0 10px;
-			width: 40%;
-			float: left;
-		}
-		
-		#page-question-result div.question {
-			padding-left: 40px;
-		}
-		
-		ul.answers {
-			color: #555;
-			font-weight: bold;
-			font-size: 40px;
-			list-style: upper-alpha;
-			margin-left: 20px;
-		}
-		
-		.leader-board {
-			margin: 0 30px 0 30px;
-		}
-		
-		.leader-board dl dt {
-			color: #FF5600;
-			float: left;
-			clear:left;
-		}
-		
-		.leader-board dl dd {
-			color: #FF5600;
-			float: left;
-		}
-		
-		.messages {
-			float: right;
-			font-size: 20px;
-			height: 500px;
-			overflow: auto;
-		}
-		
-		.result-container {
-			float: right;
-			margin: 0 50px 0 50px;
-			padding: 0 50px 0 50px;
-		}
-		
-		.result {
-			font-size: 45px;
-		}
-		
-		.time {
-			font-size: 50px;
-			font-weight: bolder;
-			border: 5px solid #FF5600;
-			padding: 5px;
-			width: 55px;
-			height: 60px;
-			display: block;
-			text-align: center;
-			-webkit-border-radius: 55px;
-		}
-		
-		.name {
-			color: #FF5600;
-			font-weight: bold;
-		}
-		
-		.correct {
-			color: green;
-			font-weight: bold;
-		}
-		
-		.wrong {
-			color: red;
-			font-weight: bold;
-		}
-		</style>
+		<link rel="stylesheet" href="stylesheets/style.css">
         <!-- End: Styles -->
 
         <!-- Start: Scripts -->
@@ -177,112 +52,99 @@
     </head>
 
     <body>
-        <!-- Start: Page Game -->
-        <div id="page-game" data-role="page">
-            <!-- Start: Header -->
-            <div class="hd" data-role="header">
-				<div class="logo">
-					<img src="/images/rapp-logo.png" width="200" align="left" />
-				</div>
-				
-            	<h1>Dallas Hack Day 2011 Game</h1>
-            </div>
-            <!-- End: Header -->
+      <!-- Start: Page Game -->
+      <div id="page-game" data-role="page">
+        <div class="app">
+          	<div class="viewport">
+          		<header>
+          			<img src="images/logo.png" alt="">
+          			<!-- <div class="right">
+          	            Sponsored by: <span>Mission: Impossible Ghost Protocol</span> in IMAX <span>December 16, 2011</span>			
+          			</div> -->
+          		</header>
+          		<section class="question" data-role="content">
+      			
+          		</section>
+          		<!-- Start: Footer -->
+          		<footer>
+          			<section class="join">
+          	            <h3>3 Ways to Join The Game!</h3>		
+          	            - Text "Join" to (972) 919-015<br>
+                          - Scan the QR Code<br>
+                          - Browse to http://bit.ly/pczawk 
+          			</section>
+          			<section class="qrcode">
+          	            <img src="http://chart.apis.google.com/chart?cht=qr&chs=175x175&chld=L|2&chl=${gameLocation}" />    			
+          			</section>
+          			<section class="tip">
+          	            Look at the question being shown and select your answer on your device before time expires!    			
+          			</section>
+          			<section class="countdown">
+          	            10
+          			</section>
+          		</footer>
+          		<!-- End: Footer -->
+          	</div>
 
-            <!-- Start: Body -->
-            <div class="bd" data-role="content">
-				<div class="side-column">
-					<div class="leader-board">
-						<h2>Leader Board</h2>
-						<div class="scores">
-						</div>
-					</div>
-				</div>
-				
-				<div class="question">
-					<h2 class="question"></h2>
-					<div class="question-photo"></div>
-					<ul class="answers"></ul>
-					<span class="time"></span>
-				</div>
-				
-				<ul class="messages" data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
-					<li data-role="list-divider">Actions</li>
-				</ul>
-            </div>
-            <!-- End: Body -->
+          	<div class="status">
+          		<h2>Leaderboard:</h2>
+                  <ul>
 
-            <!-- Start: Footer -->
-            <div class="ft ui-grid-a" data-role="footer" data-position="fixed">
-				<div class="ui-block-a">
-            		<h2>Join the game!</h2>
-					<img src="http://chart.apis.google.com/chart?cht=qr&chs=175x175&chld=L|2&chl=${gameLocation}" align="left" width="175" />
-				</div>
-				
-				<div class="ui-block-b">
-					<h2>Instructions:</h2>
-					<ol>
-						<li>Use your mobile device to browse to <span class="name">${gameLocation}</span> or the QR code</li>
-						<li>Look at the question being shown</li>
-						<li>Select your answer on your device</li>
-					</ol>
-					
-					<img class="logo hackday-logo" src="/images/hackday-logo.png" width="350" align="right" />
-				</div>
-            </div>
-            <!-- End: Footer -->
-        </div>
-        <!-- End: Page Game -->
+                  </ul>	
+                 <div class="sponsor">
 
-        <!-- Start: Page Question Result -->
-        <div id="page-question-result" data-role="page">
-            <!-- Start: Header -->
-            <div class="hd" data-role="header">
-				<div class="logo">
-					<img src="/images/rapp-logo.png" width="200" align="left" />
-				</div>
-				
-            	<h1>Dallas Hack Day 2011 Game</h1>
-            </div>
-            <!-- End: Header -->
+                 </div> 
+          	</div>
+        </div>	
+      </div>
+      <!-- End: Page Game -->
+      <!-- Start: Page Question Result -->
+      <div id="page-question-result" data-role="page">
+          <div class="app">
+            	<div class="viewport">
+            		<header>
+            			<img src="images/logo.png" alt="">
+            			<!-- <div class="right">
+            	            Sponsored by: <span>Mission: Impossible Ghost Protocol</span> in IMAX <span>December 16, 2011</span>			
+            			</div> -->
+            		</header>
+            		<section class="question" data-role="content">
+                        <div class="answer">
+                            
+                        </div>
+            		</section>
+            		<!-- Start: Footer -->
+            		<footer>
+            			<section class="join">
+            	            <h3>3 Ways to Join The Game!</h3>		
+            	            - Text "Join" to (972) 919-015<br>
+                            - Scan the QR Code<br>
+                            - Browse to http://bit.ly/pczawk 
+            			</section>
+            			<section class="qrcode">
+            	            <img src="http://chart.apis.google.com/chart?cht=qr&chs=175x175&chld=L|2&chl=${gameLocation}" />    			
+            			</section>
+            			<section class="tip">
+            	            Look at the question being shown and select your answer on your device before time expires!    			
+            			</section>
+            			<section class="countdown">
+            	            10
+            			</section>
+            		</footer>
+            		<!-- End: Footer -->
+            	</div>
 
-            <!-- Start: Body -->
-            <div class="bd" data-role="content">
-				<div class="question">
-					<h2 class="question"></h2>
-					<ul class="answers"></ul>
-					<span class="time"></span>
-				</div>
-				<div class="result-container">
-					<h2>How you did...</h2>
-					<div class="result"></div>
-				</div>
-            </div>
-            <!-- End: Body -->
+            	<div class="status">
+            		<h2>Leaderboard:</h2>
+                    <ul>
 
-            <!-- Start: Footer -->
-            <div class="ft ui-grid-a" data-role="footer" data-position="fixed">
-				<div class="ui-block-a">
-            		<h2>Join the game!</h2>
-					<img src="http://chart.apis.google.com/chart?cht=qr&chs=175x175&chld=L|2&chl=${gameLocation}" align="left" width="175" />
-				</div>
-				
-				<div class="ui-block-b">
-					<h2>Instructions:</h2>
-					<ol>
-						<li>Use your mobile device to browse to <span class="name">${gameLocation}</span> or the QR code</li>
-						<li>Look at the question being shown</li>
-						<li>Select your answer on your device</li>
-					</ol>
-					
-					<img class="logo hackday-logo" src="/images/hackday-logo.png" width="350" align="right" />
-				</div>
-            </div>
-            <!-- End: Footer -->
-        </div>
-        <!-- End: Page Question Result -->
+                    </ul>	
+                   <div class="sponsor">
 
-        <!-- Start: Inline Scripts -->
-        <!-- End: Inline Scripts -->
+                   </div> 
+            	</div>
+          </div>
+      </div>
+          <!-- End: Page Question Result -->          
     </body>
 </html>
