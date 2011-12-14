@@ -1,5 +1,5 @@
 var gameLocation = 'http://hackday.geoffreytran.com:3000';
-var questionsURL = 'http://hackday.geoffreytran.com'
+var questionsURL = 'http://hackday.geoffreytran.com/index.php'
 var questionSeconds = 30;
 var resultsSeconds = 10;
 
