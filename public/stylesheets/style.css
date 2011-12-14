@@ -114,12 +114,12 @@ h3 {
     	    width: 0;
 	    }
 	    .viewport .qrcode { 
-	        -webkit-box-flex: 0.5; 
+	        -webkit-box-flex: 0.75; 
 	        width: 0;
 	    }
 	    .viewport .join { 
 	        font-size: 2rem;
-	        -webkit-box-flex: 1.4; 
+	        -webkit-box-flex: 2; 
 	        padding-top: 25px;
 	        width: 0;
 	    }
