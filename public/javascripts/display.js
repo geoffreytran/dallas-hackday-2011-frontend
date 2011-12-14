@@ -60,9 +60,9 @@ socket.on('question.answered', function(data) {
 	// Mark correct/incorrect on leaderboard
 	for (var index in data.users) {
     	if ( parseInt(data.users[index].answer) == data.correctAnswer ) {
-        	$('.status li[data-id="' + data.users[index].user.name + '"]').removeClass('answered').addClass('correct');
+        	$('.status li[data-id="' + data.users[index].user.name.replace(/ /g,'').toLowerCase() + '"]').removeClass('answered').addClass('correct');
     	} else {
-            $('.status li[data-id="' + data.users[index].user.name + '"]').removeClass('answered').addClass('incorrect');
+            $('.status li[data-id="' + data.users[index].user.name.replace(/ /g,'').toLowerCase() + '"]').removeClass('answered').addClass('incorrect');
     	}
     }	
 });
@@ -72,7 +72,7 @@ socket.on('leaderboard', function(data) {
 	
 	for (var index in data) {
     	console.log(data[index]);
-		$('.status li[data-id="' + data[index].name + '"]').attr('data-score', data[index].score);
+		$('.status li[data-id="' + data[index].name.replace(/ /g,'').toLowerCase() + '"]').attr('data-score', data[index].score);
 	}
 });
 
@@ -81,13 +81,13 @@ socket.on('question.time-left', function(data) {
 });
 
 socket.on('user.connected', function(data) {
-	$('.status ul').append('<li data-id="' + data.name + '" data-score="' + data.score + '">' + data.name + '</li>');
+	$('.status ul').append('<li data-id="' + data.name.replace(/ /g,'').toLowerCase() + '" data-score="' + data.score + '">' + data.name + '</li>');
 });
 
 socket.on('user.disconnected', function(data) {
-	$('.status li[data-id="' + data.name + '"]').remove();
+	$('.status li[data-id="' + data.name.replace(/ /g,'').toLowerCase() + '"]').remove();
 });
 
 socket.on('display.user-answered', function(data) {
-	$('.status li[data-id="' + data.name + '"]').addClass('answered');
+	$('.status li[data-id="' + data.name.replace(/ /g,'').toLowerCase() + '"]').addClass('answered');
 });
