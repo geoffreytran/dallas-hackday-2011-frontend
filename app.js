@@ -175,7 +175,6 @@ socket.on('sconnection', function (client, session) {
 								if (questions[currentQuestion].users[index].scored) {
 									continue;
 								}
-								users[i].score++;
 
 								if (questions[currentQuestion].users[index].answer == questions[currentQuestion].correctAnswer) {
     								users[i].score++;
