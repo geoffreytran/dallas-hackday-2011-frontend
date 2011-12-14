@@ -180,7 +180,7 @@ socket.on('sconnection', function (client, session) {
     								users[i].score++;
 								} else {
     								if (users[i].score) {
-        								users[i].score--;
+        								//users[i].score--;
     								}
 								}
 
